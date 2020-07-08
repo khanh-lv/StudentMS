@@ -27,11 +27,7 @@ public class MainForm extends javax.swing.JFrame {
      */
     public MainForm() {
         initComponents();
-        this.setResizable(false);
-        
-        
-        
-        
+        this.setResizable(false);   
     }
 
     /**
@@ -101,6 +97,11 @@ public class MainForm extends javax.swing.JFrame {
         btnStudentManager.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         btnStudentManager.setForeground(new java.awt.Color(51, 51, 255));
         btnStudentManager.setText("Quản lý sinh viên");
+        btnStudentManager.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnStudentManagerActionPerformed(evt);
+            }
+        });
 
         btnClassManager.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         btnClassManager.setForeground(new java.awt.Color(51, 51, 255));
@@ -114,6 +115,11 @@ public class MainForm extends javax.swing.JFrame {
         btnSubjectManager.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         btnSubjectManager.setForeground(new java.awt.Color(51, 51, 255));
         btnSubjectManager.setText("Quản lý môn học");
+        btnSubjectManager.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSubjectManagerActionPerformed(evt);
+            }
+        });
 
         btnManager.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         btnManager.setForeground(new java.awt.Color(51, 51, 255));
@@ -210,6 +216,7 @@ public class MainForm extends javax.swing.JFrame {
         newFrame.add(employeeManager, BorderLayout.NORTH);
         newFrame.setVisible(true);
         newFrame.setSize(1007,582);
+        jDesktopPane.removeAll();
         jDesktopPane.add(newFrame);
         newFrame.moveToFront();
         
@@ -226,6 +233,28 @@ public class MainForm extends javax.swing.JFrame {
         jDesktopPane.add(newFrame);
         
     }//GEN-LAST:event_btnClassManagerActionPerformed
+
+    private void btnStudentManagerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStudentManagerActionPerformed
+        // TODO add your handling code here:
+        StudentManager studentManager = new StudentManager();
+        JInternalFrame newFrame = new JInternalFrame();
+        newFrame.add(studentManager);
+        newFrame.setVisible(true);
+        newFrame.setSize(1007, 582);
+        jDesktopPane.removeAll();
+        jDesktopPane.add(newFrame);
+    }//GEN-LAST:event_btnStudentManagerActionPerformed
+
+    private void btnSubjectManagerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubjectManagerActionPerformed
+        // TODO add your handling code here:
+        SubjectManager subjectManager = new SubjectManager();
+        JInternalFrame newFrame = new JInternalFrame();
+        newFrame.add(subjectManager);
+        newFrame.setVisible(true);
+        newFrame.setSize(1007, 582);
+        jDesktopPane.removeAll();
+        jDesktopPane.add(newFrame);
+    }//GEN-LAST:event_btnSubjectManagerActionPerformed
 
     /**
      * @param args the command line arguments

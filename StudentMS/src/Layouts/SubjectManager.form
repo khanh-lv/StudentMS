@@ -16,29 +16,33 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="jScrollPane1" alignment="0" pref="772" max="32767" attributes="0"/>
           <Group type="102" alignment="0" attributes="0">
-              <EmptySpace min="-2" pref="91" max="-2" attributes="0"/>
-              <Component id="btnAdd" min="-2" pref="135" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="58" max="-2" attributes="0"/>
-              <Component id="btnUpdate" min="-2" pref="163" max="-2" attributes="0"/>
-              <EmptySpace max="32767" attributes="0"/>
-              <Component id="btnDelete" min="-2" pref="110" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="112" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="jScrollPane1" min="-2" pref="261" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="57" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="btnAdd" min="-2" pref="109" max="-2" attributes="0"/>
+                  <Component id="btnUpdate" min="-2" pref="109" max="-2" attributes="0"/>
+                  <Component id="btnDelete" min="-2" pref="109" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace pref="151" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
-              <Component id="jScrollPane1" min="-2" pref="388" max="-2" attributes="0"/>
-              <EmptySpace pref="29" max="32767" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="btnAdd" alignment="3" min="-2" pref="33" max="-2" attributes="0"/>
-                  <Component id="btnUpdate" alignment="3" min="-2" pref="33" max="-2" attributes="0"/>
-                  <Component id="btnDelete" alignment="3" min="-2" pref="33" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace max="-2" attributes="0"/>
+              <Component id="jScrollPane1" min="-2" pref="364" max="-2" attributes="0"/>
+              <EmptySpace min="0" pref="25" max="32767" attributes="0"/>
+          </Group>
+          <Group type="102" alignment="0" attributes="0">
+              <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
+              <Component id="btnAdd" min="-2" pref="39" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="38" max="-2" attributes="0"/>
+              <Component id="btnUpdate" min="-2" pref="39" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="41" max="-2" attributes="0"/>
+              <Component id="btnDelete" min="-2" pref="39" max="-2" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -54,15 +58,9 @@
         <Component class="javax.swing.JTable" name="jTable1">
           <Properties>
             <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-              <Table columnCount="8" rowCount="0">
+              <Table columnCount="2" rowCount="0">
                 <Column editable="false" title="ID" type="java.lang.Object"/>
-                <Column editable="false" title="H&#x1ecd; t&#xea;n" type="java.lang.Object"/>
-                <Column editable="false" title="Ng&#xe0;y sinh" type="java.lang.Object"/>
-                <Column editable="false" title="Gi&#x1edb;i t&#xed;nh" type="java.lang.Object"/>
-                <Column editable="false" title="&#x110;&#x1ecb;a ch&#x1ec9;" type="java.lang.Object"/>
-                <Column editable="false" title="Email" type="java.lang.Object"/>
-                <Column editable="false" title="S&#x1ed1; &#x111;i&#x1ec7;n tho&#x1ea1;i" type="java.lang.Object"/>
-                <Column editable="false" title="Nghi&#x1ec7;p v&#x1ee5;" type="java.lang.Object"/>
+                <Column editable="false" title="T&#xea;n m&#xf4;n h&#x1ecd;c" type="java.lang.Object"/>
               </Table>
             </Property>
           </Properties>
@@ -71,20 +69,17 @@
     </Container>
     <Component class="javax.swing.JButton" name="btnAdd">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Th&#xea;m nh&#xe2;n vi&#xea;n"/>
+        <Property name="text" type="java.lang.String" value="Th&#xea;m m&#xf4;n h&#x1ecd;c"/>
       </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnAddActionPerformed"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="btnUpdate">
       <Properties>
-        <Property name="text" type="java.lang.String" value="S&#x1eed;a th&#xf4;ng tin nh&#xe2;n vi&#xea;n"/>
+        <Property name="text" type="java.lang.String" value="S&#x1eed;a m&#xf4;n h&#x1ecd;c"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="btnDelete">
       <Properties>
-        <Property name="text" type="java.lang.String" value="X&#xf3;a nh&#xe2;n vi&#xea;n"/>
+        <Property name="text" type="java.lang.String" value="X&#xf3;a m&#xf4;n h&#x1ecd;c"/>
       </Properties>
     </Component>
   </SubComponents>
