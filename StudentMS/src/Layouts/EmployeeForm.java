@@ -6,6 +6,8 @@
 package Layouts;
 
 
+
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -44,7 +46,7 @@ public class EmployeeForm extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         txtEmail = new javax.swing.JTextField();
-        txtNumber = new javax.swing.JTextField();
+        txtPhone = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         btnReset = new javax.swing.JButton();
         jLabel9 = new javax.swing.JLabel();
@@ -80,6 +82,11 @@ public class EmployeeForm extends javax.swing.JFrame {
         jLabel8.setText("Chức vụ:");
 
         jButton1.setText("Save");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         btnReset.setText("Reset");
         btnReset.addActionListener(new java.awt.event.ActionListener() {
@@ -122,7 +129,7 @@ public class EmployeeForm extends javax.swing.JFrame {
                     .addComponent(txtName)
                     .addComponent(txtEmployeeID)
                     .addComponent(txtEmail)
-                    .addComponent(txtNumber)
+                    .addComponent(txtPhone)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 231, Short.MAX_VALUE)
                     .addComponent(cbGender, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(cbPosition, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -172,7 +179,7 @@ public class EmployeeForm extends javax.swing.JFrame {
                     .addComponent(btnReset, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtNumber, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtPhone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel7))
                 .addGap(40, 40, 40)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -216,12 +223,27 @@ public class EmployeeForm extends javax.swing.JFrame {
         cbGender.setSelectedIndex(0);
         txtAddress.setText("");
         txtEmail.setText("");
-        txtNumber.setText("");
+        txtPhone.setText("");
         cbPosition.setSelectedIndex(0);
         txtUsername.setText("");
         txtPassword.setText("");
         txtDate.setDate(null);
     }//GEN-LAST:event_btnResetActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        String employeeID = txtEmployeeID.getText();
+        String empName = txtName.getText();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String birthday = sdf.format(txtDate.getDate());
+        String gender = cbGender.getSelectedItem().toString();
+        String address = txtAddress.getText();
+        String email = txtEmail.getText();
+        String phone = txtPhone.getText();
+        String position = cbPosition.getSelectedItem().toString();
+        
+        
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -280,8 +302,8 @@ public class EmployeeForm extends javax.swing.JFrame {
     private javax.swing.JTextField txtEmail;
     private javax.swing.JTextField txtEmployeeID;
     private javax.swing.JTextField txtName;
-    private javax.swing.JTextField txtNumber;
     private javax.swing.JPasswordField txtPassword;
+    private javax.swing.JTextField txtPhone;
     private javax.swing.JTextField txtUsername;
     // End of variables declaration//GEN-END:variables
 }

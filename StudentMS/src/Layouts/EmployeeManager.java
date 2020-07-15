@@ -5,12 +5,16 @@
  */
 package Layouts;
 
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author khanh
  */
 public class EmployeeManager extends javax.swing.JPanel {
 
+   
+    
     /**
      * Creates new form EmployeeManager
      */
@@ -28,12 +32,12 @@ public class EmployeeManager extends javax.swing.JPanel {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tblEmployee = new javax.swing.JTable();
         btnAdd = new javax.swing.JButton();
         btnUpdate = new javax.swing.JButton();
         btnDelete = new javax.swing.JButton();
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tblEmployee.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -49,7 +53,7 @@ public class EmployeeManager extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tblEmployee);
 
         btnAdd.setText("Thêm nhân viên");
         btnAdd.addActionListener(new java.awt.event.ActionListener() {
@@ -101,6 +105,6 @@ public class EmployeeManager extends javax.swing.JPanel {
     private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnUpdate;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable tblEmployee;
     // End of variables declaration//GEN-END:variables
 }
