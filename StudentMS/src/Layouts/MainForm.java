@@ -29,6 +29,21 @@ public class MainForm extends javax.swing.JFrame {
         initComponents();
         this.setResizable(false);   
     }
+    public MainForm(String role){
+        initComponents();
+        switch(role){
+            case "hr":
+                btnEmpManager.setEnabled(false);
+                btnMarkManager.setEnabled(false);
+                break;
+            case "teacher":
+                btnEmpManager.setEnabled(false);
+                btnStudentManager.setEnabled(false);
+                btnSubjectManager.setEnabled(false);
+                btnClassManager.setEnabled(false);
+                break;
+        }
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -47,7 +62,7 @@ public class MainForm extends javax.swing.JFrame {
         btnStudentManager = new javax.swing.JButton();
         btnClassManager = new javax.swing.JButton();
         btnSubjectManager = new javax.swing.JButton();
-        btnManager = new javax.swing.JButton();
+        btnMarkManager = new javax.swing.JButton();
         btnAttendence = new javax.swing.JButton();
         jDesktopPane = new javax.swing.JDesktopPane();
 
@@ -121,9 +136,9 @@ public class MainForm extends javax.swing.JFrame {
             }
         });
 
-        btnManager.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        btnManager.setForeground(new java.awt.Color(51, 51, 255));
-        btnManager.setText("Quản lý điểm");
+        btnMarkManager.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        btnMarkManager.setForeground(new java.awt.Color(51, 51, 255));
+        btnMarkManager.setText("Quản lý điểm");
 
         btnAttendence.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         btnAttendence.setForeground(new java.awt.Color(51, 51, 255));
@@ -136,7 +151,7 @@ public class MainForm extends javax.swing.JFrame {
             .addGroup(leftPanelLayout.createSequentialGroup()
                 .addGap(34, 34, 34)
                 .addGroup(leftPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(btnManager, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnMarkManager, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnSubjectManager, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnClassManager, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnEmpManager, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -156,7 +171,7 @@ public class MainForm extends javax.swing.JFrame {
                 .addGap(26, 26, 26)
                 .addComponent(btnSubjectManager, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(29, 29, 29)
-                .addComponent(btnManager, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnMarkManager, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(34, 34, 34)
                 .addComponent(btnAttendence, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(177, Short.MAX_VALUE))
@@ -298,7 +313,7 @@ public class MainForm extends javax.swing.JFrame {
     private javax.swing.JButton btnAttendence;
     private javax.swing.JButton btnClassManager;
     private javax.swing.JButton btnEmpManager;
-    private javax.swing.JButton btnManager;
+    private javax.swing.JButton btnMarkManager;
     private javax.swing.JButton btnStudentManager;
     private javax.swing.JButton btnSubjectManager;
     private javax.swing.JDesktopPane jDesktopPane;
