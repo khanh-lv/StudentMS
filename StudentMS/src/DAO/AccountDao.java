@@ -20,7 +20,7 @@ import java.sql.Statement;
 public class AccountDao implements AccountInterface{
 
     @Override
-    public boolean insert(Account account) {
+    public Account insert(Account account) {
         String sql = "insert into account(username, password, role) values(?, ?, ?)";
         ResultSet key = null;
         try{
@@ -35,14 +35,14 @@ public class AccountDao implements AccountInterface{
                 key.next();
                 int accId = key.getInt(1);
                 account.setAccId(accId);
-                return true;
+                return account;
             } else{
-                return false;
+                return null;
             }
             
         } catch(Exception e){
             System.err.println(e.getMessage());
-            return false;
+            return null;
         }
         
         

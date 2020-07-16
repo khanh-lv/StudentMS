@@ -12,7 +12,7 @@ import Entity.Account;
  * @author khanh
  */
 public interface AccountInterface {
-    public boolean insert(Account account);
+    public Account insert(Account account);
     public boolean update(Account account);
     public boolean delete(int accId);
     public Account getAccount(String username, String password);
