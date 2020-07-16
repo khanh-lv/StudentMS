@@ -140,7 +140,7 @@ public class LoginForm extends javax.swing.JFrame {
             Account account = accountDAO.getAccount(txtUser.getText(), txtPassword.getText());
             if(account != null){
                 if(!account.getRole().equals("student")){
-                    MainForm mainForm = new MainForm(account.getRole());
+                    MainForm mainForm = new MainForm(account);
                     mainForm.setVisible(true);
                     this.setVisible(false);
                 } else{

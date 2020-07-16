@@ -5,6 +5,7 @@
  */
 package Layouts;
 
+import Entity.Account;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import javax.swing.JButton;
@@ -29,9 +30,9 @@ public class MainForm extends javax.swing.JFrame {
         initComponents();
         this.setResizable(false);   
     }
-    public MainForm(String role){
+    public MainForm(Account account){
         initComponents();
-        switch(role){
+        switch(account.getRole()){
             case "hr":
                 btnEmpManager.setEnabled(false);
                 btnMarkManager.setEnabled(false);
