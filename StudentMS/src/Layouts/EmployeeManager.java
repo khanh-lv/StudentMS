@@ -95,7 +95,7 @@ public class EmployeeManager extends javax.swing.JPanel {
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
         // TODO add your handling code here:
-        EmployeeForm emf = new EmployeeForm();
+        EmpForm emf = new EmpForm();
         emf.setVisible(true);
     }//GEN-LAST:event_btnAddActionPerformed
 
