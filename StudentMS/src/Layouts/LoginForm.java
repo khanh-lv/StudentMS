@@ -144,9 +144,9 @@ public class LoginForm extends javax.swing.JFrame {
                     mainForm.setVisible(true);
                     this.setVisible(false);
                 } else{
-                    StudentForm studentForm = new StudentForm();
-                    studentForm.setVisible(true);
-                    this.setVisible(false);
+//                    StudentForm studentForm = new StudentForm();
+//                    studentForm.setVisible(true);
+//                    this.setVisible(false);
                 }
                 
             }else{

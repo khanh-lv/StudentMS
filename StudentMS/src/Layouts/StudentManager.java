@@ -52,6 +52,11 @@ public class StudentManager extends javax.swing.JPanel {
         jScrollPane1.setViewportView(jTable1);
 
         btnUpdate.setText("Sửa thông tin sinh viên");
+        btnUpdate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUpdateActionPerformed(evt);
+            }
+        });
 
         btnAdd.setText("Thêm sinh viên");
 
@@ -83,6 +88,12 @@ public class StudentManager extends javax.swing.JPanel {
                 .addContainerGap(48, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
+        // TODO add your handling code here:
+        
+//        StuForm stuForm = new StuForm(st);
+    }//GEN-LAST:event_btnUpdateActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
