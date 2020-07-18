@@ -5,7 +5,11 @@
  */
 package Layouts;
 
+import DAO.EmployeeDAO;
+import Entity.Employee;
+import java.util.List;
 import javax.swing.table.DefaultTableModel;
+import sun.net.www.MimeTable;
 
 /**
  *
@@ -20,6 +24,7 @@ public class EmployeeManager extends javax.swing.JPanel {
      */
     public EmployeeManager() {
         initComponents();
+        loadTable();
     }
 
     /**
@@ -107,4 +112,18 @@ public class EmployeeManager extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tblEmployee;
     // End of variables declaration//GEN-END:variables
+
+    private void loadTable() {
+        DefaultTableModel model = (DefaultTableModel)tblEmployee.getModel();
+        model.setRowCount(0);
+        EmployeeDAO employeeDAO = new EmployeeDAO();
+        List<Employee> empList = employeeDAO.getAllEmployee();
+        for(Employee e : empList){
+            model.addRow(new Object[]{
+                e.getEmpNum(),e.getName(),e.getBirthdate(),e.getGender(),e.getAddress(),e.getEmail(),e.getPhone(),e.getPosition()
+            });
+        }
+    }
+
+    
 }

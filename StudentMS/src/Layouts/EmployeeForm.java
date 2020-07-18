@@ -38,7 +38,7 @@ public class EmployeeForm extends javax.swing.JFrame {
         txtName = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        txtEmployeeID = new javax.swing.JTextField();
+        txtEmployeeNum = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         cbGender = new javax.swing.JComboBox<>();
         jLabel5 = new javax.swing.JLabel();
@@ -67,7 +67,7 @@ public class EmployeeForm extends javax.swing.JFrame {
 
         jLabel2.setText("Ngày Sinh:");
 
-        jLabel3.setText("EmployeeID: ");
+        jLabel3.setText("Employee Number: ");
 
         jLabel4.setText("Giới Tính:");
 
@@ -127,7 +127,7 @@ public class EmployeeForm extends javax.swing.JFrame {
                 .addGap(40, 40, 40)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(txtName)
-                    .addComponent(txtEmployeeID)
+                    .addComponent(txtEmployeeNum)
                     .addComponent(txtEmail)
                     .addComponent(txtPhone)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 231, Short.MAX_VALUE)
@@ -148,7 +148,7 @@ public class EmployeeForm extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(txtEmployeeID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtEmployeeNum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(9, 9, 9)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -203,7 +203,7 @@ public class EmployeeForm extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(40, Short.MAX_VALUE))
+                .addContainerGap(17, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -218,7 +218,7 @@ public class EmployeeForm extends javax.swing.JFrame {
 
     private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
         // TODO add your handling code here:
-        txtEmployeeID.setText("");
+        txtEmployeeNum.setText("");
         txtName.setText("");
         cbGender.setSelectedIndex(0);
         txtAddress.setText("");
@@ -232,7 +232,7 @@ public class EmployeeForm extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        String employeeID = txtEmployeeID.getText();
+        String employeeID = txtEmployeeNum.getText();
         String empName = txtName.getText();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String birthday = sdf.format(txtDate.getDate());
@@ -300,7 +300,7 @@ public class EmployeeForm extends javax.swing.JFrame {
     private javax.swing.JTextArea txtAddress;
     private com.toedter.calendar.JDateChooser txtDate;
     private javax.swing.JTextField txtEmail;
-    private javax.swing.JTextField txtEmployeeID;
+    private javax.swing.JTextField txtEmployeeNum;
     private javax.swing.JTextField txtName;
     private javax.swing.JPasswordField txtPassword;
     private javax.swing.JTextField txtPhone;

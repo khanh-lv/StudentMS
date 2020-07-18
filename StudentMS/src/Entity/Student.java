@@ -12,8 +12,10 @@ package Entity;
 public class Student {
 
 
-    private String studentId;
-
+    private int studentId;
+    
+    private String rollNo;
+    
     private String name;
 
     private String birthdate;
@@ -31,8 +33,8 @@ public class Student {
     public Student() {
     }
 
-    public Student(String studentId, String name, String birthday, String gender, String address, String email, String phone, int accId) {
-        this.studentId = studentId;
+    public Student(String rollNo, String name, String birthday, String gender, String address, String email, String phone, int accId) {
+        this.rollNo = rollNo;
         this.name = name;
         this.birthdate = birthday;
         this.gender = gender;
@@ -41,18 +43,32 @@ public class Student {
         this.phone = phone;
         this.accId = accId;
     }
-    
-    
 
-    public Student(String studentId) {
+    public Student(int studentId, String rollNo, String name, String birthdate, String gender, String address, String email, String phone, int accId) {
         this.studentId = studentId;
+        this.rollNo = rollNo;
+        this.name = name;
+        this.birthdate = birthdate;
+        this.gender = gender;
+        this.address = address;
+        this.email = email;
+        this.phone = phone;
+        this.accId = accId;
     }
 
-    public String getStudentId() {
+    public String getRollNo() {
+        return rollNo;
+    }
+
+    public void setRollNo(String rollNo) {
+        this.rollNo = rollNo;
+    }
+    
+    public int getStudentId() {
         return studentId;
     }
 
-    public void setStudentId(String studentId) {
+    public void setStudentId(int studentId) {
         this.studentId = studentId;
     }
 

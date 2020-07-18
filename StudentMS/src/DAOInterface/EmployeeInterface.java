@@ -13,13 +13,13 @@ import java.util.List;
  * @author khanh
  */
 public interface EmployeeInterface {
-    public boolean insert(Employee emp);
+    public Employee insert(Employee emp);
     
     public boolean update(Employee emp);
     
-    public boolean delete(String  empId);
+    public boolean delete(int  empId);
     
-    public Employee getEmployee(String empId);
+    public Employee getEmployee(String empNum);
     
     public Employee getEmployee(int accId);
     

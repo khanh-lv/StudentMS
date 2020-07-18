@@ -12,8 +12,10 @@ package Entity;
 public class Employee {
 
 
-    private String empId;
+    private int empId;
 
+    private String empNum;
+    
     private String name;
 
     private String birthdate;
@@ -33,8 +35,8 @@ public class Employee {
     public Employee() {
     }
 
-    public Employee(String empId, String name, String birthdate, String gender, String address, String email, String phone, String position, int accId) {
-        this.empId = empId;
+    public Employee(String empNum, String name, String birthdate, String gender, String address, String email, String phone, String position, int accId) {
+        this.empNum = empNum;
         this.name = name;
         this.birthdate = birthdate;
         this.gender = gender;
@@ -44,17 +46,36 @@ public class Employee {
         this.position = position;
         this.accId = accId;
     }
-    
 
-    public Employee(String empId) {
+    public Employee(int empId, String empNum, String name, String birthdate, String gender, String address, String email, String phone, String position, int accId) {
         this.empId = empId;
+        this.empNum = empNum;
+        this.name = name;
+        this.birthdate = birthdate;
+        this.gender = gender;
+        this.address = address;
+        this.email = email;
+        this.phone = phone;
+        this.position = position;
+        this.accId = accId;
     }
 
-    public String getEmpId() {
+    public String getEmpNum() {
+        return empNum;
+    }
+
+    public void setEmpNum(String empNum) {
+        this.empNum = empNum;
+    }
+    
+
+    
+
+    public int getEmpId() {
         return empId;
     }
 
-    public void setEmpId(String empId) {
+    public void setEmpId(int empId) {
         this.empId = empId;
     }
 

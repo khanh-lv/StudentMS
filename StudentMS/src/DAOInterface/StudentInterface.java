@@ -13,13 +13,13 @@ import java.util.List;
  * @author khanh
  */
 public interface StudentInterface {
-    public boolean insert(Student st);
+    public Student insert(Student st);
     
     public boolean update(Student st);
     
-    public boolean delete(String  studentId);
+    public boolean delete(String  rollNo);
     
-    public Student getStudent(String studentId);
+    public Student getStudent(String rollNo);
     
     public Student getStudent(int accId);
     

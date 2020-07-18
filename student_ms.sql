@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th7 08, 2020 lúc 08:13 PM
+-- Thời gian đã tạo: Th7 18, 2020 lúc 05:59 AM
 -- Phiên bản máy phục vụ: 10.4.11-MariaDB
 -- Phiên bản PHP: 7.4.6
 
@@ -35,11 +35,7 @@ CREATE TABLE IF NOT EXISTS `account` (
   `password` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `role` varchar(15) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`acc_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- RELATIONSHIPS FOR TABLE `account`:
---
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `account`
@@ -58,22 +54,14 @@ INSERT INTO `account` (`acc_id`, `username`, `password`, `role`) VALUES
 
 CREATE TABLE IF NOT EXISTS `attendence` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `student_id` varchar(15) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `student_id` int(11) DEFAULT NULL,
   `schedule_id` int(11) DEFAULT NULL,
   `date` varchar(15) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `status` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `student_id` (`student_id`),
-  KEY `schedule_id` (`schedule_id`)
+  KEY `schedule_id` (`schedule_id`),
+  KEY `student_id` (`student_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- RELATIONSHIPS FOR TABLE `attendence`:
---   `student_id`
---       `student` -> `student_id`
---   `schedule_id`
---       `schedule` -> `schedule_id`
---
 
 -- --------------------------------------------------------
 
@@ -87,10 +75,6 @@ CREATE TABLE IF NOT EXISTS `class` (
   PRIMARY KEY (`class_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- RELATIONSHIPS FOR TABLE `class`:
---
-
 -- --------------------------------------------------------
 
 --
@@ -98,19 +82,11 @@ CREATE TABLE IF NOT EXISTS `class` (
 --
 
 CREATE TABLE IF NOT EXISTS `classgroup` (
-  `student_id` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `student_id` int(11) NOT NULL,
   `class_id` int(11) NOT NULL,
   PRIMARY KEY (`student_id`,`class_id`),
   KEY `class_id` (`class_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- RELATIONSHIPS FOR TABLE `classgroup`:
---   `student_id`
---       `student` -> `student_id`
---   `class_id`
---       `class` -> `class_id`
---
 
 -- --------------------------------------------------------
 
@@ -119,7 +95,8 @@ CREATE TABLE IF NOT EXISTS `classgroup` (
 --
 
 CREATE TABLE IF NOT EXISTS `employee` (
-  `emp_id` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `emp_id` int(11) NOT NULL AUTO_INCREMENT,
+  `emp_num` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL,
   `name` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `birthdate` varchar(15) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `gender` varchar(6) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -129,21 +106,16 @@ CREATE TABLE IF NOT EXISTS `employee` (
   `position` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `acc_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`emp_id`),
+  UNIQUE KEY `emp_num` (`emp_num`),
   KEY `acc_id` (`acc_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- RELATIONSHIPS FOR TABLE `employee`:
---   `acc_id`
---       `account` -> `acc_id`
---
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `employee`
 --
 
-INSERT INTO `employee` (`emp_id`, `name`, `birthdate`, `gender`, `address`, `email`, `phone`, `position`, `acc_id`) VALUES
-('E001', 'Lê Văn Khánh', '14-09-1996', 'male', 'Thanh Hóa', 'khanh.lv.138@aptechlearning.edu.vn', '0985136842', 'admin', 1);
+INSERT INTO `employee` (`emp_id`, `emp_num`, `name`, `birthdate`, `gender`, `address`, `email`, `phone`, `position`, `acc_id`) VALUES
+(1, 'E001', 'Lê Văn Khánh', NULL, 'Nam', 'Thanh Hoa', 'admib@admin', '124567778', 'admin', 1);
 
 -- --------------------------------------------------------
 
@@ -152,20 +124,12 @@ INSERT INTO `employee` (`emp_id`, `name`, `birthdate`, `gender`, `address`, `ema
 --
 
 CREATE TABLE IF NOT EXISTS `mark` (
-  `student_id` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `student_id` int(11) NOT NULL,
   `subject_id` int(11) NOT NULL,
   `mark` double DEFAULT NULL,
   PRIMARY KEY (`student_id`,`subject_id`),
   KEY `subject_id` (`subject_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- RELATIONSHIPS FOR TABLE `mark`:
---   `student_id`
---       `student` -> `student_id`
---   `subject_id`
---       `subject` -> `subject_id`
---
 
 -- --------------------------------------------------------
 
@@ -177,7 +141,7 @@ CREATE TABLE IF NOT EXISTS `schedule` (
   `schedule_id` int(11) NOT NULL AUTO_INCREMENT,
   `subject_id` int(11) DEFAULT NULL,
   `class_id` int(11) DEFAULT NULL,
-  `emp_id` varchar(15) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `emp_id` int(11) DEFAULT NULL,
   `startdate` varchar(15) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `enddate` varchar(15) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `teachingtimeframe` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -188,16 +152,6 @@ CREATE TABLE IF NOT EXISTS `schedule` (
   KEY `emp_id` (`emp_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- RELATIONSHIPS FOR TABLE `schedule`:
---   `class_id`
---       `class` -> `class_id`
---   `subject_id`
---       `subject` -> `subject_id`
---   `emp_id`
---       `employee` -> `emp_id`
---
-
 -- --------------------------------------------------------
 
 --
@@ -205,23 +159,19 @@ CREATE TABLE IF NOT EXISTS `schedule` (
 --
 
 CREATE TABLE IF NOT EXISTS `student` (
-  `student_id` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `student_id` int(11) NOT NULL AUTO_INCREMENT,
+  `rollNo` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL,
   `name` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `birthday` varchar(15) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `birthdate` varchar(15) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `gender` varchar(6) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `address` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `email` varchar(150) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `phone` varchar(15) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `acc_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`student_id`),
+  UNIQUE KEY `rollNo` (`rollNo`),
   KEY `acc_id` (`acc_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- RELATIONSHIPS FOR TABLE `student`:
---   `acc_id`
---       `account` -> `acc_id`
---
 
 -- --------------------------------------------------------
 
@@ -236,10 +186,6 @@ CREATE TABLE IF NOT EXISTS `subject` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- RELATIONSHIPS FOR TABLE `subject`:
---
-
---
 -- Các ràng buộc cho các bảng đã đổ
 --
 
@@ -247,15 +193,15 @@ CREATE TABLE IF NOT EXISTS `subject` (
 -- Các ràng buộc cho bảng `attendence`
 --
 ALTER TABLE `attendence`
-  ADD CONSTRAINT `attendence_ibfk_1` FOREIGN KEY (`student_id`) REFERENCES `student` (`student_id`),
-  ADD CONSTRAINT `attendence_ibfk_2` FOREIGN KEY (`schedule_id`) REFERENCES `schedule` (`schedule_id`);
+  ADD CONSTRAINT `attendence_ibfk_2` FOREIGN KEY (`schedule_id`) REFERENCES `schedule` (`schedule_id`),
+  ADD CONSTRAINT `attendence_ibfk_3` FOREIGN KEY (`student_id`) REFERENCES `student` (`student_id`);
 
 --
 -- Các ràng buộc cho bảng `classgroup`
 --
 ALTER TABLE `classgroup`
-  ADD CONSTRAINT `classgroup_ibfk_1` FOREIGN KEY (`student_id`) REFERENCES `student` (`student_id`),
-  ADD CONSTRAINT `classgroup_ibfk_2` FOREIGN KEY (`class_id`) REFERENCES `class` (`class_id`);
+  ADD CONSTRAINT `classgroup_ibfk_2` FOREIGN KEY (`class_id`) REFERENCES `class` (`class_id`),
+  ADD CONSTRAINT `classgroup_ibfk_3` FOREIGN KEY (`student_id`) REFERENCES `student` (`student_id`);
 
 --
 -- Các ràng buộc cho bảng `employee`

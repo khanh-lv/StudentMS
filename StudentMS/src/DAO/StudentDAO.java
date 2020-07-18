@@ -23,14 +23,15 @@ import java.util.List;
 public class StudentDAO implements StudentInterface{
 
     @Override
-    public boolean insert(Student st) {
+    public Student insert(Student st) {
         Connection connection = null;
         String sql = "insert into student(student_id,name,birthdate,gender,address,email,phone,acc_id) values(?)"
                     + "values(?,?,?,?,?,?,?,?)";
+        ResultSet key = null;
         try{
             connection = DbConnection.getConnection();
-            PreparedStatement ps = connection.prepareStatement(sql);
-            ps.setString(1, st.getStudentId());
+            PreparedStatement ps = connection.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
+            ps.setString(1, st.getRollNo());
             ps.setString(2, st.getName());
             ps.setString(3, st.getBirthdate());
             ps.setString(4, st.getGender());
@@ -39,11 +40,19 @@ public class StudentDAO implements StudentInterface{
             ps.setString(7, st.getPhone());
             ps.setInt(8, st.getAccId());
             int rowInserted = ps.executeUpdate();
-            return rowInserted == 1;
+            if(rowInserted == 1){
+                key = ps.getGeneratedKeys();
+                key.next();
+                int student_id = key.getInt(1);
+                st.setStudentId(student_id);
+                return st;
+            } else{
+                return null;
+            }
             
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
-            return false;
+            return null;
         } 
     }
 
@@ -51,19 +60,20 @@ public class StudentDAO implements StudentInterface{
     public boolean update(Student st) {
         Connection connection = null;
         String sql = "update student set "
-                + "name = ?, birthdate = ?, gender = ?, address = ?, email = ?, phone = ?, acc_id = ?"
+                + "rollNo = ?, name = ?, birthdate = ?, gender = ?, address = ?, email = ?, phone = ?, acc_id = ?"
                 + " where st_id = ?";
         try{
             connection = DbConnection.getConnection();
             PreparedStatement ps = connection.prepareStatement(sql);
-            ps.setString(8, st.getStudentId());
-            ps.setString(1, st.getName());
-            ps.setString(2, st.getBirthdate());
-            ps.setString(3, st.getGender());
-            ps.setString(4, st.getAddress());
-            ps.setString(5, st.getEmail());
-            ps.setString(6, st.getPhone());
-            ps.setInt(7, st.getAccId());
+            ps.setString(1, st.getRollNo());
+            ps.setString(2, st.getName());
+            ps.setString(3, st.getBirthdate());
+            ps.setString(4, st.getGender());
+            ps.setString(5, st.getAddress());
+            ps.setString(6, st.getEmail());
+            ps.setString(7, st.getPhone());
+            ps.setInt(8, st.getAccId());
+            ps.setInt(9, st.getStudentId());
             int rowUpdated = ps.executeUpdate();
             return rowUpdated == 1;
             
@@ -74,13 +84,13 @@ public class StudentDAO implements StudentInterface{
     }
 
     @Override
-    public boolean delete(String studentId) {
+    public boolean delete(String rollNo) {
         Connection connection = null;
-        String sql = "delete from student where student_id = ?";
+        String sql = "delete from student where rollNo = ?";
         try{
             connection = DbConnection.getConnection();
             PreparedStatement ps = connection.prepareStatement(sql);
-            ps.setString(1, studentId);
+            ps.setString(1, rollNo);
             int rowInserted = ps.executeUpdate();
             return rowInserted == 1;
             
@@ -91,15 +101,16 @@ public class StudentDAO implements StudentInterface{
     }
 
     @Override
-    public Student getStudent(String studentId) {
+    public Student getStudent(String rollNo) {
         Connection connection = null;
         try{
             connection = DbConnection.getConnection();
             Statement st = connection.createStatement();
-            ResultSet rs = st.executeQuery("select * from student where student_id =' " + studentId + "' ");
+            ResultSet rs = st.executeQuery("select * from student where rollNo = " + rollNo + "' ");
             if(rs.next()){
                 Student tmp = new Student();
-                tmp.setStudentId(rs.getString("student_id"));
+                tmp.setStudentId(rs.getInt("student_id"));
+                tmp.setRollNo(rs.getString("rollNo"));
                 tmp.setName(rs.getString("name"));
                 tmp.setBirthdate(rs.getString("birthdate"));
                 tmp.setGender(rs.getString("gender"));
@@ -127,7 +138,8 @@ public class StudentDAO implements StudentInterface{
             ResultSet rs = st.executeQuery("select * from student, account where account.acc_id = " + accId + " and student.acc_id = account.acc_id");
             if(rs.next()){
                 Student tmp = new Student();
-                tmp.setStudentId(rs.getString("student_id"));
+                tmp.setStudentId(rs.getInt("student_id"));
+                tmp.setRollNo(rs.getString("rollNo"));
                 tmp.setName(rs.getString("name"));
                 tmp.setBirthdate(rs.getString("birthdate"));
                 tmp.setGender(rs.getString("gender"));
@@ -157,7 +169,8 @@ public class StudentDAO implements StudentInterface{
             ResultSet rs = st.executeQuery("select * from student");
             while(rs.next()){
                 Student tmp = new Student();
-                tmp.setStudentId(rs.getString("st_id"));
+                tmp.setStudentId(rs.getInt("student_id"));
+                tmp.setRollNo(rs.getString("rollNo"));
                 tmp.setName(rs.getString("name"));
                 tmp.setBirthdate(rs.getString("birthdate"));
                 tmp.setGender(rs.getString("gender"));

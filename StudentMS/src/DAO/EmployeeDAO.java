@@ -25,14 +25,15 @@ import java.util.logging.Logger;
 public class EmployeeDAO implements EmployeeInterface{
 
     @Override
-    public boolean insert(Employee emp) {
+    public Employee insert(Employee emp) {
         Connection connection = null;
         String sql = "insert into employee(emp_id,name,birthdate,gender,address,email,phone,position,acc_id) values(?)"
                     + "values(?,?,?,?,?,?,?,?,?)";
+        ResultSet key = null;
         try{
             connection = DbConnection.getConnection();
-            PreparedStatement ps = connection.prepareStatement(sql);
-            ps.setString(1, emp.getEmpId());
+            PreparedStatement ps = connection.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
+            ps.setString(1, emp.getEmpNum());
             ps.setString(2, emp.getName());
             ps.setString(3, emp.getBirthdate());
             ps.setString(4, emp.getGender());
@@ -42,11 +43,19 @@ public class EmployeeDAO implements EmployeeInterface{
             ps.setString(8, emp.getPosition());
             ps.setInt(9, emp.getAccId());
             int rowInserted = ps.executeUpdate();
-            return rowInserted == 1;
+            if(rowInserted == 1){
+                key = ps.getGeneratedKeys();
+                key.next();
+                int emp_id = key.getInt(1);
+                emp.setEmpId(emp_id);
+                return emp;
+            }else{
+                return null;
+            }
             
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
-            return false;
+            return null;
         }  
     }
 
@@ -54,20 +63,21 @@ public class EmployeeDAO implements EmployeeInterface{
     public boolean update(Employee emp) {
         Connection connection = null;
         String sql = "update employee set "
-                + "name = ?, birthdate = ?, gender = ?, address = ?, email = ?, phone = ?, position = ?, acc_id = ?"
+                + "emp_num = ?, name = ?, birthdate = ?, gender = ?, address = ?, email = ?, phone = ?, position = ?, acc_id = ?"
                 + " where emp_id = ?";
         try{
             connection = DbConnection.getConnection();
             PreparedStatement ps = connection.prepareStatement(sql);
-            ps.setString(9, emp.getEmpId());
-            ps.setString(1, emp.getName());
-            ps.setString(2, emp.getBirthdate());
-            ps.setString(3, emp.getGender());
-            ps.setString(4, emp.getAddress());
-            ps.setString(5, emp.getEmail());
-            ps.setString(6, emp.getPhone());
-            ps.setString(7, emp.getPosition());
-            ps.setInt(8, emp.getAccId());
+            ps.setString(1, emp.getEmpNum());
+            ps.setString(2, emp.getName());
+            ps.setString(3, emp.getBirthdate());
+            ps.setString(4, emp.getGender());
+            ps.setString(5, emp.getAddress());
+            ps.setString(6, emp.getEmail());
+            ps.setString(7, emp.getPhone());
+            ps.setString(8, emp.getPosition());
+            ps.setInt(9, emp.getAccId());
+            ps.setInt(10, emp.getEmpId());
             int rowUpdated = ps.executeUpdate();
             return rowUpdated == 1;
             
@@ -78,13 +88,13 @@ public class EmployeeDAO implements EmployeeInterface{
     }
 
     @Override
-    public boolean delete(String empId) {
+    public boolean delete(int empId) {
         Connection connection = null;
         String sql = "delete from employee where emp_id = ?";
         try{
             connection = DbConnection.getConnection();
             PreparedStatement ps = connection.prepareStatement(sql);
-            ps.setString(1, empId);
+            ps.setInt(1, empId);
             int rowInserted = ps.executeUpdate();
             return rowInserted == 1;
             
@@ -103,7 +113,8 @@ public class EmployeeDAO implements EmployeeInterface{
             ResultSet rs = st.executeQuery("select * from employee where emp_id =' " + empId + "' ");
             if(rs.next()){
                 Employee emp = new Employee();
-                emp.setEmpId(rs.getString("emp_id"));
+                emp.setEmpId(rs.getInt("emp_id"));
+                emp.setEmpNum(rs.getString("emp_num"));
                 emp.setName(rs.getString("name"));
                 emp.setBirthdate(rs.getString("birthdate"));
                 emp.setGender(rs.getString("gender"));
@@ -135,7 +146,8 @@ public class EmployeeDAO implements EmployeeInterface{
             ResultSet rs = st.executeQuery("select * from employee");
             while(rs.next()){
                 Employee emp = new Employee();
-                emp.setEmpId(rs.getString("emp_id"));
+                emp.setEmpId(rs.getInt("emp_id"));
+                emp.setEmpNum(rs.getString("emp_num"));
                 emp.setName(rs.getString("name"));
                 emp.setBirthdate(rs.getString("birthdate"));
                 emp.setGender(rs.getString("gender"));
@@ -162,7 +174,8 @@ public class EmployeeDAO implements EmployeeInterface{
             ResultSet rs = st.executeQuery("select * from employee, account where account.acc_id = " + accId + " and student.acc_id = account.acc_id");
             if(rs.next()){
                 Employee emp = new Employee();
-                emp.setEmpId(rs.getString("emp_id"));
+                emp.setEmpId(rs.getInt("emp_id"));
+                emp.setEmpNum(rs.getString("emp_num"));
                 emp.setName(rs.getString("name"));
                 emp.setBirthdate(rs.getString("birthdate"));
                 emp.setGender(rs.getString("gender"));
