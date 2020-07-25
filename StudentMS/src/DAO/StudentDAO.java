@@ -25,7 +25,7 @@ public class StudentDAO implements StudentInterface{
     @Override
     public Student insert(Student st) {
         Connection connection = null;
-        String sql = "insert into student(student_id,name,birthdate,gender,address,email,phone,acc_id) values(?)"
+        String sql = "insert into student(rollNo,name,birthdate,gender,address,email,phone,acc_id)"
                     + "values(?,?,?,?,?,?,?,?)";
         ResultSet key = null;
         try{

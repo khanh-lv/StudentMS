@@ -273,8 +273,8 @@
                   <Properties>
                     <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
                       <StringArray count="2">
-                        <StringItem index="0" value="Gi&#xe1;o v&#x1ee5;"/>
-                        <StringItem index="1" value="Gi&#xe1;o vi&#xea;n"/>
+                        <StringItem index="0" value="Giao vu"/>
+                        <StringItem index="1" value="Giao vien"/>
                       </StringArray>
                     </Property>
                   </Properties>

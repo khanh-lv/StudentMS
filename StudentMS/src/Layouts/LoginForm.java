@@ -219,7 +219,7 @@ public class LoginForm extends javax.swing.JFrame {
         }
         String username = txtUser.getText();
         String password = txtPassword.getText();
-        String regex = "[a-zA-z0-9_@]{6,}";
+        String regex = "[a-zA-Z0-9_@]{6,}";
         if(!Pattern.matches(regex, username) || !Pattern.matches(regex, password)){
             JOptionPane.showMessageDialog(null, "username và pasword chỉ gồm các ký tự a-z, A-Z, 0-9, _, @");
             return false;

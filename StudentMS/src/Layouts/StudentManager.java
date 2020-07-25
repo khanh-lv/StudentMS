@@ -5,6 +5,11 @@
  */
 package Layouts;
 
+import DAO.StudentDAO;
+import Entity.Student;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author khanh
@@ -16,6 +21,7 @@ public class StudentManager extends javax.swing.JPanel {
      */
     public StudentManager() {
         initComponents();
+        loadTable();
     }
 
     /**
@@ -28,28 +34,28 @@ public class StudentManager extends javax.swing.JPanel {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tblStudent = new javax.swing.JTable();
         btnUpdate = new javax.swing.JButton();
         btnAdd = new javax.swing.JButton();
         btnDelete = new javax.swing.JButton();
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tblStudent.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "ID", "Họ tên", "Ngày sinh", "Giới tính", "Địa chỉ", "Email", "Số điện thoại", "Lớp"
+                "ID", "Họ tên", "Ngày sinh", "Giới tính", "Địa chỉ", "Email", "Số điện thoại"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tblStudent);
 
         btnUpdate.setText("Sửa thông tin sinh viên");
         btnUpdate.addActionListener(new java.awt.event.ActionListener() {
@@ -59,6 +65,11 @@ public class StudentManager extends javax.swing.JPanel {
         });
 
         btnAdd.setText("Thêm sinh viên");
+        btnAdd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddActionPerformed(evt);
+            }
+        });
 
         btnDelete.setText("Xóa sinh viên");
 
@@ -95,12 +106,32 @@ public class StudentManager extends javax.swing.JPanel {
 //        StuForm stuForm = new StuForm(st);
     }//GEN-LAST:event_btnUpdateActionPerformed
 
+    private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
+        StuForm stuForm = new StuForm();
+        stuForm.setVisible(true);
+       
+    }//GEN-LAST:event_btnAddActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdd;
     private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnUpdate;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable tblStudent;
     // End of variables declaration//GEN-END:variables
+
+    private void loadTable() {
+        DefaultTableModel model = (DefaultTableModel)tblStudent.getModel();
+        model.setRowCount(0);
+        StudentDAO stuDAO = new StudentDAO();
+        List<Student> stuList = stuDAO.getAllStudent();
+        for(Student s : stuList){
+            model.addRow(new Object[]{
+                s.getRollNo(),s.getName(),s.getBirthdate(),s.getGender(),s.getAddress(),s.getEmail(),s.getPhone()
+            });
+        }
+    }
+    
 }
+

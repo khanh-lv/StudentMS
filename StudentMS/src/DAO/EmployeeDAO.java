@@ -27,7 +27,7 @@ public class EmployeeDAO implements EmployeeInterface{
     @Override
     public Employee insert(Employee emp) {
         Connection connection = null;
-        String sql = "insert into employee(emp_id,name,birthdate,gender,address,email,phone,position,acc_id) values(?)"
+        String sql = "insert into employee(emp_num,name,birthdate,gender,address,email,phone,position,acc_id)"
                     + "values(?,?,?,?,?,?,?,?,?)";
         ResultSet key = null;
         try{
