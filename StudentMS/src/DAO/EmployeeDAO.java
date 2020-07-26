@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -105,12 +106,11 @@ public class EmployeeDAO implements EmployeeInterface{
     }
 
     @Override
-    public Employee getEmployee(String empId) {
-        Connection connection = null;
+    public Employee getEmployee(String empNum) {
         try{
-            connection = DbConnection.getConnection();
+            Connection connection = DbConnection.getConnection();
             Statement st = connection.createStatement();
-            ResultSet rs = st.executeQuery("select * from employee where emp_id =' " + empId + "' ");
+            ResultSet rs = st.executeQuery("select * from employee where emp_num ='" + empNum + "'");
             if(rs.next()){
                 Employee emp = new Employee();
                 emp.setEmpId(rs.getInt("emp_id"));
@@ -125,6 +125,7 @@ public class EmployeeDAO implements EmployeeInterface{
                 emp.setAccId(rs.getInt("acc_id"));
                 return emp;
             } else{
+                JOptionPane.showMessageDialog(null, "day");
                 return null;
             }
             

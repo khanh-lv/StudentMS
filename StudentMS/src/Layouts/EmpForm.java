@@ -25,7 +25,8 @@ public class EmpForm extends javax.swing.JFrame {
     public EmpForm() {
         initComponents();
     }
-    private Employee emp;
+    private Employee emp = null;
+
     public EmpForm(Employee emp) {
         initComponents();
         this.emp = emp;
@@ -295,8 +296,8 @@ public class EmpForm extends javax.swing.JFrame {
         String username = txtUsername.getText();
         String password = txtPassword.getText();
         String repass = txtRepass.getText();
-       
-        if(validation()){ 
+
+        if (validation()) {
 //            System.out.println("Employee Num " + employeeNum);   
 //            System.out.println("Name " + empName);
 //            System.out.println("Birthday " + birthday);
@@ -308,15 +309,45 @@ public class EmpForm extends javax.swing.JFrame {
 //            System.out.println("Username " + username);
 //            System.out.println("Password " + password);
 //            System.out.println("Repassword " + repass);
-                Account acc = new Account(username, password);
-                AccountDao accDao = new AccountDao();
-                acc.setRole(position);              
-                accDao.insert(acc);
-                if(acc!=null) {
-                    Employee emp = new Employee(employeeNum, empName, birthday, gender, address, email, phone, position, acc.getAccId());
-                    EmployeeDAO empDao = new EmployeeDAO();
-                    empDao.insert(emp);
-                }     
+            AccountDao accDao = new AccountDao();
+            if (emp == null) {
+                
+                if (accDao.check(username)) {
+                    Account acc = new Account(username, password);
+                    if(position.equals("Giao vu")){
+                        acc.setRole("hr");
+                    } else{
+                        acc.setRole("teacher");
+                    }    
+                    acc = accDao.insert(acc);
+                    if (acc != null) {
+                        emp = new Employee(employeeNum, empName, birthday, gender, address, email, phone, position, acc.getAccId());
+                        EmployeeDAO empDao = new EmployeeDAO();
+                        empDao.insert(emp);
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "username đã tồn tại, vui lòng nhập lại");
+                    txtUsername.setText("");
+                }
+            } else{
+                Account account = accDao.getAccount(emp.getAccId());
+                account.setPassword(password);
+                EmployeeDAO employeeDAO = new EmployeeDAO();
+                emp.setEmpNum(employeeNum);
+                emp.setName(empName);
+                emp.setAddress(address);
+                emp.setBirthdate(birthday);
+                emp.setGender(gender);
+                emp.setEmail(email);
+                emp.setPhone(phone);
+                emp.setPosition(position);
+                if(accDao.update(account) && employeeDAO.update(emp)){
+                    JOptionPane.showMessageDialog(null, "Update thành công");
+                } else{
+                    JOptionPane.showMessageDialog(null, "Update thất bại");
+                }
+            }
+
         }
 
     }//GEN-LAST:event_btnSaveActionPerformed
@@ -370,68 +401,68 @@ public class EmpForm extends javax.swing.JFrame {
             }
         });
     }
-    
+
     private boolean validation() {
-       SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        if(txtUsername.getText().length() > 30 || txtUsername.getText().length() < 1){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        if (txtUsername.getText().length() > 30 || txtUsername.getText().length() < 1) {
             JOptionPane.showMessageDialog(null, "username có đọ dài không vượt quá 30 ký tự");
             return false;
         }
-        if(txtAddress.getText().length() > 255){
+        if (txtAddress.getText().length() > 255) {
             JOptionPane.showMessageDialog(null, "Địa chỉ có độ dài không vượt quá 255 kí tự");
             return false;
         }
-        if(txtPassword.getText().length() > 15 || txtPassword.getText().length() < 6){
+        if (txtPassword.getText().length() > 15 || txtPassword.getText().length() < 6) {
             JOptionPane.showMessageDialog(null, "pasword có độ dài từ 8-15 ký tự");
             return false;
         }
-        if(txtEmployeeNum.getText().isEmpty()) {
+        if (txtEmployeeNum.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Bạn chưa nhập Employee Num");
             return false;
         }
-        if(txtName.getText().isEmpty()) {
+        if (txtName.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Bạn chưa nhập tên");
             return false;
         }
-        if(sdf.format(txtDate.getDate()).isEmpty()) {
+        if (sdf.format(txtDate.getDate()).isEmpty()) {
             JOptionPane.showMessageDialog(null, "Bạn chưa nhập Ngày tháng năm");
             return false;
         }
-        if(txtAddress.getText().isEmpty()) {
+        if (txtAddress.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Bạn chưa nhập Địa chỉ");
             return false;
         }
-        if(txtEmail.getText().isEmpty()) {
+        if (txtEmail.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Bạn chưa nhập Email");
             return false;
         }
-        if(txtPhone.getText().isEmpty()) {
+        if (txtPhone.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Bạn chưa nhập sdt");
             return false;
         }
-        if(!(txtPassword.getText()).equals(txtRepass.getText())) {
+        if (!(txtPassword.getText()).equals(txtRepass.getText())) {
             JOptionPane.showMessageDialog(null, "Pasword của bạn và Repassword của bạn không khớp, xin nhập lại");
             txtPassword.setText("");
-            txtRepass.setText("");   
+            txtRepass.setText("");
             return false;
-        } 
+        }
         String username = txtUsername.getText();
         String password = txtPassword.getText();
         String phone = txtPhone.getText();
         String email = txtEmail.getText();
         String address = txtAddress.getText();
         String regex = "[a-zA-Z0-9_@]{6,}";
-        if(!Pattern.matches(regex, username) || !Pattern.matches(regex, password)){
+        if (!Pattern.matches(regex, username) || !Pattern.matches(regex, password)) {
             JOptionPane.showMessageDialog(null, "username và pasword chỉ gồm các ký tự a-z, A-Z, 0-9, _, @");
             return false;
         }
         String regex2 = "[0-9]{10,15}";
-        if(!Pattern.matches(regex2, phone)){
+        if (!Pattern.matches(regex2, phone)) {
             JOptionPane.showMessageDialog(null, "Sdt không hợp lệ");
             return false;
         }
-        String regex3 = "^[A-Za-z0-9+_.-]+@(.+)$"; 
-        if(!Pattern.matches(regex3, email)){
+        String regex3 = "^[A-Za-z0-9+_.-]+@(.+)$";
+        if (!Pattern.matches(regex3, email)) {
             JOptionPane.showMessageDialog(null, "Địa chỉ email k hợp lệ");
             return false;
         }

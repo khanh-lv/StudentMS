@@ -10,11 +10,12 @@ package Entity;
  * @author khanh
  */
 public class Class {
-    private int classId;
+    private int classId = 0;
     
     private String className;
 
     public Class() {
+        
     }
 
     public Class(String className) {

@@ -10,7 +10,7 @@ package Entity;
  * @author khanh
  */
 public class Subject {
-    private int subjectId;
+    private int subjectId = 0;
     
     private String subjectName;
 

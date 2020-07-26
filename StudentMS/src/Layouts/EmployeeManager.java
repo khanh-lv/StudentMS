@@ -116,7 +116,13 @@ public class EmployeeManager extends javax.swing.JPanel {
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
         // TODO add your handling code here:
-        EmpForm empForm = new EmpForm();
+        int rowSelected = tblEmployee.getSelectedRow();
+        String empNum = tblEmployee.getModel().getValueAt(rowSelected, 0).toString();
+        EmployeeDAO employeeDAO = new EmployeeDAO();
+        Employee emp = employeeDAO.getEmployee(empNum);
+        EmpForm empForm = new EmpForm(emp);
+        empForm.setVisible(true);
+        this.disable();
         
         
     }//GEN-LAST:event_btnUpdateActionPerformed

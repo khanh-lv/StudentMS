@@ -10,12 +10,13 @@ package Entity;
  * @author khanh
  */
 public class Account {
-    private int accId;
+    private int accId = 0;
     private String username;
     private String password;
     private String role;
 
     public Account() {
+        
     }
 
     public Account(String username, String password) {

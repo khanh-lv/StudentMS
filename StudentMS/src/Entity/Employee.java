@@ -12,7 +12,7 @@ package Entity;
 public class Employee {
 
 
-    private int empId;
+    private int empId = 0;
 
     private String empNum;
     
@@ -33,6 +33,7 @@ public class Employee {
     private int accId;
 
     public Employee() {
+        
     }
 
     public Employee(String empNum, String name, String birthdate, String gender, String address, String email, String phone, String position, int accId) {

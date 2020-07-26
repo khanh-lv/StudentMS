@@ -12,51 +12,51 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author khanh
  */
-public class AccountDao implements AccountInterface{
+public class AccountDao implements AccountInterface {
 
     @Override
     public Account insert(Account account) {
         String sql = "insert into account(username, password, role) values(?, ?, ?)";
         ResultSet key = null;
-        try{
+        try {
             Connection connection = DbConnection.getConnection();
             PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, account.getUsername());
             ps.setString(2, account.getPassword());
             ps.setString(3, account.getRole());
             int rowInserted = ps.executeUpdate();
-            if(rowInserted == 1){
+            if (rowInserted == 1) {
                 key = ps.getGeneratedKeys();
                 key.next();
                 int accId = key.getInt(1);
                 account.setAccId(accId);
                 return account;
-            } else{
+            } else {
                 return null;
             }
-            
-        } catch(Exception e){
+
+        } catch (Exception e) {
             System.err.println(e.getMessage());
             return null;
         }
-        
-        
+
     }
 
     @Override
     public boolean update(Account account) {
         String sql = "update account set"
                 + " username = ?,"
-                + " password = ?"
+                + " password = ?,"
                 + " role = ?"
                 + " where acc_id = ?";
-        
-        try{
+
+        try {
             Connection connection = DbConnection.getConnection();
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setString(1, account.getUsername());
@@ -64,13 +64,13 @@ public class AccountDao implements AccountInterface{
             ps.setString(3, account.getRole());
             ps.setInt(4, account.getAccId());
             int rowUpdated = ps.executeUpdate();
-            if(rowUpdated == 1){
+            if (rowUpdated == 1) {
                 return true;
-            } else{
+            } else {
                 return false;
             }
-        } catch(Exception e){
-            System.err.println(e.getMessage());
+        } catch (Exception e) {
+            e.getStackTrace();
             return false;
         }
     }
@@ -78,17 +78,17 @@ public class AccountDao implements AccountInterface{
     @Override
     public boolean delete(int accId) {
         String sql = "delete from account where id = ?";
-        try{
+        try {
             Connection connection = DbConnection.getConnection();
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setInt(1, accId);
             int rowUpdated = ps.executeUpdate();
-            if(rowUpdated == 1){
+            if (rowUpdated == 1) {
                 return true;
-            } else{
+            } else {
                 return false;
             }
-        } catch(Exception e){
+        } catch (Exception e) {
             System.err.println(e.getMessage());
             return false;
         }
@@ -99,24 +99,62 @@ public class AccountDao implements AccountInterface{
         String sql = "select * from account where username = '" + username
                 + "' and password = '" + password + "'";
         Account account = null;
-        try{
+        try {
             Connection connection = DbConnection.getConnection();
             Statement st = connection.createStatement();
             ResultSet rs = st.executeQuery(sql);
-            if(rs.next()){
+            if (rs.next()) {
                 account = new Account();
                 account.setAccId(rs.getInt("acc_id"));
                 account.setUsername(rs.getString("username"));
                 account.setPassword(rs.getString("password"));
                 account.setRole(rs.getString("role"));
             }
-        } catch(Exception e){
+        } catch (Exception e) {
             System.err.println(e.getMessage());
         }
-        
+
         return account;
     }
 
-    
-    
+    public boolean check(String username) {
+        String sql = "select * from account where username = '" + username + "'";
+        try {
+            Connection connection = DbConnection.getConnection();
+            Statement st = connection.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            if (rs.next()) {
+                return false;
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Kết nối đến server bị gián đoạn");
+            System.err.println(e.getMessage());
+            return false;
+        }
+
+        return true;
+    }
+
+    public Account getAccount(int accId) {
+
+        String sql = "select * from account where acc_id = " + accId;
+        Account account = null;
+        try {
+            Connection connection = DbConnection.getConnection();
+            Statement st = connection.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            if (rs.next()) {
+                account = new Account();
+                account.setAccId(rs.getInt("acc_id"));
+                account.setUsername(rs.getString("username"));
+                account.setPassword(rs.getString("password"));
+                account.setRole(rs.getString("role"));
+            }
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
+
+        return account;
+    }
+
 }

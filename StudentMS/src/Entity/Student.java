@@ -12,7 +12,7 @@ package Entity;
 public class Student {
 
 
-    private int studentId;
+    private int studentId = 0;
     
     private String rollNo;
     
@@ -31,6 +31,7 @@ public class Student {
     private int accId;
 
     public Student() {
+        
     }
 
     public Student(String rollNo, String name, String birthday, String gender, String address, String email, String phone, int accId) {
