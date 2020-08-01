@@ -121,7 +121,7 @@ public class StudentForm extends javax.swing.JFrame {
 
         jLabel8.setText("Lớp");
 
-        cbxGender.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "nam", "nữ" }));
+        cbxGender.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Nam", "Nữ" }));
 
         txtAddress.setColumns(20);
         txtAddress.setRows(5);
