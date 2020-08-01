@@ -30,7 +30,50 @@ public class EmployeeForm extends javax.swing.JFrame {
     public EmployeeForm() {
         initComponents();
     }
-
+    
+    public EmployeeForm(Employee e) {
+        initComponents();
+        this.setDefaultCloseOperation(HIDE_ON_CLOSE);
+        employee = e;
+        try {
+            loadCombobox();
+            if (employee != null) {
+                try {
+                    txtEmpNum.setText(employee.getEmployeenum());
+                    txtAddress.setText(employee.getAddress());
+                    txtEmail.setText(employee.getEmail());
+                    txtPhone.setText(employee.getPhoneNo());
+                    txtName.setText(employee.getFullname());
+                    txtUser.setText(employee.getAccount().getUsername());
+                    txtUser.setEditable(false);
+                    txtPass.setText(employee.getAccount().getPassword());
+                    cbxGender.setSelectedItem(employee.getGender());
+                    cbxRole.setSelectedItem(employee.getAccount().getRole().getRole());
+                    DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+                    Date birthDate = df.parse(employee.getBirthdate());
+                    jBirthDate.setDate(birthDate);
+                    txtEmpNum.setEnabled(false);
+                    txtAddress.setEnabled(false);
+                    txtName.setEnabled(false);
+                    txtEmail.setEnabled(false);
+                    txtPhone.setEnabled(false);
+                    txtUser.setEnabled(false);
+                    txtPass.setEnabled(false);
+                    cbxGender.setEnabled(false);
+                    cbxRole.setEnabled(false);
+                    jBirthDate.setEnabled(false);
+                    btnSave.setEnabled(false);
+                    btnClose.setEnabled(false);
+                    btnReset.setEnabled(false);
+                } catch (ParseException ex) {
+                    Logger.getLogger(EmployeeForm.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(EmployeeForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }
     public EmployeeForm(Account account, Employee employee) {
         initComponents();
         this.account = account;

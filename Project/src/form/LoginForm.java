@@ -148,7 +148,6 @@ public class LoginForm extends javax.swing.JFrame {
                 Account account = Account.getAccoutnt(username, password);
                 if (account != null) {
                     if (account.getStatus() == 1) {
-                        JOptionPane.showMessageDialog(null, "Đăng nhập thành công");
                         MainForm mainForm = new MainForm(account);
                         mainForm.setVisible(true);
                         this.setVisible(false);

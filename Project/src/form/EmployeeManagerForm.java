@@ -61,6 +61,7 @@ public class EmployeeManagerForm extends javax.swing.JFrame {
         btnAdd = new javax.swing.JButton();
         btnDelete = new javax.swing.JButton();
         btnSearch = new javax.swing.JButton();
+        btnDetail = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -138,6 +139,13 @@ public class EmployeeManagerForm extends javax.swing.JFrame {
             }
         });
 
+        btnDetail.setText("Xem thông tin");
+        btnDetail.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDetailActionPerformed(evt);
+            }
+        });
+
         jMenu1.setText("Tài khoản");
 
         jMenuItem1.setText("Thông tin tài khoản");
@@ -174,15 +182,17 @@ public class EmployeeManagerForm extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(100, 100, 100)
                 .addComponent(btnBack, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(60, 60, 60)
+                .addGap(40, 40, 40)
                 .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(60, 60, 60)
+                .addGap(40, 40, 40)
                 .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(60, 60, 60)
+                .addGap(40, 40, 40)
                 .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(60, 60, 60)
+                .addGap(40, 40, 40)
                 .addComponent(btnSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(100, 100, 100))
+                .addGap(40, 40, 40)
+                .addComponent(btnDetail)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -205,7 +215,8 @@ public class EmployeeManagerForm extends javax.swing.JFrame {
                             .addComponent(btnBack, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnDetail, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(28, 28, 28))))
         );
 
@@ -275,7 +286,7 @@ public class EmployeeManagerForm extends javax.swing.JFrame {
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
         // TODO add your handling code here:
         String nameStr = JOptionPane.showInputDialog("nhập tên:");
-        if(!nameStr.isEmpty()){
+        if (!nameStr.isEmpty()) {
             List<Employee> employees;
             try {
                 employees = Employee.findByName(nameStr);
@@ -283,7 +294,7 @@ public class EmployeeManagerForm extends javax.swing.JFrame {
             } catch (SQLException ex) {
                 Logger.getLogger(EmployeeManagerForm.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
+
         }
     }//GEN-LAST:event_btnSearchActionPerformed
 
@@ -297,6 +308,25 @@ public class EmployeeManagerForm extends javax.swing.JFrame {
             Logger.getLogger(EmployeeManagerForm.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnFilterActionPerformed
+
+    private void btnDetailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDetailActionPerformed
+        // TODO add your handling code here:
+        int rowSelected = tblEmp.getSelectedRow();
+        if (rowSelected >= 0) {
+            String empNum = tblEmp.getModel().getValueAt(rowSelected, 1).toString();
+
+            try {
+                Employee e = Employee.getEmployee(empNum);
+                EmployeeForm employeeForm = new EmployeeForm(e);
+                employeeForm.setVisible(true);
+            } catch (SQLException ex) {
+                Logger.getLogger(EmployeeManagerForm.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        } else {
+            JOptionPane.showMessageDialog(null, "Vui lòng chọn nhân viên trước");
+        }
+    }//GEN-LAST:event_btnDetailActionPerformed
 
     /**
      * @param args the command line arguments
@@ -337,6 +367,7 @@ public class EmployeeManagerForm extends javax.swing.JFrame {
     private javax.swing.JButton btnAdd;
     private javax.swing.JButton btnBack;
     private javax.swing.JButton btnDelete;
+    private javax.swing.JButton btnDetail;
     private javax.swing.JButton btnFilter;
     private javax.swing.JButton btnSearch;
     private javax.swing.JButton btnUpdate;
