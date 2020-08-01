@@ -97,13 +97,13 @@ public class StudentForm extends javax.swing.JFrame {
         btnReset = new javax.swing.JButton();
         btnClose = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Student form");
         setMaximumSize(new java.awt.Dimension(412, 609));
         setMinimumSize(new java.awt.Dimension(412, 609));
         setResizable(false);
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Nhập thông tin sinh viên"));
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Nhập Thông Tin Sinh Viên", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 12))); // NOI18N
 
         jLabel1.setText("Mã sinh viên");
 
@@ -135,6 +135,11 @@ public class StudentForm extends javax.swing.JFrame {
         });
 
         btnReset.setText("Reset");
+        btnReset.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnResetActionPerformed(evt);
+            }
+        });
 
         btnClose.setText("Close");
         btnClose.addActionListener(new java.awt.event.ActionListener() {
@@ -162,8 +167,10 @@ public class StudentForm extends javax.swing.JFrame {
                             .addComponent(jLabel5)
                             .addComponent(jLabel7)
                             .addComponent(jLabel8)
-                            .addComponent(btnSave))
-                        .addGap(22, 22, 22)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(23, 23, 23)
+                                .addComponent(btnSave)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtPhone)
                             .addComponent(jBirthDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -173,14 +180,12 @@ public class StudentForm extends javax.swing.JFrame {
                             .addComponent(txtEmail)
                             .addComponent(cbxClass, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(10, 10, 10)
+                                .addGap(47, 47, 47)
                                 .addComponent(btnReset)
-                                .addGap(35, 35, 35)
+                                .addGap(50, 50, 50)
                                 .addComponent(btnClose)
-                                .addGap(0, 0, 0)))
+                                .addGap(0, 107, Short.MAX_VALUE))
+                            .addComponent(jScrollPane1))
                         .addGap(25, 25, 25))))
         );
         jPanel1Layout.setVerticalGroup(
@@ -225,7 +230,7 @@ public class StudentForm extends javax.swing.JFrame {
                     .addComponent(btnSave)
                     .addComponent(btnReset)
                     .addComponent(btnClose))
-                .addContainerGap(20, Short.MAX_VALUE))
+                .addContainerGap(26, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -233,16 +238,16 @@ public class StudentForm extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(50, 50, 50)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(50, Short.MAX_VALUE))
+                .addContainerGap()
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(30, 30, 30)
+                .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(30, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -272,6 +277,7 @@ public class StudentForm extends javax.swing.JFrame {
                     student.setBirthdate(birthDate);
                     if (Student.update(student)) {
                         JOptionPane.showMessageDialog(null, "Update thành công", "", JOptionPane.INFORMATION_MESSAGE);
+                        resetForm();
                     } else {
                         JOptionPane.showMessageDialog(null, "Update thất bại", "", JOptionPane.ERROR_MESSAGE);
                     }
@@ -293,6 +299,7 @@ public class StudentForm extends javax.swing.JFrame {
                     student.setBirthdate(birthDate);
                     if (Student.insert(student) != null) {
                         JOptionPane.showMessageDialog(null, "insert thành công", "", JOptionPane.INFORMATION_MESSAGE);
+                        resetForm();
                     } else {
                         JOptionPane.showMessageDialog(null, "insert thất bại", "", JOptionPane.ERROR_MESSAGE);
                     }
@@ -302,6 +309,11 @@ public class StudentForm extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_btnSaveActionPerformed
+
+    private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
+        // TODO add your handling code here:
+            resetForm();    
+    }//GEN-LAST:event_btnResetActionPerformed
 
     /**
      * @param args the command line arguments
@@ -362,6 +374,18 @@ public class StudentForm extends javax.swing.JFrame {
     private javax.swing.JTextField txtRoll;
     // End of variables declaration//GEN-END:variables
 
+    private void resetForm() {
+        txtRoll.setText("");
+        txtEmail.setText("");
+        txtAddress.setText("");
+        txtName.setText("");
+        txtPhone.setText("");
+        cbxGender.setSelectedIndex(0);
+        cbxClass.setSelectedIndex(0);
+        jBirthDate.setDate(null);
+    }
+
+    
     private void loadClassCombobox() throws SQLException {
         List<ClassObj> classes;
 
