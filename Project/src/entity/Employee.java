@@ -286,22 +286,26 @@ public class Employee {
         Connection connection = DbConnector.getConnection();
         List<Employee> employees = null;
         if (connection != null) {
-            Statement st = connection.createStatement();
-            ResultSet rs = st.executeQuery("select * from employee where fullname like '%" + nameStr + "%'");
-            employees = new ArrayList<>();
-            while (rs.next()) {
-                Employee employee = new Employee();
-                employee.setId(rs.getInt("id"));
-                employee.setEmployeenum(rs.getString("empNum"));
-                employee.setFullname(rs.getString("fullname"));
-                employee.setBirthdate(rs.getString("birthdate"));
-                employee.setGender(rs.getString("gender"));
-                employee.setAddress(rs.getString("address"));
-                employee.setEmail(rs.getString("email"));
-                employee.setPhoneNo(rs.getString("phoneNo"));
-                employee.setStatus(rs.getInt("status"));
-                employee.setAccount(Account.getAccoutnt(rs.getInt("accId")));
-                employees.add(employee);
+            if(nameStr != null) {
+                Statement st = connection.createStatement();
+                ResultSet rs = st.executeQuery("select * from employee where fullname like '%" + nameStr + "%'");
+                employees = new ArrayList<>();
+                while (rs.next()) {
+                    Employee employee = new Employee();
+                    employee.setId(rs.getInt("id"));
+                    employee.setEmployeenum(rs.getString("empNum"));
+                    employee.setFullname(rs.getString("fullname"));
+                    employee.setBirthdate(rs.getString("birthdate"));
+                    employee.setGender(rs.getString("gender"));
+                    employee.setAddress(rs.getString("address"));
+                    employee.setEmail(rs.getString("email"));
+                    employee.setPhoneNo(rs.getString("phoneNo"));
+                    employee.setStatus(rs.getInt("status"));
+                    employee.setAccount(Account.getAccoutnt(rs.getInt("accId")));
+                    employees.add(employee);
+                }       
+            } else {
+                employees = getAllEmployee();
             }
         }
         return employees;

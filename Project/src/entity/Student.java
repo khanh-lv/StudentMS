@@ -155,12 +155,12 @@ public class Student {
     public void setAttendanceList(List<Attendance> attendanceList) {
         this.attendanceList = attendanceList;
     }
-       
-    public static Student insert(Student insertStudent) throws SQLException{
+
+    public static Student insert(Student insertStudent) throws SQLException {
         String sql = "insert into student(rollNo, fullname, birthdate, gender, address, email, phoneNo, classNo) values(?, ?, ?, ?, ?, ?, ?, ?)";
-        
+
         Connection connection = DbConnector.getConnection();
-        if(connection != null){
+        if (connection != null) {
             PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, insertStudent.getRollNo());
             ps.setString(2, insertStudent.getFullName());
@@ -171,7 +171,7 @@ public class Student {
             ps.setString(7, insertStudent.getPhoneNo());
             ps.setString(8, insertStudent.getClassNo().getClassNo());
             int rowInserted = ps.executeUpdate();
-            if(rowInserted == 1){
+            if (rowInserted == 1) {
                 ResultSet rs = ps.getGeneratedKeys();
                 rs.next();
                 int id = rs.getInt(1);
@@ -181,13 +181,13 @@ public class Student {
         }
         return null;
     }
-    
-    public static boolean update(Student updateStudent) throws SQLException{
-        String sql = "update student set " 
+
+    public static boolean update(Student updateStudent) throws SQLException {
+        String sql = "update student set "
                 + "rollNo = ?, fullname = ?, birthdate = ?, gender = ?, address = ?, email = ?, phoneNo = ?, classNo = ?, status = ? where id = ?";
-        
+
         Connection connection = DbConnector.getConnection();
-        if(connection != null){
+        if (connection != null) {
             PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, updateStudent.getRollNo());
             ps.setString(2, updateStudent.getFullName());
@@ -200,19 +200,19 @@ public class Student {
             ps.setInt(9, updateStudent.getStatus());
             ps.setInt(10, updateStudent.getId());
             int rowUpdated = ps.executeUpdate();
-            if(rowUpdated == 1){
+            if (rowUpdated == 1) {
                 return true;
             }
         }
         return false;
     }
-    
-    public static Student getStudent(String rollNo) throws SQLException{
+
+    public static Student getStudent(String rollNo) throws SQLException {
         Connection connection = DbConnector.getConnection();
-        if(connection != null){
+        if (connection != null) {
             Statement st = connection.createStatement();
             ResultSet rs = st.executeQuery("select * from student where rollNo = '" + rollNo + "'");
-            if(rs.next()){
+            if (rs.next()) {
                 Student student = new Student();
                 student.setId(rs.getInt("id"));
                 student.setRollNo(rs.getString("rollNo"));
@@ -229,27 +229,27 @@ public class Student {
         }
         return null;
     }
-    
-    public static boolean isExist(String rollNo) throws SQLException{
+
+    public static boolean isExist(String rollNo) throws SQLException {
         Connection connection = DbConnector.getConnection();
-        if(connection != null){
+        if (connection != null) {
             Statement st = connection.createStatement();
             ResultSet rs = st.executeQuery("select * from student where rollNo = '" + rollNo + "'");
-            if(rs.next()){
+            if (rs.next()) {
                 return true;
             }
         }
         return false;
     }
-    
-    public static List<Student> getAllStudent() throws SQLException{
+
+    public static List<Student> getAllStudent() throws SQLException {
         Connection connection = DbConnector.getConnection();
         List<Student> students = null;
-        if(connection != null){
+        if (connection != null) {
             Statement st = connection.createStatement();
             ResultSet rs = st.executeQuery("select * from student");
             students = new ArrayList<>();
-            while(rs.next()){
+            while (rs.next()) {
                 Student student = new Student();
                 student.setId(rs.getInt("id"));
                 student.setRollNo(rs.getString("rollNo"));
@@ -262,20 +262,20 @@ public class Student {
                 student.setClassNo(ClassObj.getClass(rs.getString("classNo")));
                 student.setStatus(rs.getInt("status"));
                 students.add(student);
-                
+
             }
         }
         return students;
     }
-    
-    public static List<Student> getAllStudent(String classNo) throws SQLException{
+
+    public static List<Student> getAllStudent(String classNo) throws SQLException {
         Connection connection = DbConnector.getConnection();
         List<Student> students = null;
-        if(connection != null){
+        if (connection != null) {
             Statement st = connection.createStatement();
             ResultSet rs = st.executeQuery("select * from student, class where student.classNo = '" + classNo + "' and class.classNo = student.classNo");
             students = new ArrayList<>();
-            while(rs.next()){
+            while (rs.next()) {
                 Student student = new Student();
                 student.setId(rs.getInt("id"));
                 student.setRollNo(rs.getString("rollNo"));
@@ -288,36 +288,40 @@ public class Student {
                 student.setClassNo(ClassObj.getClass(rs.getString("classNo")));
                 student.setStatus(rs.getInt("status"));
                 students.add(student);
-                
+
             }
         }
         return students;
     }
-    
-    public static List<Student> findByName(String nameStr) throws SQLException{
+
+    public static List<Student> findByName(String nameStr) throws SQLException {
         Connection connection = DbConnector.getConnection();
         List<Student> students = null;
-        if(connection != null){
-            Statement st = connection.createStatement();
-            ResultSet rs = st.executeQuery("select * from student where fullname like '%" + nameStr + "%'");
-            students = new ArrayList<>();
-            while(rs.next()){
-                Student student = new Student();
-                student.setId(rs.getInt("id"));
-                student.setRollNo(rs.getString("rollNo"));
-                student.setFullName(rs.getString("fullname"));
-                student.setBirthdate(rs.getString("birthdate"));
-                student.setGender(rs.getString("gender"));
-                student.setAddress(rs.getString("address"));
-                student.setEmail(rs.getString("email"));
-                student.setPhoneNo(rs.getString("phoneNo"));
-                student.setClassNo(ClassObj.getClass(rs.getString("classNo")));
-                student.setStatus(rs.getInt("status"));
-                students.add(student);
-                
+        if (connection != null) {
+            if (nameStr != null) {
+                Statement st = connection.createStatement();
+                ResultSet rs = st.executeQuery("select * from student where fullname like '%" + nameStr + "%'");
+                students = new ArrayList<>();
+                while (rs.next()) {
+                    Student student = new Student();
+                    student.setId(rs.getInt("id"));
+                    student.setRollNo(rs.getString("rollNo"));
+                    student.setFullName(rs.getString("fullname"));
+                    student.setBirthdate(rs.getString("birthdate"));
+                    student.setGender(rs.getString("gender"));
+                    student.setAddress(rs.getString("address"));
+                    student.setEmail(rs.getString("email"));
+                    student.setPhoneNo(rs.getString("phoneNo"));
+                    student.setClassNo(ClassObj.getClass(rs.getString("classNo")));
+                    student.setStatus(rs.getInt("status"));
+                    students.add(student);
+
+                }
+            }else{
+                students = getAllStudent();
             }
         }
         return students;
     }
-   
+
 }

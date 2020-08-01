@@ -35,6 +35,46 @@ public class StudentForm extends javax.swing.JFrame {
     public StudentForm() {
         initComponents();
     }
+    
+    public StudentForm(Student s) {
+                initComponents();
+        this.setDefaultCloseOperation(HIDE_ON_CLOSE);
+        student = s;
+        try {
+            loadClassCombobox();
+            if (student != null) {
+                try {
+                    txtRoll.setText(student.getRollNo());
+                    txtAddress.setText(student.getAddress());
+                    txtEmail.setText(student.getEmail());
+                    txtPhone.setText(student.getPhoneNo());
+                    txtName.setText(student.getFullName());
+                    cbxGender.setSelectedItem(student.getGender());
+                    cbxClass.setSelectedItem(student.getClassNo().getClassNo());
+                    DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+                    Date birthDate = df.parse(student.getBirthdate());
+                    jBirthDate.setDate(birthDate);
+                    txtRoll.setEnabled(false);
+                    txtAddress.setEnabled(false);
+                    txtName.setEnabled(false);
+                    txtEmail.setEnabled(false);
+                    txtPhone.setEnabled(false);
+ 
+                    cbxGender.setEnabled(false);
+                    cbxClass.setEnabled(false);
+                    jBirthDate.setEnabled(false);
+                    btnSave.setEnabled(false);
+                    btnClose.setEnabled(false);
+                    btnReset.setEnabled(false);
+                } catch (ParseException ex) {
+                    Logger.getLogger(EmployeeForm.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(EmployeeForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    
+    }
 
     public StudentForm(Account account, Student student) {
         initComponents();

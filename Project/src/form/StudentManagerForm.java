@@ -160,6 +160,11 @@ public class StudentManagerForm extends javax.swing.JFrame {
         btnResultMark.setText("kết quả học tập");
 
         btnDetail.setText("Thông tin chi tiết");
+        btnDetail.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDetailActionPerformed(evt);
+            }
+        });
 
         jMenu1.setText("Tài khoản");
 
@@ -333,6 +338,26 @@ public class StudentManagerForm extends javax.swing.JFrame {
         }
         
     }//GEN-LAST:event_btnFilterActionPerformed
+
+    private void btnDetailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDetailActionPerformed
+        // TODO add your handling code here:
+        int rowSelected = tblStu.getSelectedRow();
+        if (rowSelected >= 0) {
+            String rollNo = tblStu.getModel().getValueAt(rowSelected, 1).toString();
+
+            try {
+                Student s = Student.getStudent(rollNo);
+               
+                StudentForm studentForm = new StudentForm(s);
+                studentForm.setVisible(true);
+            } catch (SQLException ex) {
+                Logger.getLogger(EmployeeManagerForm.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        } else {
+            JOptionPane.showMessageDialog(null, "Vui lòng chọn sinh viên trước");
+        }
+    }//GEN-LAST:event_btnDetailActionPerformed
 
     /**
      * @param args the command line arguments
