@@ -6,6 +6,16 @@
 package form;
 
 import entity.Account;
+import entity.Subject;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.regex.Pattern;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 /**
  *
@@ -18,12 +28,23 @@ public class SubjectManagerForm extends javax.swing.JFrame {
      */
     public SubjectManagerForm() {
         initComponents();
+        try {
+            loadTable(Subject.getAllSubject());   
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Lỗi kết nối.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
     private Account account;
+    private Subject subject;
     public SubjectManagerForm(Account account) {
         initComponents();
         this.account = account;
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        try {
+            loadTable(Subject.getAllSubject());
+        } catch (SQLException ex) {
+            Logger.getLogger(SubjectManagerForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -34,21 +55,269 @@ public class SubjectManagerForm extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel1 = new javax.swing.JLabel();
+        txtSubNo = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        txtSubName = new javax.swing.JTextField();
+        btnSave = new javax.swing.JButton();
+        btnSearch = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblSub = new javax.swing.JTable();
+        btnDelete = new javax.swing.JButton();
+        btnBack = new javax.swing.JButton();
+        btnReset = new javax.swing.JButton();
+        btnUpdate = new javax.swing.JButton();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jLabel1.setText("Mã Môn Học");
+
+        jLabel2.setText("Môn Học");
+
+        btnSave.setText("Save");
+        btnSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSaveActionPerformed(evt);
+            }
+        });
+
+        btnSearch.setText("Tìm Kiếm");
+        btnSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSearchActionPerformed(evt);
+            }
+        });
+
+        tblSub.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
+            },
+            new String [] {
+                "Stt ", "Mã Môn Học", "Môn Học"
+            }
+        ));
+        jScrollPane1.setViewportView(tblSub);
+
+        btnDelete.setText("Delete");
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteActionPerformed(evt);
+            }
+        });
+
+        btnBack.setText("Back");
+        btnBack.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBackActionPerformed(evt);
+            }
+        });
+
+        btnReset.setText("Reset");
+        btnReset.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnResetActionPerformed(evt);
+            }
+        });
+
+        btnUpdate.setText("Update");
+        btnUpdate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUpdateActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 730, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(50, 50, 50)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel2))
+                        .addGap(27, 27, 27)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtSubNo)
+                            .addComponent(txtSubName, javax.swing.GroupLayout.DEFAULT_SIZE, 127, Short.MAX_VALUE)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(50, 50, 50)
+                        .addComponent(btnReset, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 20, Short.MAX_VALUE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 425, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(btnBack, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(43, 43, 43)
+                        .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(39, 39, 39)
+                        .addComponent(btnSearch)
+                        .addContainerGap())))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel1)
+                            .addComponent(txtSubNo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(26, 26, 26)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel2)
+                            .addComponent(txtSubName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(37, 37, 37)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnReset, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(61, 61, 61))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnBack, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(19, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
+        // TODO add your handling code here:
+            if (validation()) {
+            if (subject != null) {
+                try {
+                    subject.setSubjectNo(txtSubNo.getText());
+                    subject.setSubjectName(txtSubName.getText());
+                    
+                    if (Subject.update(subject)) {
+                        JOptionPane.showMessageDialog(null, "Update thành công", "", JOptionPane.INFORMATION_MESSAGE);
+                        txtSubNo.setText("");
+                        txtSubName.setText("");
+                        loadTable(Subject.getAllSubject());
+                        this.subject = null;
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Update thất bại", "", JOptionPane.ERROR_MESSAGE);
+                    }
+                } catch (SQLException ex) {
+                    Logger.getLogger(SubjectManagerForm.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            } else {
+                try {
+                    subject = new Subject();
+                    subject.setSubjectNo(txtSubNo.getText());
+                    subject.setSubjectName(txtSubName.getText());
+                 
+                    if (Subject.insert(subject) != null) {
+                        JOptionPane.showMessageDialog(null, "insert thành công", "", JOptionPane.INFORMATION_MESSAGE);
+                        txtSubNo.setText("");
+                        txtSubName.setText("");
+                        loadTable(Subject.getAllSubject());
+                    } else {
+                        JOptionPane.showMessageDialog(null, "insert thất bại", "", JOptionPane.ERROR_MESSAGE);
+                    }
+                } catch (SQLException ex) {
+                    Logger.getLogger(SubjectManagerForm.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        
+    }//GEN-LAST:event_btnSaveActionPerformed
+
+    private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
+        // TODO add your handling code here:
+        String nameStr;
+        if((nameStr = JOptionPane.showInputDialog("Nhập tên môn học tìm kiếm:").toString()) != null){
+            List<Subject> subjects = new ArrayList<>();
+            try {
+                subjects = Subject.findByName(nameStr);
+
+                loadTable(subjects);
+            } catch (SQLException ex) {
+                Logger.getLogger(StudentManagerForm.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+        } 
+    }//GEN-LAST:event_btnSearchActionPerformed
+
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        // TODO add your handling code here:
+        int rowSelected = tblSub.getSelectedRow();
+        if (rowSelected >= 0) {
+            String subjectNo = tblSub.getModel().getValueAt(rowSelected, 1).toString();
+            try {
+                Subject subject = Subject.getSubject(subjectNo);
+                int choose = JOptionPane.showConfirmDialog(null, "Bạn có chắc muốn xóa môn học này ?");
+                if (choose == 0) {
+                    subject.setStatus(0);
+                    if (Subject.update(subject)) {
+                        JOptionPane.showMessageDialog(null, "Xóa thành công", "", JOptionPane.INFORMATION_MESSAGE);
+                        List<Subject> subjects = Subject.getAllSubject();
+                        System.out.println(subjects.get(0).getStatus());
+                        if (Subject.update(subject)) {
+                            loadTable(subjects);
+                        }
+                    }
+
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(StudentManagerForm.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Không thể thực hiện thao tác này khi chưa chọn môn học. Vui lòng chọn", "", JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_btnDeleteActionPerformed
+
+    private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
+        // TODO add your handling code here:
+        MainForm mainForm = new MainForm(account);
+        mainForm.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_btnBackActionPerformed
+
+    private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
+        // TODO add your handling code here:
+        txtSubNo.setText("");
+        txtSubName.setText("");
+    }//GEN-LAST:event_btnResetActionPerformed
+
+    private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
+        // TODO add your handling code here:
+        int i = tblSub.getSelectedRow();
+        if (i >= 0) {
+//            String empNum = tblSub.getModel().getValueAt(rowSelected, 1).toString();
+//            try {
+//                Employee e = Employee.getEmployee(empNum);
+//                EmployeeForm employeeForm = new EmployeeForm(account, e);
+//                employeeForm.setVisible(true);
+//                this.setVisible(false);
+//            } catch (SQLException ex) {
+//                Logger.getLogger(EmployeeManagerForm.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+            TableModel model =  tblSub.getModel();
+            txtSubNo.setText(model.getValueAt(i, 1).toString());
+            txtSubName.setText(model.getValueAt(i, 2).toString());
+            try {
+                this.subject = Subject.getSubject(model.getValueAt(i, 1).toString());
+            } catch (SQLException ex) {
+                Logger.getLogger(SubjectManagerForm.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+        } else {
+            JOptionPane.showMessageDialog(null, "Vui lòng chọn môn học trước");
+        }
+    }//GEN-LAST:event_btnUpdateActionPerformed
 
     /**
      * @param args the command line arguments
@@ -85,7 +354,61 @@ public class SubjectManagerForm extends javax.swing.JFrame {
             }
         });
     }
+    
+     private void loadTable(List<Subject> subjectList) {
+        DefaultTableModel model = (DefaultTableModel) tblSub.getModel();
+        model.setRowCount(0);
+        int count = 1;
+        for (Subject s : subjectList) {
+            if (s.getStatus() == 1) {
+                model.addRow(new Object[]{
+                    count, s.getSubjectNo(), s.getSubjectName()
+                });
+                count ++;
+
+            }
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnBack;
+    private javax.swing.JButton btnDelete;
+    private javax.swing.JButton btnReset;
+    private javax.swing.JButton btnSave;
+    private javax.swing.JButton btnSearch;
+    private javax.swing.JButton btnUpdate;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable tblSub;
+    private javax.swing.JTextField txtSubName;
+    private javax.swing.JTextField txtSubNo;
     // End of variables declaration//GEN-END:variables
+    private boolean validation() {
+        if(txtSubNo.getText().isEmpty() || txtSubName.getText().isEmpty()){
+            JOptionPane.showMessageDialog(null, "Vui lòng nhập đầy đủ thông tin");
+            return false;
+        }
+        if(txtSubNo.getText().length() > 15){
+            JOptionPane.showMessageDialog(null, "Mã môn học không vượt quá 15 ký tự");
+            return false;
+        }
+        if(txtSubName.getText().length() > 150){
+            JOptionPane.showMessageDialog(null, "Tên môn học không vượt quá 150 ký tự");
+            return false;
+        }
+        String regex1 = "[a-zA-Z0-9]{1,15}";
+        if (!Pattern.matches(regex1, txtSubNo.getText())) {
+            JOptionPane.showMessageDialog(null, "Mã môn học nhập vào không đúng định dạng");
+            return false;
+        }
+        String regex2 = "[a-zA-Z0-9 ]{1,150}";
+        if (!Pattern.matches(regex2, txtSubName.getText())) {
+            JOptionPane.showMessageDialog(null, "Tên môn học nhập vào không đúng định dạng");
+            return false;
+        }
+        
+        return true;      
+    }
 }
+

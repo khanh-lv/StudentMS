@@ -168,5 +168,25 @@ public class Subject {
         return subjects;
     }
     
+    public static List<Subject> findByName(String nameStr) throws SQLException {
+        Connection connection = DbConnector.getConnection();
+        List<Subject> subjects = null;
+        if (connection != null) {
+            if(nameStr != null) {
+                Statement st = connection.createStatement();
+                ResultSet rs = st.executeQuery("select * from subject where subjectName like '%" + nameStr + "%'");
+                subjects = new ArrayList<>();
+                while (rs.next()) {        
+                    Subject subject = new Subject();
+                    subject.setId(rs.getInt("id"));
+                    subject.setSubjectNo(rs.getString("subjectNo"));
+                    subject.setSubjectName(rs.getString("subjectName"));
+                    subject.setStatus(rs.getInt("status"));
+                    subjects.add(subject);
+                }       
+            } 
+        }
+        return subjects;
+    }
    
 }
