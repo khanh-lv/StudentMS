@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th8 01, 2020 lúc 04:11 AM
+-- Thời gian đã tạo: Th8 06, 2020 lúc 01:04 PM
 -- Phiên bản máy phục vụ: 10.4.11-MariaDB
 -- Phiên bản PHP: 7.4.6
 
@@ -31,23 +31,22 @@ USE `project`;
 
 CREATE TABLE IF NOT EXISTS `account` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `username` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `username` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `password` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL,
   `roleId` int(11) NOT NULL,
   `status` int(11) DEFAULT 1,
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`),
   KEY `roleId` (`roleId`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `account`
 --
 
 INSERT INTO `account` (`id`, `username`, `password`, `roleId`, `status`) VALUES
-(1, 'khanh@admin', '123456', 4, 1),
-(2, 'sonvan@gv', '123456', 2, 1),
-(3, 'halv@admin', '123456', 3, 1);
+(1, 'khanh@admin', '123456', 1, 1),
+(2, 'quang@gv', '123456', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -57,14 +56,23 @@ INSERT INTO `account` (`id`, `username`, `password`, `roleId`, `status`) VALUES
 
 CREATE TABLE IF NOT EXISTS `attendance` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `rollNo` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `studentId` int(11) NOT NULL,
   `scheduleId` int(11) NOT NULL,
   `date` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `status` int(11) DEFAULT 1,
+  `status` int(11) DEFAULT 0,
   PRIMARY KEY (`id`),
-  KEY `rollNo` (`rollNo`),
+  KEY `studentId` (`studentId`),
   KEY `scheduleId` (`scheduleId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `attendance`
+--
+
+INSERT INTO `attendance` (`id`, `studentId`, `scheduleId`, `date`, `status`) VALUES
+(16, 1, 1, '06-08-2020', 1),
+(17, 3, 1, '06-08-2020', 0),
+(18, 2, 2, '06-08-2020', 0);
 
 -- --------------------------------------------------------
 
@@ -78,7 +86,7 @@ CREATE TABLE IF NOT EXISTS `class` (
   `status` int(11) DEFAULT 1,
   PRIMARY KEY (`id`),
   UNIQUE KEY `classNo` (`classNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `class`
@@ -86,7 +94,9 @@ CREATE TABLE IF NOT EXISTS `class` (
 
 INSERT INTO `class` (`id`, `classNo`, `status`) VALUES
 (1, 'C1808G', 1),
-(2, 'C1708i', 1);
+(2, 'C1010H', 0),
+(3, 'C1808G2', 1),
+(4, 'C1901A', 0);
 
 -- --------------------------------------------------------
 
@@ -101,23 +111,21 @@ CREATE TABLE IF NOT EXISTS `employee` (
   `birthdate` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL,
   `gender` varchar(6) COLLATE utf8mb4_unicode_ci NOT NULL,
   `address` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(150) COLLATE utf8mb4_unicode_ci NOT NULL,
   `phoneNo` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `accId` int(11) NOT NULL,
   `status` int(11) DEFAULT 1,
+  `accId` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `empNum` (`empNum`),
   KEY `accId` (`accId`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `employee`
 --
 
-INSERT INTO `employee` (`id`, `empNum`, `fullname`, `birthdate`, `gender`, `address`, `email`, `phoneNo`, `accId`, `status`) VALUES
-(1, 'E001', 'Lê Văn Khánh', '14-09-1996', 'nam', 'Yên Định, Thanh Hóa', 'khanh.lv.138@aptechlearning.edu.vn', '0985136842', 1, 1),
-(4, 'E002', 'Lê Văn Sơn', '13-08-2020', 'nam', 'Thanh Hóa', 'son.lv.112@aptechlearning.edu.vn', '0123854967', 2, 1),
-(5, 'E003', 'Lê Thị Hà', '26-08-2020', 'nữ', 'Thanh Hóa', 'ha.lt.112@aptechlearning.edu.vn', '0125879466', 3, 1);
+INSERT INTO `employee` (`id`, `empNum`, `fullname`, `birthdate`, `gender`, `address`, `email`, `phoneNo`, `status`, `accId`) VALUES
+(1, 'E002', 'Nguyễn Minh Quang', '26-08-2020', 'Nam', 'Nam Định', 'quang.nm.113@aptechlearning.edu.vn', '0123658497', 1, 2);
 
 -- --------------------------------------------------------
 
@@ -127,21 +135,22 @@ INSERT INTO `employee` (`id`, `empNum`, `fullname`, `birthdate`, `gender`, `addr
 
 CREATE TABLE IF NOT EXISTS `mark` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `rollNo` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `subjectNo` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `mark` double NOT NULL DEFAULT 0,
+  `studentId` int(11) NOT NULL,
+  `subjectId` int(11) NOT NULL,
+  `mark` double DEFAULT 0,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `rollNo` (`rollNo`,`subjectNo`),
-  KEY `subjectNo` (`subjectNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  UNIQUE KEY `studentId` (`studentId`,`subjectId`),
+  KEY `subjectId` (`subjectId`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `mark`
 --
 
-INSERT INTO `mark` (`id`, `rollNo`, `subjectNo`, `mark`) VALUES
-(1, 'C1808G4191', 'S001', 8.5),
-(3, 'C1808G4191', 'S002', 8.5);
+INSERT INTO `mark` (`id`, `studentId`, `subjectId`, `mark`) VALUES
+(1, 1, 1, 8),
+(2, 3, 1, 6),
+(3, 2, 1, 0);
 
 -- --------------------------------------------------------
 
@@ -151,18 +160,18 @@ INSERT INTO `mark` (`id`, `rollNo`, `subjectNo`, `mark`) VALUES
 
 CREATE TABLE IF NOT EXISTS `role` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `role` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `role` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `role`
 --
 
 INSERT INTO `role` (`id`, `role`) VALUES
-(2, 'Giáo vụ'),
-(3, 'CTSV'),
-(4, 'Administration');
+(1, 'administrator'),
+(2, 'giáo vụ'),
+(3, 'ctsv');
 
 -- --------------------------------------------------------
 
@@ -172,18 +181,27 @@ INSERT INTO `role` (`id`, `role`) VALUES
 
 CREATE TABLE IF NOT EXISTS `schedule` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `classNo` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `subjectNo` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `classId` int(11) NOT NULL,
+  `subjectId` int(11) NOT NULL,
   `teacher` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `teachingFrameTime` varchar(150) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `teachingTime` int(11) NOT NULL DEFAULT 0,
+  `teachingFrameTime` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `teachingTime` int(11) DEFAULT 0,
   `startDate` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL,
   `endDate` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL,
   `status` int(11) DEFAULT 1,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `classNo` (`classNo`,`subjectNo`),
-  KEY `subjectNo` (`subjectNo`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  UNIQUE KEY `classId` (`classId`,`subjectId`),
+  KEY `subjectId` (`subjectId`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `schedule`
+--
+
+INSERT INTO `schedule` (`id`, `classId`, `subjectId`, `teacher`, `teachingFrameTime`, `teachingTime`, `startDate`, `endDate`, `status`) VALUES
+(1, 1, 1, 'Trần Văn Điệp', 'Sáng t3,t5,t7', 4, '14-09-2018', '14-10-2018', 1),
+(2, 3, 1, 'Trần Văn Điệp', 'Chiều t2,t4,t6', 4, '01-05-2019', '31-05-2019', 1),
+(3, 3, 2, 'Trần Văn Điệp', 'Sáng t2,t4,t6', 4, '01-06-2019', '05-07-2019', 1);
 
 -- --------------------------------------------------------
 
@@ -198,22 +216,23 @@ CREATE TABLE IF NOT EXISTS `student` (
   `birthdate` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL,
   `gender` varchar(6) COLLATE utf8mb4_unicode_ci NOT NULL,
   `address` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(150) COLLATE utf8mb4_unicode_ci NOT NULL,
   `phoneNo` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `classNo` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `classId` int(11) NOT NULL,
   `status` int(11) DEFAULT 1,
   PRIMARY KEY (`id`),
   UNIQUE KEY `rollNo` (`rollNo`),
-  KEY `classNo` (`classNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  KEY `classId` (`classId`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `student`
 --
 
-INSERT INTO `student` (`id`, `rollNo`, `fullname`, `birthdate`, `gender`, `address`, `email`, `phoneNo`, `classNo`, `status`) VALUES
-(1, 'C1808G4191', 'Lê Văn Khánh', '14-09-1996', 'nam', 'Thanh Hoa', 'khanh.lv.138@aptectlearning.edu.vn', '0985136842', 'C1808G', 1),
-(2, 'C1708i4045', 'Lê Văn Khánh', '14-09-1996', 'nam', 'Thanh Hóa', 'khanh1.lv.138@aptechlearning.edu.vn', '0985136842', 'C1708i', 1);
+INSERT INTO `student` (`id`, `rollNo`, `fullname`, `birthdate`, `gender`, `address`, `email`, `phoneNo`, `classId`, `status`) VALUES
+(1, 'C1808G4191', 'Lê Văn Khánh', '14-09-1996', 'Nam', 'Thanh Hóa', 'gunvolf@gmail.com', '0985136842', 1, 1),
+(2, 'C1808G5152', 'Lê Thị B', '21-08-2020', 'Nữ', 'Hà nội', 'lethib@gmail.com', '0123456789', 3, 1),
+(3, 'C1010G1234', 'Lê Thị C', '20-08-2020', 'Nữ', 'hà Nội', 'lethib@gmail.com', '1234567890', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -227,9 +246,8 @@ CREATE TABLE IF NOT EXISTS `subject` (
   `subjectName` varchar(150) COLLATE utf8mb4_unicode_ci NOT NULL,
   `status` int(11) DEFAULT 1,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `subjectNo` (`subjectNo`),
-  UNIQUE KEY `subjectName` (`subjectName`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  UNIQUE KEY `subjectNo` (`subjectNo`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `subject`
@@ -237,9 +255,7 @@ CREATE TABLE IF NOT EXISTS `subject` (
 
 INSERT INTO `subject` (`id`, `subjectNo`, `subjectName`, `status`) VALUES
 (1, 'S001', 'C Programming', 1),
-(2, 'S002', 'Java', 1),
-(3, 'S003', 'SQL Server', 1),
-(5, 'S004', 'Web Design', 1);
+(2, 'S002', 'Web Design', 1);
 
 --
 -- Các ràng buộc cho các bảng đã đổ
@@ -255,7 +271,7 @@ ALTER TABLE `account`
 -- Các ràng buộc cho bảng `attendance`
 --
 ALTER TABLE `attendance`
-  ADD CONSTRAINT `attendance_ibfk_1` FOREIGN KEY (`rollNo`) REFERENCES `student` (`rollNo`),
+  ADD CONSTRAINT `attendance_ibfk_1` FOREIGN KEY (`studentId`) REFERENCES `student` (`id`),
   ADD CONSTRAINT `attendance_ibfk_2` FOREIGN KEY (`scheduleId`) REFERENCES `schedule` (`id`);
 
 --
@@ -268,21 +284,21 @@ ALTER TABLE `employee`
 -- Các ràng buộc cho bảng `mark`
 --
 ALTER TABLE `mark`
-  ADD CONSTRAINT `mark_ibfk_1` FOREIGN KEY (`rollNo`) REFERENCES `student` (`rollNo`),
-  ADD CONSTRAINT `mark_ibfk_2` FOREIGN KEY (`subjectNo`) REFERENCES `subject` (`subjectNo`);
+  ADD CONSTRAINT `mark_ibfk_1` FOREIGN KEY (`studentId`) REFERENCES `student` (`id`),
+  ADD CONSTRAINT `mark_ibfk_2` FOREIGN KEY (`subjectId`) REFERENCES `subject` (`id`);
 
 --
 -- Các ràng buộc cho bảng `schedule`
 --
 ALTER TABLE `schedule`
-  ADD CONSTRAINT `schedule_ibfk_1` FOREIGN KEY (`classNo`) REFERENCES `class` (`classNo`),
-  ADD CONSTRAINT `schedule_ibfk_2` FOREIGN KEY (`subjectNo`) REFERENCES `subject` (`subjectNo`);
+  ADD CONSTRAINT `schedule_ibfk_1` FOREIGN KEY (`classId`) REFERENCES `class` (`id`),
+  ADD CONSTRAINT `schedule_ibfk_2` FOREIGN KEY (`subjectId`) REFERENCES `subject` (`id`);
 
 --
 -- Các ràng buộc cho bảng `student`
 --
 ALTER TABLE `student`
-  ADD CONSTRAINT `student_ibfk_1` FOREIGN KEY (`classNo`) REFERENCES `class` (`classNo`);
+  ADD CONSTRAINT `student_ibfk_1` FOREIGN KEY (`classId`) REFERENCES `class` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
