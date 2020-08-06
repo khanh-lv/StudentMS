@@ -6,6 +6,13 @@
 package form;
 
 import entity.Account;
+import entity.ClassObj;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -20,11 +27,17 @@ public class ClassManagerForm extends javax.swing.JFrame {
         initComponents();
     }
     private Account account;
+
     public ClassManagerForm(Account account) {
         initComponents();
         this.account = account;
-        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        try {
+            loadTable(ClassObj.getAllClass());
+        } catch (SQLException ex) {
+            Logger.getLogger(ClassManagerForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -34,21 +47,273 @@ public class ClassManagerForm extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblClass = new javax.swing.JTable();
+        btnDelete = new javax.swing.JButton();
+        btnAdd = new javax.swing.JButton();
+        btnUpdate = new javax.swing.JButton();
+        btnSchedule = new javax.swing.JButton();
+        btnAttendance = new javax.swing.JButton();
+        btnMark = new javax.swing.JButton();
+        btnBack = new javax.swing.JButton();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Quản lý lớp học");
+        setResizable(false);
+
+        tblClass.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "STT", "Mã lớp học"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(tblClass);
+
+        btnDelete.setText("Xóa");
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteActionPerformed(evt);
+            }
+        });
+
+        btnAdd.setText("Thêm");
+        btnAdd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddActionPerformed(evt);
+            }
+        });
+
+        btnUpdate.setText("Sửa");
+        btnUpdate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUpdateActionPerformed(evt);
+            }
+        });
+
+        btnSchedule.setText("Xem thời khóa biểu");
+        btnSchedule.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnScheduleActionPerformed(evt);
+            }
+        });
+
+        btnAttendance.setText("Điểm danh");
+        btnAttendance.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAttendanceActionPerformed(evt);
+            }
+        });
+
+        btnMark.setText("Cập nhật điểm");
+        btnMark.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMarkActionPerformed(evt);
+            }
+        });
+
+        btnBack.setText("Back");
+        btnBack.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBackActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(50, 50, 50)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 291, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(35, 35, 35)
+                        .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(35, 35, 35)
+                        .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(8, 8, 8)))
+                .addGap(73, 73, 73)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnSchedule, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnMark, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnAttendance, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnBack, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(30, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(30, 30, 30)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 345, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(80, 80, 80)
+                        .addComponent(btnSchedule, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(45, 45, 45)
+                        .addComponent(btnMark, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(45, 45, 45)
+                        .addComponent(btnAttendance, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(45, 45, 45)
+                        .addComponent(btnBack, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(20, 20, 20)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnDelete, javax.swing.GroupLayout.DEFAULT_SIZE, 32, Short.MAX_VALUE)
+                    .addComponent(btnAdd, javax.swing.GroupLayout.DEFAULT_SIZE, 32, Short.MAX_VALUE)
+                    .addComponent(btnUpdate, javax.swing.GroupLayout.DEFAULT_SIZE, 32, Short.MAX_VALUE))
+                .addGap(30, 30, 30))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
+        // TODO add your handling code here:
+        String classNo = JOptionPane.showInputDialog("Nhập mã lớp: ");
+        if (!classNo.isEmpty() && classNo.length() <= 15) {
+            try {
+                if (!ClassObj.isExist(classNo)) {
+                    ClassObj c = new ClassObj(classNo);
+                    if (ClassObj.insert(c) != null) {
+                        JOptionPane.showMessageDialog(null, "insert thành công");
+                        loadTable(ClassObj.getAllClass());
+                    } else {
+                        JOptionPane.showMessageDialog(null, "insert thất bại");
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "Mã lớp học đã tồn tại", "", JOptionPane.WARNING_MESSAGE);
+                }
+
+            } catch (SQLException ex) {
+                Logger.getLogger(ClassManagerForm.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Mã lớp học không vượt quá 15 ký tự hoặc để trống", "", JOptionPane.WARNING_MESSAGE);
+        }
+
+    }//GEN-LAST:event_btnAddActionPerformed
+
+    private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
+        // TODO add your handling code here:
+        int rowSelected = tblClass.getSelectedRow();
+        if (rowSelected >= 0) {
+            try {
+                ClassObj c = ClassObj.getClass(tblClass.getModel().getValueAt(rowSelected, 1).toString());
+                String classNo = JOptionPane.showInputDialog("Nhập mã lớp: ");
+                if (!classNo.isEmpty() && classNo.length() <= 15) {
+
+                    if (!ClassObj.isExist(classNo)) {
+                        c.setClassNo(classNo);
+                        if (ClassObj.update(c)) {
+                            JOptionPane.showMessageDialog(null, "update thành công");
+                            loadTable(ClassObj.getAllClass());
+                        } else {
+                            JOptionPane.showMessageDialog(null, "update thất bại");
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Mã lớp học đã tồn tại", "", JOptionPane.WARNING_MESSAGE);
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "Mã lớp học không vượt quá 15 ký tự hoặc để trống", "", JOptionPane.WARNING_MESSAGE);
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(ClassManagerForm.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Bạn phải chọn lớp học để thực hiện thao tác này", "", JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_btnUpdateActionPerformed
+
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        // TODO add your handling code here:
+        int rowSelected = tblClass.getSelectedRow();
+        if (rowSelected >= 0) {
+            try {
+                ClassObj c = ClassObj.getClass(tblClass.getModel().getValueAt(rowSelected, 1).toString());
+                int choose = JOptionPane.showConfirmDialog(null, "Bạn có chác muốn xóa lớp này: ");
+                if (choose == 0) {
+                    c.setStatus(0);
+                    if (ClassObj.update(c)) {
+                        JOptionPane.showMessageDialog(null, "Xóa thành công");
+                        loadTable(ClassObj.getAllClass());
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Xóa thất bại");
+                    }
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(ClassManagerForm.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Bạn phải chọn lớp học để thực hiện thao tác này", "", JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_btnDeleteActionPerformed
+
+    private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
+        // TODO add your handling code here:
+        MainForm mainForm = new MainForm(account);
+        mainForm.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_btnBackActionPerformed
+
+    private void btnScheduleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnScheduleActionPerformed
+        // TODO add your handling code here:
+        int rowSelected = tblClass.getSelectedRow();
+        if (rowSelected >= 0) {
+            try {
+                ClassObj c = ClassObj.getClass(tblClass.getModel().getValueAt(rowSelected, 1).toString());
+                ScheduleManagerForm scheduleManagerForm = new ScheduleManagerForm(c, account);
+                scheduleManagerForm.setVisible(true);
+                this.setVisible(false);
+            } catch (SQLException ex) {
+                Logger.getLogger(ClassManagerForm.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        } else {
+            JOptionPane.showMessageDialog(null, "Bạn phải chọn lớp để thực hiện thao tác này");
+        }
+    }//GEN-LAST:event_btnScheduleActionPerformed
+
+    private void btnAttendanceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAttendanceActionPerformed
+        // TODO add your handling code here:
+        int rowSelected = tblClass.getSelectedRow();
+        if (rowSelected >= 0) {
+            try {
+                ClassObj c = ClassObj.getClass(tblClass.getModel().getValueAt(rowSelected, 1).toString());
+                AttendanceForm attendanceForm = new AttendanceForm(c);
+                attendanceForm.setVisible(true);
+
+            } catch (SQLException ex) {
+                Logger.getLogger(ClassManagerForm.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_btnAttendanceActionPerformed
+
+    private void btnMarkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMarkActionPerformed
+        // TODO add your handling code here:
+        int rowSelected = tblClass.getSelectedRow();
+        if (rowSelected >= 0) {
+            ClassObj c;
+            try {
+                c = ClassObj.getClass(tblClass.getModel().getValueAt(rowSelected, 1).toString());
+                MarkManager manager = new MarkManager(c);
+                manager.setVisible(true);
+            } catch (SQLException ex) {
+                Logger.getLogger(ClassManagerForm.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        }
+    }//GEN-LAST:event_btnMarkActionPerformed
 
     /**
      * @param args the command line arguments
@@ -86,5 +351,28 @@ public class ClassManagerForm extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAdd;
+    private javax.swing.JButton btnAttendance;
+    private javax.swing.JButton btnBack;
+    private javax.swing.JButton btnDelete;
+    private javax.swing.JButton btnMark;
+    private javax.swing.JButton btnSchedule;
+    private javax.swing.JButton btnUpdate;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable tblClass;
     // End of variables declaration//GEN-END:variables
+
+    private void loadTable(List<ClassObj> allClass) {
+        DefaultTableModel model = (DefaultTableModel) tblClass.getModel();
+        model.setRowCount(0);
+        int count = 1;
+        for (ClassObj c : allClass) {
+            if (c.getStatus() == 1) {
+                model.addRow(new Object[]{
+                    count, c.getClassNo()
+                });
+                count++;
+            }
+        }
+    }
 }

@@ -84,11 +84,11 @@ public class Attendance {
     }
     
     public static Attendance insert(Attendance insertAttendance) throws SQLException{
-        String sql = "insert into attendance(rollNo, scheduleId, date, status) values(?, ?, ?, ?)";
+        String sql = "insert into attendance(studentId, scheduleId, date, status) values(?, ?, ?, ?)";
         Connection connection = DbConnector.getConnection();
         if(connection != null){
             PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            ps.setString(1, insertAttendance.getStudent().getRollNo());
+            ps.setInt(1, insertAttendance.getStudent().getId());
             ps.setInt(2, insertAttendance.getSchedule().getId());
             ps.setString(3, insertAttendance.getDate());
             ps.setInt(4, insertAttendance.getStatus());
@@ -119,19 +119,50 @@ public class Attendance {
         return false;
     }
     
-    public static List<Attendance> getAllAttendance(String rollNo, String classNo, String subjectNo) throws SQLException{
+    public static List<Attendance> getAllAttendance(int studentId, int classId, int subjectId) throws SQLException{
         Connection connection = DbConnector.getConnection();
         List<Attendance> attendances = null;
         if(connection != null){
             Statement st = connection.createStatement();
-            Schedule schedule = Schedule.getSchedule(classNo, subjectNo);
-            ResultSet rs = st.executeQuery("select * from attendance where rollNo = '" + rollNo + "' and scheduleId = " + schedule.getId());
+            Schedule schedule = Schedule.getSchedule(classId, subjectId);
+            ResultSet rs = st.executeQuery("select * from attendance where studentId = " + studentId + " and scheduleId = " + schedule.getId());
             attendances = new ArrayList<>();
             while(rs.next()){
-                Attendance a = new Attendance(rs.getInt("id"), Student.getStudent(rs.getString("rollNo")), schedule,rs.getString("date") , 0);
+                Attendance a = new Attendance(rs.getInt("id"), Student.getStudent(rs.getInt("studentId")), schedule,rs.getString("date") , rs.getInt("status"));
                 attendances.add(a);
             }
         }
         return attendances;
+    }
+    
+    public static List<Attendance> getAllAttendance(Schedule schedule, String date) throws SQLException{
+        Connection connection = DbConnector.getConnection();
+        List<Attendance> attendances = null;
+        if(connection != null){
+            Statement st = connection.createStatement();
+            ResultSet rs = st.executeQuery("select * from attendance where scheduleId = " + schedule.getId() + " and date = '" + date+ "'");
+            attendances = new ArrayList<>();
+            while(rs.next()){
+                Attendance a = new Attendance(rs.getInt("id"), Student.getStudent(rs.getInt("studentId")), schedule,rs.getString("date") , rs.getInt("status"));
+                attendances.add(a);
+            }
+        }
+        return attendances;
+    }
+    
+    public static boolean delete(int scheduleId, String date) throws SQLException{
+        String sql = "delete from attendance where scheduleId = ? and date = ?";
+        Connection connection = DbConnector.getConnection();
+        if(connection != null){
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, scheduleId);
+            ps.setString(2, date);
+            int rowDeleted = ps.executeUpdate();
+            if(rowDeleted > 0){
+                return true;
+            }
+        }
+        return false;
+        
     }
 }

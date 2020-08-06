@@ -151,4 +151,16 @@ public class ClassObj {
         return false;
     }
     
+    public static ClassObj getClass(int id) throws SQLException{
+        Connection connection = DbConnector.getConnection();
+        if(connection != null){
+            Statement st = connection.createStatement();
+            ResultSet rs = st.executeQuery("select * from class where id = " + id);
+            if(rs.next()){
+                ClassObj getClass = new ClassObj(rs.getInt("id"), rs.getString("classNo"), rs.getInt("status"));
+                return getClass;
+            }
+        }
+        return null;
+    }
 }

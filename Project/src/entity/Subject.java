@@ -19,6 +19,23 @@ import java.util.List;
  * @author khanh
  */
 public class Subject {
+
+    public static List<Subject> getSubjectbyClass(int classId) throws SQLException {
+
+        Connection connection = DbConnector.getConnection();
+        List<Subject> subjects = null;
+        if (connection != null) {
+            subjects = new ArrayList<>();
+            Statement st = connection.createStatement();
+            ResultSet rs = st.executeQuery("select * from subject, schedule where subject.id = schedule.subjectId and schedule.classid = " + classId);
+            while (rs.next()) {
+                Subject subject = new Subject(rs.getInt("id"), rs.getString("subjectNo"), rs.getString("subjectName"), rs.getInt("status"));
+                subjects.add(subject);
+            }
+        }
+        return subjects;
+    }
+
     private int id;
     private String subjectNo;
     private String subjectName;
@@ -88,17 +105,16 @@ public class Subject {
     public void setScheduleList(List<Schedule> scheduleList) {
         this.scheduleList = scheduleList;
     }
-    
-    
-    public static Subject insert(Subject insertSubject) throws SQLException{
+
+    public static Subject insert(Subject insertSubject) throws SQLException {
         String sql = "insert into subject(subjectNo, subjectName) values(?, ?)";
         Connection connection = DbConnector.getConnection();
-        if(connection != null){
+        if (connection != null) {
             PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, insertSubject.getSubjectNo());
             ps.setString(2, insertSubject.getSubjectName());
             int rowInserted = ps.executeUpdate();
-            if(rowInserted == 1){
+            if (rowInserted == 1) {
                 ResultSet rs = ps.getGeneratedKeys();
                 rs.next();
                 int id = rs.getInt(1);
@@ -108,85 +124,98 @@ public class Subject {
         }
         return null;
     }
-    
-    public static boolean update(Subject updateSubject) throws SQLException{
+
+    public static boolean update(Subject updateSubject) throws SQLException {
         String sql = "update subject set "
                 + "subjectNo = ?, subjectName = ?, status = ? where id = ?";
         Connection connection = DbConnector.getConnection();
-        if(connection != null){
+        if (connection != null) {
             PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, updateSubject.getSubjectNo());
             ps.setString(2, updateSubject.getSubjectName());
             ps.setInt(3, updateSubject.getStatus());
             ps.setInt(4, updateSubject.getId());
             int rowUpdated = ps.executeUpdate();
-            if(rowUpdated == 1){
+            if (rowUpdated == 1) {
                 return true;
             }
         }
         return false;
     }
-    
-    public static Subject getSubject(String subjectNo) throws SQLException{
+
+    public static Subject getSubject(String subjectNo) throws SQLException {
         Connection connection = DbConnector.getConnection();
-        if(connection != null){
+        if (connection != null) {
             Statement st = connection.createStatement();
             ResultSet rs = st.executeQuery("select * from subject where subjectNo = '" + subjectNo + "'");
-            if(rs.next()){
+            if (rs.next()) {
                 Subject subject = new Subject(rs.getInt("id"), rs.getString("subjectNo"), rs.getString("subjectName"), rs.getInt("status"));
                 return subject;
             }
         }
         return null;
     }
-    
-    public static Subject getSubjectByName(String subjectName) throws SQLException{
+
+    public static Subject getSubject(int subjectId) throws SQLException {
         Connection connection = DbConnector.getConnection();
-        if(connection != null){
+        if (connection != null) {
+            Statement st = connection.createStatement();
+            ResultSet rs = st.executeQuery("select * from subject where id = " + subjectId);
+            if (rs.next()) {
+                Subject subject = new Subject(rs.getInt("id"), rs.getString("subjectNo"), rs.getString("subjectName"), rs.getInt("status"));
+                return subject;
+            }
+        }
+        return null;
+    }
+
+    public static Subject getSubjectByName(String subjectName) throws SQLException {
+        Connection connection = DbConnector.getConnection();
+        if (connection != null) {
             Statement st = connection.createStatement();
             ResultSet rs = st.executeQuery("select * from subject where subjectName = '" + subjectName + "'");
-            if(rs.next()){
+            if (rs.next()) {
                 Subject subject = new Subject(rs.getInt("id"), rs.getString("subjectNo"), rs.getString("subjectName"), rs.getInt("status"));
                 return subject;
             }
         }
         return null;
     }
-    
-    public static List<Subject> getAllSubject() throws SQLException{
+
+    public static List<Subject> getAllSubject() throws SQLException {
         Connection connection = DbConnector.getConnection();
         List<Subject> subjects = null;
-        if(connection != null){
+        if (connection != null) {
             subjects = new ArrayList<>();
             Statement st = connection.createStatement();
             ResultSet rs = st.executeQuery("select * from subject");
-            while(rs.next()){
+            while (rs.next()) {
                 Subject subject = new Subject(rs.getInt("id"), rs.getString("subjectNo"), rs.getString("subjectName"), rs.getInt("status"));
                 subjects.add(subject);
             }
         }
         return subjects;
     }
-    
+
     public static List<Subject> findByName(String nameStr) throws SQLException {
         Connection connection = DbConnector.getConnection();
         List<Subject> subjects = null;
         if (connection != null) {
-            if(nameStr != null) {
+            if (nameStr != null) {
                 Statement st = connection.createStatement();
                 ResultSet rs = st.executeQuery("select * from subject where subjectName like '%" + nameStr + "%'");
                 subjects = new ArrayList<>();
-                while (rs.next()) {        
+                while (rs.next()) {
                     Subject subject = new Subject();
                     subject.setId(rs.getInt("id"));
                     subject.setSubjectNo(rs.getString("subjectNo"));
                     subject.setSubjectName(rs.getString("subjectName"));
                     subject.setStatus(rs.getInt("status"));
                     subjects.add(subject);
-                }       
-            } 
+                }
+            }
         }
         return subjects;
     }
-   
+
 }

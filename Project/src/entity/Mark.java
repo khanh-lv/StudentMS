@@ -73,12 +73,12 @@ public class Mark {
     }
     
     public static Mark insertMark(Mark insertMark) throws SQLException{
-        String sql = "insert into mark(rollNo, subjectNo, mark) values(?, ?, ?)";
+        String sql = "insert into mark(studentId, subjectId, mark) values(?, ?, ?)";
         Connection connection = DbConnector.getConnection();
         if(connection != null){
             PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            ps.setString(1, insertMark.getStudent().getRollNo());
-            ps.setString(2, insertMark.getSubject().getSubjectNo());
+            ps.setInt(1, insertMark.getStudent().getId());
+            ps.setInt(2, insertMark.getSubject().getId());
             ps.setDouble(3, insertMark.getMark());
             int rowInserted = ps.executeUpdate();
             if(rowInserted == 1){
@@ -121,15 +121,13 @@ public class Mark {
         return false;
     }
     
-    public static Mark getMark(String rollNo, String subjectNo) throws SQLException{
+    public static Mark getMark(int studentId, int subjectId) throws SQLException{
         Connection connection = DbConnector.getConnection();
         if(connection != null){
             Statement st = connection.createStatement();
-            ResultSet rs = st.executeQuery("select mark.* from mark, student, subject"
-                                            +"where mark.subjectNo = subject.subjectNo and student.rollNo = mark.rollNo and student.rollNo = '" 
-                                            + rollNo + "' and subject.subjectNo = '" + subjectNo + "'" );
+            ResultSet rs = st.executeQuery("select * from mark where studentId = " + studentId + " and subjectId = " + subjectId );
             if(rs.next()){
-                Mark mark = new Mark(rs.getInt("id"), Student.getStudent(rs.getString("rollNo")), Subject.getSubject(rs.getString("subjectNo")), rs.getDouble("mark"));
+                Mark mark = new Mark(rs.getInt("id"), Student.getStudent(rs.getInt("studentId")), Subject.getSubject(rs.getInt("subjectId")), rs.getDouble("mark"));
                 return mark;
             }
         }
@@ -144,7 +142,7 @@ public class Mark {
             Statement st = connection.createStatement();
             ResultSet rs = st.executeQuery("select * from mark" );
             while(rs.next()){
-                Mark mark = new Mark(rs.getInt("id"), Student.getStudent(rs.getString("rollNo")), Subject.getSubject(rs.getString("subjectNo")), rs.getDouble("mark"));
+                Mark mark = new Mark(rs.getInt("id"), Student.getStudent(rs.getInt("studentId")), Subject.getSubject(rs.getInt("subjectId")), rs.getDouble("mark"));
                 marks.add(mark);
             }
         }
@@ -159,27 +157,41 @@ public class Mark {
             Statement st = connection.createStatement();
             ResultSet rs = st.executeQuery("select * from mark where rollNo = '" + rollNo + "'" );
             while(rs.next()){
-                Mark mark = new Mark(rs.getInt("id"), Student.getStudent(rs.getString("rollNo")), Subject.getSubject(rs.getString("subjectNo")), rs.getDouble("mark"));
+                Mark mark = new Mark(rs.getInt("id"), Student.getStudent(rs.getInt("studentId")), Subject.getSubject(rs.getInt("subjectId")), rs.getDouble("mark"));
                 marks.add(mark);
             }
         }
         return marks;
     }
     
-    public static List<Mark> getAllMarkBySubjectNo(String subjectNo) throws SQLException{
+    public static List<Mark> getAllMarkBySubjectNo(int subjectId) throws SQLException{
         Connection connection = DbConnector.getConnection();
         List<Mark> marks = null;
         if(connection != null){
             marks = new ArrayList<>();
             Statement st = connection.createStatement();
-            ResultSet rs = st.executeQuery("select * from mark where subjectNo = '" + subjectNo + "'" );
+            ResultSet rs = st.executeQuery("select * from mark where subjectId = " + subjectId );
             while(rs.next()){
-                Mark mark = new Mark(rs.getInt("id"), Student.getStudent(rs.getString("rollNo")), Subject.getSubject(rs.getString("subjectNo")), rs.getDouble("mark"));
+                Mark mark = new Mark(rs.getInt("id"), Student.getStudent(rs.getInt("studentId")), Subject.getSubject(rs.getInt("subjectId")), rs.getDouble("mark"));
                 marks.add(mark);
             }
         }
         return marks;
     }
     
+    public static List<Mark> getMarkByClass(int subjectId, int classId) throws SQLException{
+        Connection connection = DbConnector.getConnection();
+        List<Mark> marks = null;
+        if(connection != null){
+            marks = new ArrayList<>();
+            Statement st = connection.createStatement();
+            ResultSet rs = st.executeQuery("select mark.* from mark, student where mark.subjectId = " + subjectId + " and mark.studentId = student.id and student.classId =" + classId);
+            while(rs.next()){
+                Mark mark = new Mark(rs.getInt("id"), Student.getStudent(rs.getInt("studentId")), Subject.getSubject(rs.getInt("subjectId")), rs.getDouble("mark"));
+                marks.add(mark);
+            }
+        }
+        return marks;
+    }
     
 }

@@ -26,12 +26,11 @@ public class StudentManagerForm extends javax.swing.JFrame {
      */
     public StudentManagerForm() {
         initComponents();
-        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         try {
             loadTable(Student.getAllStudent());
             loadCombobox();
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Lỗi kết nối.", "Error", JOptionPane.ERROR_MESSAGE);
+            ex.printStackTrace();
         }
     }
     private Account account;
@@ -39,12 +38,11 @@ public class StudentManagerForm extends javax.swing.JFrame {
     public StudentManagerForm(Account account) {
         initComponents();
         this.account = account;
-        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         try {
             loadTable(Student.getAllStudent());
             loadCombobox();
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Lỗi kết nối.", "Error", JOptionPane.ERROR_MESSAGE);
+            ex.printStackTrace();
         }
     }
 

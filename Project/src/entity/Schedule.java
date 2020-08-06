@@ -137,12 +137,12 @@ public class Schedule {
     }
 
     public static Schedule insert(Schedule insertSchedule) throws SQLException {
-        String sql = "insert into schedule(classNo, subjectNo, teacher, teachingFrameTime, teachingTime, startDate, endDate) values(?, ?, ?, ?, ?, ?, ?)";
+        String sql = "insert into schedule(classId, subjectId, teacher, teachingFrameTime, teachingTime, startDate, endDate) values(?, ?, ?, ?, ?, ?, ?)";
         Connection connection = DbConnector.getConnection();
         if (connection != null) {
             PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            ps.setString(1, insertSchedule.getClassNo().getClassNo());
-            ps.setString(2, insertSchedule.getSubject().getSubjectNo());
+            ps.setInt(1, insertSchedule.getClassNo().getId());
+            ps.setInt(2, insertSchedule.getSubject().getId());
             ps.setString(3, insertSchedule.getTeacher());
             ps.setString(4, insertSchedule.getTeachingFrameTime());
             ps.setInt(5, insertSchedule.getTeachingTime());
@@ -163,12 +163,12 @@ public class Schedule {
 
     public static boolean update(Schedule updateSchedule) throws SQLException {
         String sql = "update schedule set "
-                + "classNo = ?, subjectNo = ?, teacher = ?, teachingFrameTime = ?, teachingTime = ?, startDate = ?, endDate = ?, status = ? where id = ?";
+                + "classId = ?, subjectId = ?, teacher = ?, teachingFrameTime = ?, teachingTime = ?, startDate = ?, endDate = ?, status = ? where id = ?";
         Connection connection = DbConnector.getConnection();
         if (connection != null) {
             PreparedStatement ps = connection.prepareStatement(sql);
-            ps.setString(1, updateSchedule.getClassNo().getClassNo());
-            ps.setString(2, updateSchedule.getSubject().getSubjectNo());
+            ps.setInt(1, updateSchedule.getClassNo().getId());
+            ps.setInt(2, updateSchedule.getSubject().getId());
             ps.setString(3, updateSchedule.getTeacher());
             ps.setString(4, updateSchedule.getTeachingFrameTime());
             ps.setInt(5, updateSchedule.getTeachingTime());
@@ -184,17 +184,17 @@ public class Schedule {
         return false;
     }
 
-    public static Schedule getSchedule(String clasNo, String subjectNo) throws SQLException {
+    public static Schedule getSchedule(int classId, int subjectId) throws SQLException {
         Connection connection = DbConnector.getConnection();
 
         if (connection != null) {
             Statement st = connection.createStatement();
-            ResultSet rs = st.executeQuery("select * from schedule where classNo = '" + clasNo + "' and subjectNo = '" + subjectNo + "'");
+            ResultSet rs = st.executeQuery("select * from schedule where classId = " + classId + " and subjectId = " + subjectId);
             if (rs.next()) {
                 Schedule schedule = new Schedule();
                 schedule.setId(rs.getInt("id"));
-                schedule.setClassNo(ClassObj.getClass(rs.getString("classNo")));
-                schedule.setSubject(Subject.getSubject(rs.getString("subjectNo")));
+                schedule.setClassNo(ClassObj.getClass(rs.getInt("classId")));
+                schedule.setSubject(Subject.getSubject(rs.getInt("subjectId")));
                 schedule.setTeacher(rs.getString("teacher"));
                 schedule.setTeachingFrameTime(rs.getString("teachingFrameTime"));
                 schedule.setTeachingTime(rs.getInt("teachingTime"));
@@ -208,18 +208,18 @@ public class Schedule {
         return null;
     }
 
-    public static List<Schedule> getAllSchedules(String classNo) throws SQLException {
+    public static List<Schedule> getAllSchedulesByClass(int classId) throws SQLException {
         Connection connection = DbConnector.getConnection();
         List<Schedule> schedules = null;
         if (connection != null) {
             Statement st = connection.createStatement();
-            ResultSet rs = st.executeQuery("select * from schedule where classNo = '" + classNo + "'");
+            ResultSet rs = st.executeQuery("select * from schedule where classId = " + classId);
             schedules = new ArrayList<>();
             while(rs.next()){
                 Schedule schedule = new Schedule();
                 schedule.setId(rs.getInt("id"));
-                schedule.setClassNo(ClassObj.getClass(rs.getString("classNo")));
-                schedule.setSubject(Subject.getSubject(rs.getString("subjectNo")));
+                schedule.setClassNo(ClassObj.getClass(rs.getInt("classId")));
+                schedule.setSubject(Subject.getSubject(rs.getInt("subjectId")));
                 schedule.setTeacher(rs.getString("teacher"));
                 schedule.setTeachingFrameTime(rs.getString("teachingFrameTime"));
                 schedule.setTeachingTime(rs.getInt("teachingTime"));

@@ -157,7 +157,7 @@ public class Student {
     }
 
     public static Student insert(Student insertStudent) throws SQLException {
-        String sql = "insert into student(rollNo, fullname, birthdate, gender, address, email, phoneNo, classNo) values(?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "insert into student(rollNo, fullname, birthdate, gender, address, email, phoneNo, classId) values(?, ?, ?, ?, ?, ?, ?, ?)";
 
         Connection connection = DbConnector.getConnection();
         if (connection != null) {
@@ -169,7 +169,7 @@ public class Student {
             ps.setString(5, insertStudent.getAddress());
             ps.setString(6, insertStudent.getEmail());
             ps.setString(7, insertStudent.getPhoneNo());
-            ps.setString(8, insertStudent.getClassNo().getClassNo());
+            ps.setInt(8, insertStudent.getClassNo().getId());
             int rowInserted = ps.executeUpdate();
             if (rowInserted == 1) {
                 ResultSet rs = ps.getGeneratedKeys();
@@ -184,7 +184,7 @@ public class Student {
 
     public static boolean update(Student updateStudent) throws SQLException {
         String sql = "update student set "
-                + "rollNo = ?, fullname = ?, birthdate = ?, gender = ?, address = ?, email = ?, phoneNo = ?, classNo = ?, status = ? where id = ?";
+                + "rollNo = ?, fullname = ?, birthdate = ?, gender = ?, address = ?, email = ?, phoneNo = ?, classId = ?, status = ? where id = ?";
 
         Connection connection = DbConnector.getConnection();
         if (connection != null) {
@@ -196,7 +196,7 @@ public class Student {
             ps.setString(5, updateStudent.getAddress());
             ps.setString(6, updateStudent.getEmail());
             ps.setString(7, updateStudent.getPhoneNo());
-            ps.setString(8, updateStudent.getClassNo().getClassNo());
+            ps.setInt(8, updateStudent.getClassNo().getId());
             ps.setInt(9, updateStudent.getStatus());
             ps.setInt(10, updateStudent.getId());
             int rowUpdated = ps.executeUpdate();
@@ -222,7 +222,7 @@ public class Student {
                 student.setAddress(rs.getString("address"));
                 student.setEmail(rs.getString("email"));
                 student.setPhoneNo(rs.getString("phoneNo"));
-                student.setClassNo(ClassObj.getClass(rs.getString("classNo")));
+                student.setClassNo(ClassObj.getClass(rs.getInt("classId")));
                 student.setStatus(rs.getInt("status"));
                 return student;
             }
@@ -230,6 +230,29 @@ public class Student {
         return null;
     }
 
+    public static Student getStudent(int id) throws SQLException {
+        Connection connection = DbConnector.getConnection();
+        if (connection != null) {
+            Statement st = connection.createStatement();
+            ResultSet rs = st.executeQuery("select * from student where id = " + id);
+            if (rs.next()) {
+                Student student = new Student();
+                student.setId(rs.getInt("id"));
+                student.setRollNo(rs.getString("rollNo"));
+                student.setFullName(rs.getString("fullname"));
+                student.setBirthdate(rs.getString("birthdate"));
+                student.setGender(rs.getString("gender"));
+                student.setAddress(rs.getString("address"));
+                student.setEmail(rs.getString("email"));
+                student.setPhoneNo(rs.getString("phoneNo"));
+                student.setClassNo(ClassObj.getClass(rs.getInt("classId")));
+                student.setStatus(rs.getInt("status"));
+                return student;
+            }
+        }
+        return null;
+    }
+    
     public static boolean isExist(String rollNo) throws SQLException {
         Connection connection = DbConnector.getConnection();
         if (connection != null) {
@@ -259,7 +282,7 @@ public class Student {
                 student.setAddress(rs.getString("address"));
                 student.setEmail(rs.getString("email"));
                 student.setPhoneNo(rs.getString("phoneNo"));
-                student.setClassNo(ClassObj.getClass(rs.getString("classNo")));
+                student.setClassNo(ClassObj.getClass(rs.getInt("classId")));
                 student.setStatus(rs.getInt("status"));
                 students.add(student);
 
@@ -273,7 +296,7 @@ public class Student {
         List<Student> students = null;
         if (connection != null) {
             Statement st = connection.createStatement();
-            ResultSet rs = st.executeQuery("select * from student, class where student.classNo = '" + classNo + "' and class.classNo = student.classNo");
+            ResultSet rs = st.executeQuery("select * from student, class where student.classId = class.id and class.classNo = '" + classNo + "'");
             students = new ArrayList<>();
             while (rs.next()) {
                 Student student = new Student();
@@ -285,7 +308,7 @@ public class Student {
                 student.setAddress(rs.getString("address"));
                 student.setEmail(rs.getString("email"));
                 student.setPhoneNo(rs.getString("phoneNo"));
-                student.setClassNo(ClassObj.getClass(rs.getString("classNo")));
+                student.setClassNo(ClassObj.getClass(rs.getInt("classId")));
                 student.setStatus(rs.getInt("status"));
                 students.add(student);
 
@@ -312,7 +335,7 @@ public class Student {
                     student.setAddress(rs.getString("address"));
                     student.setEmail(rs.getString("email"));
                     student.setPhoneNo(rs.getString("phoneNo"));
-                    student.setClassNo(ClassObj.getClass(rs.getString("classNo")));
+                    student.setClassNo(ClassObj.getClass(rs.getInt("classId")));
                     student.setStatus(rs.getInt("status"));
                     students.add(student);
 

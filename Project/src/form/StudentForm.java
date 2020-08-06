@@ -339,6 +339,7 @@ public class StudentForm extends javax.swing.JFrame {
                     student.setBirthdate(birthDate);
                     if (Student.insert(student) != null) {
                         JOptionPane.showMessageDialog(null, "insert thành công", "", JOptionPane.INFORMATION_MESSAGE);
+                        student = null;
                         resetForm();
                     } else {
                         JOptionPane.showMessageDialog(null, "insert thất bại", "", JOptionPane.ERROR_MESSAGE);
