@@ -106,7 +106,7 @@ public class Mark {
         }
         return false;
     }
-    public static boolean delatetMark(Mark deleteMark) throws SQLException{
+    public static boolean deletetMark(Mark deleteMark) throws SQLException{
         String sql = "delete from mark where id = ?";
         Connection connection = DbConnector.getConnection();
         if(connection != null){
@@ -149,13 +149,13 @@ public class Mark {
         return marks;
     }
     
-    public static List<Mark> getAllMark(String rollNo) throws SQLException{
+    public static List<Mark> getAllMark(int studentId) throws SQLException{
         Connection connection = DbConnector.getConnection();
         List<Mark> marks = null;
         if(connection != null){
             marks = new ArrayList<>();
             Statement st = connection.createStatement();
-            ResultSet rs = st.executeQuery("select * from mark where rollNo = '" + rollNo + "'" );
+            ResultSet rs = st.executeQuery("select * from mark where studentId = " + studentId );
             while(rs.next()){
                 Mark mark = new Mark(rs.getInt("id"), Student.getStudent(rs.getInt("studentId")), Subject.getSubject(rs.getInt("subjectId")), rs.getDouble("mark"));
                 marks.add(mark);

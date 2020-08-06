@@ -6,7 +6,11 @@
 package form;
 
 import entity.Account;
+import entity.Employee;
 import java.awt.event.KeyEvent;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 import javax.swing.event.ChangeEvent;
@@ -26,19 +30,22 @@ public class MainForm extends javax.swing.JFrame {
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
     private Account account;
+
     public MainForm(Account account) {
         initComponents();
         this.account = account;
+
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-        if(account.getRole().getRole().equals("Giáo vụ")){
+        if (account.getRole().getRole().equals("Giáo vụ")) {
             btnEmpManager.setEnabled(false);
             btnStuManager.setEnabled(false);
-        } else if(account.getRole().getRole().equals("CTSV")){
+        } else if (account.getRole().getRole().equals("CTSV")) {
             btnClassManager.setEnabled(false);
             btnSubManager.setEnabled(false);
             btnEmpManager.setEnabled(false);
         }
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -122,9 +129,19 @@ public class MainForm extends javax.swing.JFrame {
         jMenu2.setText("Tài khoản");
 
         jMenuDetailAcc.setText("Thông tin tài khoản");
+        jMenuDetailAcc.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuDetailAccActionPerformed(evt);
+            }
+        });
         jMenu2.add(jMenuDetailAcc);
 
         jMenuRePass.setText("Thay đổi mật khẩu");
+        jMenuRePass.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuRePassActionPerformed(evt);
+            }
+        });
         jMenu2.add(jMenuRePass);
 
         jMenuLogout.setText("Đăng xuất");
@@ -185,7 +202,7 @@ public class MainForm extends javax.swing.JFrame {
     private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitActionPerformed
         // TODO add your handling code here:
         int choose = JOptionPane.showConfirmDialog(null, "Bạn có chắc muốn thoát khỏi chương trình");
-        if(choose == 0){
+        if (choose == 0) {
             System.exit(0);
         }
     }//GEN-LAST:event_btnExitActionPerformed
@@ -217,6 +234,25 @@ public class MainForm extends javax.swing.JFrame {
         studentManagerForm.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_btnStuManagerActionPerformed
+
+    private void jMenuDetailAccActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuDetailAccActionPerformed
+        try {
+            // TODO add your handling code here:
+            Employee e = Employee.getEmployee(account.getId());
+            EmployeeForm employeeForm = new EmployeeForm(e);
+            employeeForm.setVisible(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(MainForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }//GEN-LAST:event_jMenuDetailAccActionPerformed
+
+    private void jMenuRePassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuRePassActionPerformed
+        // TODO add your handling code here:
+        ResetPassForm resetPassForm = new ResetPassForm(account);
+        resetPassForm.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_jMenuRePassActionPerformed
 
     /**
      * @param args the command line arguments

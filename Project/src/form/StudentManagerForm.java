@@ -14,6 +14,7 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import entity.ClassObj;
+import entity.Employee;
 
 /**
  *
@@ -156,6 +157,11 @@ public class StudentManagerForm extends javax.swing.JFrame {
         });
 
         btnResultMark.setText("kết quả học tập");
+        btnResultMark.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnResultMarkActionPerformed(evt);
+            }
+        });
 
         btnDetail.setText("Thông tin chi tiết");
         btnDetail.addActionListener(new java.awt.event.ActionListener() {
@@ -167,12 +173,27 @@ public class StudentManagerForm extends javax.swing.JFrame {
         jMenu1.setText("Tài khoản");
 
         jMenuItem1.setText("Thông tin tài khoản");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
         jMenu1.add(jMenuItem1);
 
         jMenuItem3.setText("Thay đổi mật khẩu");
+        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem3ActionPerformed(evt);
+            }
+        });
         jMenu1.add(jMenuItem3);
 
         jMenuItem4.setText("Đăng xuất");
+        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem4ActionPerformed(evt);
+            }
+        });
         jMenu1.add(jMenuItem4);
 
         jMenuBar1.add(jMenu1);
@@ -356,6 +377,48 @@ public class StudentManagerForm extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Vui lòng chọn sinh viên trước");
         }
     }//GEN-LAST:event_btnDetailActionPerformed
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        // TODO add your handling code here:
+        try {
+            // TODO add your handling code here:
+            Employee e = Employee.getEmployee(account.getId());
+            EmployeeForm employeeForm = new EmployeeForm(e);
+            employeeForm.setVisible(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(MainForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
+        // TODO add your handling code here:
+        LoginForm loginForm = new LoginForm();
+        loginForm.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_jMenuItem4ActionPerformed
+
+    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+        // TODO add your handling code here:
+        ResetPassForm resetPassForm = new ResetPassForm(account);
+        resetPassForm.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_jMenuItem3ActionPerformed
+
+    private void btnResultMarkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResultMarkActionPerformed
+        // TODO add your handling code here:
+        int rowSelected = tblStu.getSelectedRow();
+        if(rowSelected >= 0){
+            try {
+                Student student = Student.getStudent(tblStu.getModel().getValueAt(rowSelected, 1).toString());
+                StudentMarkForm studentMarkForm = new StudentMarkForm(student);
+                studentMarkForm.setVisible(true);
+            } catch (SQLException ex) {
+                Logger.getLogger(StudentManagerForm.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else{
+            JOptionPane.showMessageDialog(null, "Vui lòng chọn sinh viên để thực hiện chức năng này");
+        }
+    }//GEN-LAST:event_btnResultMarkActionPerformed
 
     /**
      * @param args the command line arguments
