@@ -233,17 +233,20 @@ public class SubjectManagerForm extends javax.swing.JFrame {
         if (validation()) {
             if (subject != null) {
                 try {
-                    subject.setSubjectNo(txtSubNo.getText());
-                    subject.setSubjectName(txtSubName.getText());
+                    if (!txtSubName.getText().equals(subject.getSubjectName())) {
+                        if (Subject.findByName(txtSubName.getText()) == null) {
+                            subject.setSubjectName(txtSubName.getText());
 
-                    if (Subject.update(subject)) {
-                        JOptionPane.showMessageDialog(null, "Update thành công", "Message", JOptionPane.INFORMATION_MESSAGE);
-                        txtSubNo.setText("");
-                        txtSubName.setText("");
-                        loadTable(Subject.getAllSubject());
-                        this.subject = null;
-                    } else {
-                        JOptionPane.showMessageDialog(null, "Update thất bại", "Message", JOptionPane.WARNING_MESSAGE);
+                            if (Subject.update(subject)) {
+                                JOptionPane.showMessageDialog(null, "Update thành công", "Message", JOptionPane.INFORMATION_MESSAGE);
+                                txtSubNo.setText("");
+                                txtSubName.setText("");
+                                loadTable(Subject.getAllSubject());
+                                this.subject = null;
+                            } else {
+                                JOptionPane.showMessageDialog(null, "Update thất bại", "Message", JOptionPane.WARNING_MESSAGE);
+                            }
+                        }
                     }
                 } catch (SQLException ex) {
                     JOptionPane.showMessageDialog(null, "Có lỗi xảy ra khi thực hiện truy vấn. Vui lòng kiểm tra lại", "Message", JOptionPane.WARNING_MESSAGE);
@@ -265,7 +268,7 @@ public class SubjectManagerForm extends javax.swing.JFrame {
                             JOptionPane.showMessageDialog(null, "Thêm môn học thất bại", "Message", JOptionPane.WARNING_MESSAGE);
                             subject = null;
                         }
-                    } else{
+                    } else {
                         JOptionPane.showMessageDialog(null, "Môn học đã tồn tại", "Message", JOptionPane.WARNING_MESSAGE);
                         subject = null;
                     }
@@ -355,6 +358,7 @@ public class SubjectManagerForm extends javax.swing.JFrame {
             txtSubName.setText(model.getValueAt(i, 2).toString());
             try {
                 this.subject = Subject.getSubject(model.getValueAt(i, 1).toString());
+                txtSubNo.setEnabled(false);
             } catch (SQLException ex) {
                 JOptionPane.showMessageDialog(null, "Có lỗi xảy ra khi thực hiện truy vấn. Vui lòng kiểm tra lại", "Message", JOptionPane.WARNING_MESSAGE);
                 System.err.println(ex.getMessage());

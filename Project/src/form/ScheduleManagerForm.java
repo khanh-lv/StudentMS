@@ -301,7 +301,7 @@ public class ScheduleManagerForm extends javax.swing.JFrame {
         model.setRowCount(0);
         int count = 1;
         for (Schedule s : schedules) {
-            if (s.getStatus() == 1) {
+            if (s.getStatus() == 1 && s.getSubject().getStatus() == 1) {
                 model.addRow(new Object[]{
                     count, s.getSubject().getSubjectName(), s.getTeacher(), s.getTeachingFrameTime(), s.getTeachingTime(), s.getStartDate(), s.getEndDate()
                 });

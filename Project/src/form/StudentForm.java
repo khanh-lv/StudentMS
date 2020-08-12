@@ -91,6 +91,7 @@ public class StudentForm extends javax.swing.JFrame {
 
         if (student != null) {
             txtRoll.setText(student.getRollNo());
+            txtRoll.setEnabled(false);
             txtEmail.setText(student.getEmail());
             txtAddress.setText(student.getAddress());
             txtName.setText(student.getFullName());
@@ -309,7 +310,6 @@ public class StudentForm extends javax.swing.JFrame {
         if (validation()) {
             if (student != null) {
                 try {
-                    student.setRollNo(txtRoll.getText());
                     student.setFullName(txtName.getText());
                     student.setEmail(txtEmail.getText());
                     student.setAddress(txtAddress.getText());

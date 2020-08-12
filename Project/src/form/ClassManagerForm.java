@@ -223,7 +223,7 @@ public class ClassManagerForm extends javax.swing.JFrame {
                 if (!ClassObj.isExist(classNo)) {
                     ClassObj c = new ClassObj(classNo);
                     if (ClassObj.insert(c) != null) {
-                        JOptionPane.showMessageDialog(null, "insert thành công","Message", JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "insert thành công", "Message", JOptionPane.INFORMATION_MESSAGE);
                         loadTable(ClassObj.getAllClass());
                     } else {
                         JOptionPane.showMessageDialog(null, "insert thất bại", "Message", JOptionPane.INFORMATION_MESSAGE);
@@ -250,17 +250,18 @@ public class ClassManagerForm extends javax.swing.JFrame {
                 ClassObj c = ClassObj.getClass(tblClass.getModel().getValueAt(rowSelected, 1).toString());
                 String classNo = JOptionPane.showInputDialog("Nhập mã lớp: ");
                 if (classNo != null && classNo.length() <= 15) {
-
-                    if (!ClassObj.isExist(classNo)) {
-                        c.setClassNo(classNo);
-                        if (ClassObj.update(c)) {
-                            JOptionPane.showMessageDialog(null, "update thành công");
-                            loadTable(ClassObj.getAllClass());
+                    if (!classNo.equals(c.getClassNo())) {
+                        if (!ClassObj.isExist(classNo)) {
+                            c.setClassNo(classNo);
+                            if (ClassObj.update(c)) {
+                                JOptionPane.showMessageDialog(null, "update thành công");
+                                loadTable(ClassObj.getAllClass());
+                            } else {
+                                JOptionPane.showMessageDialog(null, "update thất bại");
+                            }
                         } else {
-                            JOptionPane.showMessageDialog(null, "update thất bại");
+                            JOptionPane.showMessageDialog(null, "Mã lớp học đã tồn tại", "Message", JOptionPane.WARNING_MESSAGE);
                         }
-                    } else {
-                        JOptionPane.showMessageDialog(null, "Mã lớp học đã tồn tại", "Message", JOptionPane.WARNING_MESSAGE);
                     }
                 } else {
                     JOptionPane.showMessageDialog(null, "Mã lớp học không vượt quá 15 ký tự hoặc để trống", "Message", JOptionPane.WARNING_MESSAGE);

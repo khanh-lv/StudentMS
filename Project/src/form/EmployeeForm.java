@@ -86,12 +86,13 @@ public class EmployeeForm extends javax.swing.JFrame {
             if (employee != null) {
                 try {
                     txtEmpNum.setText(employee.getEmployeenum());
+                    txtEmpNum.setEnabled(false);
                     txtAddress.setText(employee.getAddress());
                     txtEmail.setText(employee.getEmail());
                     txtPhone.setText(employee.getPhoneNo());
                     txtName.setText(employee.getFullname());
                     txtUser.setText(employee.getAccount().getUsername());
-                    txtUser.setEditable(false);
+                    txtUser.setEnabled(false);
                     txtPass.setText(employee.getAccount().getPassword());
                     cbxGender.setSelectedItem(employee.getGender());
                     cbxRole.setSelectedItem(employee.getAccount().getRole().getRole());
@@ -331,7 +332,6 @@ public class EmployeeForm extends javax.swing.JFrame {
         if (validation()) {
             if (employee != null) {
                 try {
-                    employee.setEmployeenum(txtEmpNum.getText());
                     employee.setFullname(txtName.getText());
                     employee.setAddress(txtAddress.getText());
                     employee.setEmail(txtEmail.getText());
@@ -340,7 +340,6 @@ public class EmployeeForm extends javax.swing.JFrame {
                     SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
                     String birthDate = sdf.format(jBirthDate.getDate());
                     employee.setBirthdate(birthDate);
-                    employee.getAccount().setUsername(txtUser.getText());
                     employee.getAccount().setPassword(txtPass.getText());
                     employee.getAccount().setRole(Role.getRole(cbxRole.getSelectedItem().toString()));
                     if (Employee.update(employee) && Account.update(employee.getAccount())) {
