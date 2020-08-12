@@ -30,23 +30,26 @@ public class SubjectManagerForm extends javax.swing.JFrame {
     public SubjectManagerForm() {
         initComponents();
         try {
-            loadTable(Subject.getAllSubject());   
+            loadTable(Subject.getAllSubject());
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Lỗi kết nối.", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Có lỗi xảy ra khi thực hiện truy vấn. Vui lòng kiểm tra lại", "Message", JOptionPane.WARNING_MESSAGE);
+            System.err.println(ex.getMessage());
         }
     }
     private Account account;
     private Subject subject;
+
     public SubjectManagerForm(Account account) {
         initComponents();
         this.account = account;
-        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         try {
             loadTable(Subject.getAllSubject());
         } catch (SQLException ex) {
-            Logger.getLogger(SubjectManagerForm.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Có lỗi xảy ra khi thực hiện truy vấn. Vui lòng kiểm tra lại", "Message", JOptionPane.WARNING_MESSAGE);
+            System.err.println(ex.getMessage());
         }
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -227,60 +230,69 @@ public class SubjectManagerForm extends javax.swing.JFrame {
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
         // TODO add your handling code here:
-            if (validation()) {
+        if (validation()) {
             if (subject != null) {
                 try {
                     subject.setSubjectNo(txtSubNo.getText());
                     subject.setSubjectName(txtSubName.getText());
-                    
+
                     if (Subject.update(subject)) {
-                        JOptionPane.showMessageDialog(null, "Update thành công", "", JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "Update thành công", "Message", JOptionPane.INFORMATION_MESSAGE);
                         txtSubNo.setText("");
                         txtSubName.setText("");
                         loadTable(Subject.getAllSubject());
                         this.subject = null;
                     } else {
-                        JOptionPane.showMessageDialog(null, "Update thất bại", "", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "Update thất bại", "Message", JOptionPane.WARNING_MESSAGE);
                     }
                 } catch (SQLException ex) {
-                    Logger.getLogger(SubjectManagerForm.class.getName()).log(Level.SEVERE, null, ex);
+                    JOptionPane.showMessageDialog(null, "Có lỗi xảy ra khi thực hiện truy vấn. Vui lòng kiểm tra lại", "Message", JOptionPane.WARNING_MESSAGE);
+                    System.err.println(ex.getMessage());
                 }
             } else {
                 try {
                     subject = new Subject();
                     subject.setSubjectNo(txtSubNo.getText());
                     subject.setSubjectName(txtSubName.getText());
-                 
-                    if (Subject.insert(subject) != null) {
-                        JOptionPane.showMessageDialog(null, "insert thành công", "", JOptionPane.INFORMATION_MESSAGE);
-                        txtSubNo.setText("");
-                        txtSubName.setText("");
-                        loadTable(Subject.getAllSubject());
-                    } else {
-                        JOptionPane.showMessageDialog(null, "insert thất bại", "", JOptionPane.ERROR_MESSAGE);
+
+                    if (Subject.findByName(subject.getSubjectName()) == null && Subject.getSubject(subject.getSubjectNo()) == null) {
+                        if (Subject.insert(subject) != null) {
+                            JOptionPane.showMessageDialog(null, "Thêm môn học thành công", "Message", JOptionPane.INFORMATION_MESSAGE);
+                            txtSubNo.setText("");
+                            txtSubName.setText("");
+                            loadTable(Subject.getAllSubject());
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Thêm môn học thất bại", "Message", JOptionPane.WARNING_MESSAGE);
+                            subject = null;
+                        }
+                    } else{
+                        JOptionPane.showMessageDialog(null, "Môn học đã tồn tại", "Message", JOptionPane.WARNING_MESSAGE);
+                        subject = null;
                     }
                 } catch (SQLException ex) {
-                    Logger.getLogger(SubjectManagerForm.class.getName()).log(Level.SEVERE, null, ex);
+                    JOptionPane.showMessageDialog(null, "Có lỗi xảy ra khi thực hiện truy vấn. Vui lòng kiểm tra lại", "Message", JOptionPane.WARNING_MESSAGE);
+                    System.err.println(ex.getMessage());
                 }
             }
         }
-        
+
     }//GEN-LAST:event_btnSaveActionPerformed
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
         // TODO add your handling code here:
         String nameStr;
-        if((nameStr = JOptionPane.showInputDialog("Nhập tên môn học tìm kiếm:").toString()) != null){
+        if ((nameStr = JOptionPane.showInputDialog("Nhập tên môn học tìm kiếm:").toString()) != null) {
             List<Subject> subjects = new ArrayList<>();
             try {
                 subjects = Subject.findByName(nameStr);
 
                 loadTable(subjects);
             } catch (SQLException ex) {
-                Logger.getLogger(StudentManagerForm.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null, "Có lỗi xảy ra khi thực hiện truy vấn. Vui lòng kiểm tra lại", "Message", JOptionPane.WARNING_MESSAGE);
+                System.err.println(ex.getMessage());
             }
-            
-        } 
+
+        }
     }//GEN-LAST:event_btnSearchActionPerformed
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
@@ -290,11 +302,11 @@ public class SubjectManagerForm extends javax.swing.JFrame {
             String subjectNo = tblSub.getModel().getValueAt(rowSelected, 1).toString();
             try {
                 Subject subject = Subject.getSubject(subjectNo);
-                int choose = JOptionPane.showConfirmDialog(null, "Bạn có chắc muốn xóa môn học này ?");
+                int choose = JOptionPane.showConfirmDialog(null, "Bạn có chắc muốn xóa môn học này ?", "Message", JOptionPane.WARNING_MESSAGE);
                 if (choose == 0) {
                     subject.setStatus(0);
                     if (Subject.update(subject)) {
-                        JOptionPane.showMessageDialog(null, "Xóa thành công", "", JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "Xóa thành công", "Message", JOptionPane.INFORMATION_MESSAGE);
                         List<Subject> subjects = Subject.getAllSubject();
                         System.out.println(subjects.get(0).getStatus());
                         if (Subject.update(subject)) {
@@ -304,7 +316,8 @@ public class SubjectManagerForm extends javax.swing.JFrame {
 
                 }
             } catch (SQLException ex) {
-                Logger.getLogger(StudentManagerForm.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null, "Có lỗi xảy ra khi thực hiện truy vấn. Vui lòng kiểm tra lại", "Message", JOptionPane.WARNING_MESSAGE);
+                System.err.println(ex.getMessage());
             }
         } else {
             JOptionPane.showMessageDialog(null, "Không thể thực hiện thao tác này khi chưa chọn môn học. Vui lòng chọn", "", JOptionPane.WARNING_MESSAGE);
@@ -337,15 +350,16 @@ public class SubjectManagerForm extends javax.swing.JFrame {
 //            } catch (SQLException ex) {
 //                Logger.getLogger(EmployeeManagerForm.class.getName()).log(Level.SEVERE, null, ex);
 //            }
-            TableModel model =  tblSub.getModel();
+            TableModel model = tblSub.getModel();
             txtSubNo.setText(model.getValueAt(i, 1).toString());
             txtSubName.setText(model.getValueAt(i, 2).toString());
             try {
                 this.subject = Subject.getSubject(model.getValueAt(i, 1).toString());
             } catch (SQLException ex) {
-                Logger.getLogger(SubjectManagerForm.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null, "Có lỗi xảy ra khi thực hiện truy vấn. Vui lòng kiểm tra lại", "Message", JOptionPane.WARNING_MESSAGE);
+                System.err.println(ex.getMessage());
             }
-            
+
         } else {
             JOptionPane.showMessageDialog(null, "Vui lòng chọn môn học trước");
         }
@@ -358,7 +372,8 @@ public class SubjectManagerForm extends javax.swing.JFrame {
             EmployeeForm employeeForm = new EmployeeForm(e);
             employeeForm.setVisible(true);
         } catch (SQLException ex) {
-            Logger.getLogger(MainForm.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Có lỗi xảy ra khi thực hiện truy vấn. Vui lòng kiểm tra lại", "Message", JOptionPane.WARNING_MESSAGE);
+            System.err.println(ex.getMessage());
         }
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
@@ -409,8 +424,8 @@ public class SubjectManagerForm extends javax.swing.JFrame {
             }
         });
     }
-    
-     private void loadTable(List<Subject> subjectList) {
+
+    private void loadTable(List<Subject> subjectList) {
         DefaultTableModel model = (DefaultTableModel) tblSub.getModel();
         model.setRowCount(0);
         int count = 1;
@@ -419,7 +434,7 @@ public class SubjectManagerForm extends javax.swing.JFrame {
                 model.addRow(new Object[]{
                     count, s.getSubjectNo(), s.getSubjectName()
                 });
-                count ++;
+                count++;
 
             }
         }
@@ -445,15 +460,15 @@ public class SubjectManagerForm extends javax.swing.JFrame {
     private javax.swing.JTextField txtSubNo;
     // End of variables declaration//GEN-END:variables
     private boolean validation() {
-        if(txtSubNo.getText().isEmpty() || txtSubName.getText().isEmpty()){
+        if (txtSubNo.getText().isEmpty() || txtSubName.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Vui lòng nhập đầy đủ thông tin");
             return false;
         }
-        if(txtSubNo.getText().length() > 15){
+        if (txtSubNo.getText().length() > 15) {
             JOptionPane.showMessageDialog(null, "Mã môn học không vượt quá 15 ký tự");
             return false;
         }
-        if(txtSubName.getText().length() > 150){
+        if (txtSubName.getText().length() > 150) {
             JOptionPane.showMessageDialog(null, "Tên môn học không vượt quá 150 ký tự");
             return false;
         }
@@ -467,8 +482,7 @@ public class SubjectManagerForm extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Tên môn học nhập vào không đúng định dạng");
             return false;
         }
-        
-        return true;      
+
+        return true;
     }
 }
-

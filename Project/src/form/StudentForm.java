@@ -35,9 +35,9 @@ public class StudentForm extends javax.swing.JFrame {
     public StudentForm() {
         initComponents();
     }
-    
+
     public StudentForm(Student s) {
-                initComponents();
+        initComponents();
         this.setDefaultCloseOperation(HIDE_ON_CLOSE);
         student = s;
         try {
@@ -59,7 +59,7 @@ public class StudentForm extends javax.swing.JFrame {
                     txtName.setEnabled(false);
                     txtEmail.setEnabled(false);
                     txtPhone.setEnabled(false);
- 
+
                     cbxGender.setEnabled(false);
                     cbxClass.setEnabled(false);
                     jBirthDate.setEnabled(false);
@@ -67,13 +67,15 @@ public class StudentForm extends javax.swing.JFrame {
                     btnClose.setEnabled(false);
                     btnReset.setEnabled(false);
                 } catch (ParseException ex) {
-                    Logger.getLogger(EmployeeForm.class.getName()).log(Level.SEVERE, null, ex);
+                    JOptionPane.showMessageDialog(null, "Không thể convert dữ liệu", "Message", JOptionPane.WARNING_MESSAGE);
+                    System.err.println(ex.getMessage());
                 }
             }
         } catch (SQLException ex) {
-            Logger.getLogger(EmployeeForm.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Có lỗi xảy ra khi thực hiện truy vấn. Vui lòng kiểm tra lại", "Message", JOptionPane.WARNING_MESSAGE);
+            System.err.println(ex.getMessage());
         }
-    
+
     }
 
     public StudentForm(Account account, Student student) {
@@ -83,7 +85,8 @@ public class StudentForm extends javax.swing.JFrame {
         try {
             loadClassCombobox();
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Lỗi kết nối.", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Có lỗi xảy ra khi thực hiện truy vấn. Vui lòng kiểm tra lại", "Message", JOptionPane.WARNING_MESSAGE);
+            System.err.println(ex.getMessage());
         }
 
         if (student != null) {
@@ -99,8 +102,9 @@ public class StudentForm extends javax.swing.JFrame {
                 Date date = (Date) sdf.parse(student.getBirthdate());
                 System.out.println(date.toString());
                 jBirthDate.setDate(date);
-            } catch (Exception e) {
-                e.printStackTrace();
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, "Không thể convert dữ liệu", "Message", JOptionPane.WARNING_MESSAGE);
+                System.err.println(ex.getMessage());
             }
 
         }
@@ -316,13 +320,16 @@ public class StudentForm extends javax.swing.JFrame {
                     String birthDate = sdf.format(jBirthDate.getDate());
                     student.setBirthdate(birthDate);
                     if (Student.update(student)) {
-                        JOptionPane.showMessageDialog(null, "Update thành công", "", JOptionPane.INFORMATION_MESSAGE);
-                        resetForm();
+                        JOptionPane.showMessageDialog(null, "Update thành công", "Message", JOptionPane.INFORMATION_MESSAGE);
+                        this.setVisible(false);
+                        StudentManagerForm studentManagerForm = new StudentManagerForm(account);
+                        studentManagerForm.setVisible(true);
                     } else {
-                        JOptionPane.showMessageDialog(null, "Update thất bại", "", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "Update thất bại", "Message", JOptionPane.ERROR_MESSAGE);
                     }
                 } catch (SQLException ex) {
-                    Logger.getLogger(StudentForm.class.getName()).log(Level.SEVERE, null, ex);
+                    JOptionPane.showMessageDialog(null, "Có lỗi xảy ra khi thực hiện truy vấn. Vui lòng kiểm tra lại", "Message", JOptionPane.WARNING_MESSAGE);
+                    System.err.println(ex.getMessage());
                 }
             } else {
                 try {
@@ -337,15 +344,22 @@ public class StudentForm extends javax.swing.JFrame {
                     SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
                     String birthDate = sdf.format(jBirthDate.getDate());
                     student.setBirthdate(birthDate);
-                    if (Student.insert(student) != null) {
-                        JOptionPane.showMessageDialog(null, "insert thành công", "", JOptionPane.INFORMATION_MESSAGE);
+                    if (!Student.isExist(student.getRollNo())) {
+                        if (Student.insert(student) != null) {
+                            JOptionPane.showMessageDialog(null, "Thêm sinh viên mới thành công", "Message", JOptionPane.INFORMATION_MESSAGE);
+                            student = null;
+                            resetForm();
+                        } else {
+                            student = null;
+                            JOptionPane.showMessageDialog(null, "Thêm sinh viên mới thất bại", "Message", JOptionPane.WARNING_MESSAGE);
+                        }
+                    } else{
                         student = null;
-                        resetForm();
-                    } else {
-                        JOptionPane.showMessageDialog(null, "insert thất bại", "", JOptionPane.ERROR_MESSAGE);
+                            JOptionPane.showMessageDialog(null, "Mã sinh viên đã tồn tại", "Message", JOptionPane.WARNING_MESSAGE);
                     }
                 } catch (SQLException ex) {
-                    Logger.getLogger(StudentForm.class.getName()).log(Level.SEVERE, null, ex);
+                    JOptionPane.showMessageDialog(null, "Có lỗi xảy ra khi thực hiện truy vấn. Vui lòng kiểm tra lại", "Message", JOptionPane.WARNING_MESSAGE);
+                    System.err.println(ex.getMessage());
                 }
             }
         }
@@ -353,7 +367,7 @@ public class StudentForm extends javax.swing.JFrame {
 
     private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
         // TODO add your handling code here:
-            resetForm();    
+        resetForm();
     }//GEN-LAST:event_btnResetActionPerformed
 
     /**
@@ -426,7 +440,6 @@ public class StudentForm extends javax.swing.JFrame {
         jBirthDate.setDate(null);
     }
 
-    
     private void loadClassCombobox() throws SQLException {
         List<ClassObj> classes;
 
@@ -441,68 +454,68 @@ public class StudentForm extends javax.swing.JFrame {
     }
 
     private boolean validation() {
-        if(txtRoll.getText().isEmpty()){
-            JOptionPane.showMessageDialog(null, "Vui lòng nhập đầy đủ thông tin");
+        if (txtRoll.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Vui lòng nhập đầy đủ thông tin", "Message", JOptionPane.WARNING_MESSAGE);
             return false;
         }
-        if(txtName.getText().isEmpty()){
-            JOptionPane.showMessageDialog(null, "Vui lòng nhập đầy đủ thông tin");
+        if (txtName.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Vui lòng nhập đầy đủ thông tin", "Message", JOptionPane.WARNING_MESSAGE);
             return false;
         }
-        if(txtAddress.getText().isEmpty()){
-            JOptionPane.showMessageDialog(null, "Vui lòng nhập đầy đủ thông tin");
+        if (txtAddress.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Vui lòng nhập đầy đủ thông tin", "Message", JOptionPane.WARNING_MESSAGE);
             return false;
         }
-        if(txtEmail.getText().isEmpty()){
-            JOptionPane.showMessageDialog(null, "Vui lòng nhập đầy đủ thông tin");
+        if (txtEmail.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Vui lòng nhập đầy đủ thông tin", "Message", JOptionPane.WARNING_MESSAGE);
             return false;
         }
-        if(txtPhone.getText().isEmpty()){
-            JOptionPane.showMessageDialog(null, "Vui lòng nhập đầy đủ thông tin");
+        if (txtPhone.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Vui lòng nhập đầy đủ thông tin", "Message", JOptionPane.WARNING_MESSAGE);
             return false;
         }
-        if(cbxGender.getSelectedItem() == null){
-            JOptionPane.showMessageDialog(null, "Vui lòng chọn giới tính");
+        if (cbxGender.getSelectedItem() == null) {
+            JOptionPane.showMessageDialog(null, "Vui lòng chọn giới tính", "Message", JOptionPane.WARNING_MESSAGE);
             return false;
         }
-        if(cbxClass.getSelectedItem() == null){
-            JOptionPane.showMessageDialog(null, "Vui lòng chọn lớp");
+        if (cbxClass.getSelectedItem() == null) {
+            JOptionPane.showMessageDialog(null, "Vui lòng chọn lớp", "Message", JOptionPane.WARNING_MESSAGE);
             return false;
         }
-        if(jBirthDate.getDate() == null){
-            JOptionPane.showMessageDialog(null, "Vui lòng chọn ngày sinh");
+        if (jBirthDate.getDate() == null) {
+            JOptionPane.showMessageDialog(null, "Vui lòng chọn ngày sinh", "Message", JOptionPane.WARNING_MESSAGE);
             return false;
         }
-        if(txtRoll.getText().length() > 15){
-            JOptionPane.showMessageDialog(null, "mã sinh viên không vượt quá 15 ký tự");
+        if (txtRoll.getText().length() > 15) {
+            JOptionPane.showMessageDialog(null, "mã sinh viên không vượt quá 15 ký tự", "Message", JOptionPane.WARNING_MESSAGE);
             return false;
         }
-        if(txtName.getText().length() > 50){
-            JOptionPane.showMessageDialog(null, "họ tên sinh viên không vượt quá 50 ký tự");
+        if (txtName.getText().length() > 50) {
+            JOptionPane.showMessageDialog(null, "họ tên sinh viên không vượt quá 50 ký tự", "Message", JOptionPane.WARNING_MESSAGE);
             return false;
         }
-        if(txtEmail.getText().length() > 255){
-            JOptionPane.showMessageDialog(null, "email không vượt quá 255 ký tự");
+        if (txtEmail.getText().length() > 255) {
+            JOptionPane.showMessageDialog(null, "email không vượt quá 255 ký tự", "Message", JOptionPane.WARNING_MESSAGE);
             return false;
         }
-        if(txtAddress.getText().length() > 255){
-            JOptionPane.showMessageDialog(null, "Địa chỉ không vượt quá 255 ký tự");
+        if (txtAddress.getText().length() > 255) {
+            JOptionPane.showMessageDialog(null, "Địa chỉ không vượt quá 255 ký tự", "Message", JOptionPane.WARNING_MESSAGE);
             return false;
         }
-        if(txtPhone.getText().length() > 15){
-            JOptionPane.showMessageDialog(null, "số điện thoại không vượt quá 15 ký tự");
+        if (txtPhone.getText().length() > 15) {
+            JOptionPane.showMessageDialog(null, "số điện thoại không vượt quá 15 ký tự", "Message", JOptionPane.WARNING_MESSAGE);
             return false;
         }
-        if(!Pattern.matches("[0-9]{10,15}", txtPhone.getText())){
-            JOptionPane.showMessageDialog(null, "số điện thoại chỉ gồm các ký tự 0-9");
+        if (!Pattern.matches("[0-9]{10,15}", txtPhone.getText())) {
+            JOptionPane.showMessageDialog(null, "số điện thoại chỉ gồm các ký tự 0-9", "Message", JOptionPane.WARNING_MESSAGE);
             return false;
         }
         String emailRegex = "^[a-z][a-z0-9_\\.]{5,32}@[a-z0-9]{2,}.[a-z]{2,4}.[a-z]{2,4}";
-        if(!Pattern.matches(emailRegex, txtEmail.getText())){
-            JOptionPane.showMessageDialog(null, "email nhập vào không đúng định dạng");
+        if (!Pattern.matches(emailRegex, txtEmail.getText())) {
+            JOptionPane.showMessageDialog(null, "email nhập vào không đúng định dạng", "Message", JOptionPane.WARNING_MESSAGE);
             return false;
         }
-                
+
         return true;
     }
 }

@@ -27,19 +27,16 @@ public class MainForm extends javax.swing.JFrame {
      */
     public MainForm() {
         initComponents();
-        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
     private Account account;
 
     public MainForm(Account account) {
         initComponents();
         this.account = account;
-
-        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-        if (account.getRole().getRole().equals("Giáo vụ")) {
+        if (account.getRole().getRole().equals("giáo vụ")) {
             btnEmpManager.setEnabled(false);
             btnStuManager.setEnabled(false);
-        } else if (account.getRole().getRole().equals("CTSV")) {
+        } else if (account.getRole().getRole().equals("ctsv")) {
             btnClassManager.setEnabled(false);
             btnSubManager.setEnabled(false);
             btnEmpManager.setEnabled(false);
@@ -73,12 +70,10 @@ public class MainForm extends javax.swing.JFrame {
         setResizable(false);
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(255, 102, 255));
+        jLabel1.setForeground(new java.awt.Color(0, 0, 204));
         jLabel1.setText("STUDENT MS");
 
-        btnEmpManager.setBackground(new java.awt.Color(51, 51, 255));
         btnEmpManager.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        btnEmpManager.setForeground(new java.awt.Color(255, 255, 255));
         btnEmpManager.setText("Quản lý nhân viên");
         btnEmpManager.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -86,9 +81,7 @@ public class MainForm extends javax.swing.JFrame {
             }
         });
 
-        btnStuManager.setBackground(new java.awt.Color(0, 255, 51));
         btnStuManager.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        btnStuManager.setForeground(new java.awt.Color(255, 255, 255));
         btnStuManager.setText("Quản lý sinh viên");
         btnStuManager.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -96,9 +89,7 @@ public class MainForm extends javax.swing.JFrame {
             }
         });
 
-        btnClassManager.setBackground(new java.awt.Color(204, 0, 204));
         btnClassManager.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        btnClassManager.setForeground(new java.awt.Color(255, 255, 255));
         btnClassManager.setText("Quản lý lớp học");
         btnClassManager.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -106,9 +97,7 @@ public class MainForm extends javax.swing.JFrame {
             }
         });
 
-        btnExit.setBackground(new java.awt.Color(255, 51, 0));
         btnExit.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        btnExit.setForeground(new java.awt.Color(255, 255, 255));
         btnExit.setText("Exit");
         btnExit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -116,9 +105,7 @@ public class MainForm extends javax.swing.JFrame {
             }
         });
 
-        btnSubManager.setBackground(new java.awt.Color(153, 153, 0));
         btnSubManager.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        btnSubManager.setForeground(new java.awt.Color(255, 255, 255));
         btnSubManager.setText("Quản lý môn học");
         btnSubManager.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -161,7 +148,7 @@ public class MainForm extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(103, 103, 103)
+                .addGap(80, 80, 80)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnEmpManager, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -169,14 +156,14 @@ public class MainForm extends javax.swing.JFrame {
                     .addComponent(btnClassManager, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnExit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnSubManager, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(103, Short.MAX_VALUE))
+                .addContainerGap(80, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(25, 25, 25)
+                .addContainerGap(30, Short.MAX_VALUE)
                 .addComponent(jLabel1)
-                .addGap(30, 30, 30)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
                 .addComponent(btnEmpManager, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(25, 25, 25)
                 .addComponent(btnStuManager, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -186,7 +173,7 @@ public class MainForm extends javax.swing.JFrame {
                 .addComponent(btnSubManager, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(25, 25, 25)
                 .addComponent(btnExit, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(27, Short.MAX_VALUE))
+                .addContainerGap(30, Short.MAX_VALUE))
         );
 
         pack();
@@ -201,7 +188,7 @@ public class MainForm extends javax.swing.JFrame {
 
     private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitActionPerformed
         // TODO add your handling code here:
-        int choose = JOptionPane.showConfirmDialog(null, "Bạn có chắc muốn thoát khỏi chương trình");
+        int choose = JOptionPane.showConfirmDialog(null, "Bạn có chắc muốn thoát khỏi chương trình", "Message", JOptionPane.WARNING_MESSAGE);
         if (choose == 0) {
             System.exit(0);
         }
@@ -242,7 +229,8 @@ public class MainForm extends javax.swing.JFrame {
             EmployeeForm employeeForm = new EmployeeForm(e);
             employeeForm.setVisible(true);
         } catch (SQLException ex) {
-            Logger.getLogger(MainForm.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Có lỗi xảy ra khi thực hiện truy vấn. Vui lòng kiểm tra lại", "Message", JOptionPane.WARNING_MESSAGE);
+            System.err.println(ex.getMessage());
         }
 
     }//GEN-LAST:event_jMenuDetailAccActionPerformed

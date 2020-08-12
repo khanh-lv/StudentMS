@@ -9,9 +9,7 @@ import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 import entity.Account;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.border.Border;
+
 
 /**
  *
@@ -57,20 +55,14 @@ public class LoginForm extends javax.swing.JFrame {
 
         jLabel3.setText("Password");
 
-        btnExit.setBackground(new java.awt.Color(255, 255, 255));
-        btnExit.setForeground(new java.awt.Color(255, 0, 0));
         btnExit.setText("Exit");
-        btnExit.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 0, 0)));
         btnExit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnExitActionPerformed(evt);
             }
         });
 
-        btnLogin.setBackground(new java.awt.Color(255, 255, 255));
-        btnLogin.setForeground(new java.awt.Color(0, 0, 204));
         btnLogin.setText("Login");
-        btnLogin.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 255)));
         btnLogin.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnLoginActionPerformed(evt);
@@ -133,7 +125,7 @@ public class LoginForm extends javax.swing.JFrame {
 
     private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitActionPerformed
         // TODO add your handling code here:
-        int choose = JOptionPane.showConfirmDialog(null, "Do you want to exit the system");
+        int choose = JOptionPane.showConfirmDialog(null, "Bạn có muốn thoát khỏi chương trình", "Message", JOptionPane.WARNING_MESSAGE);
         if (choose == 0) {
             System.exit(0);
         }
@@ -152,17 +144,16 @@ public class LoginForm extends javax.swing.JFrame {
                         mainForm.setVisible(true);
                         this.setVisible(false);
                     } else {
-                        JOptionPane.showMessageDialog(null, "Tài khoản này đã bị xóa. Vui lòng kiểm tra lại");
+                        JOptionPane.showMessageDialog(null, "Tài khoản này đã bị xóa. Vui lòng kiểm tra lại", "Message", JOptionPane.WARNING_MESSAGE);
                         txtUser.setText("");
                         txtPass.setText("");
                     }
                 } else {
-                    JOptionPane.showMessageDialog(null, "Tên đăng nhập hoặc mật khẩu của bản không chính xác, Vui lòng kiểm tra lại");
-                    txtUser.setText("");
-                    txtPass.setText("");
+                    JOptionPane.showMessageDialog(null, "Đăng nhập thất bại. Vui lòng kiểm tra lại thông tin đăng nhập", "Message", JOptionPane.WARNING_MESSAGE);
                 }
             } catch (SQLException ex) {
-                JOptionPane.showMessageDialog(null, "Đăng nhập thất bại, vui lòng kiểm tra lại kết nối");
+                JOptionPane.showMessageDialog(null, "Có lỗi xảy ra khi thực hiện truy vấn. Vui lòng kiểm tra lại", "Message", JOptionPane.WARNING_MESSAGE);
+                System.err.println(ex.getMessage());
             }
 
         }
@@ -204,22 +195,22 @@ public class LoginForm extends javax.swing.JFrame {
 
     private boolean validation() {
         if (txtUser.getText().equals("") || txtPass.getText().equals("")) {
-            JOptionPane.showMessageDialog(null, "Vui lòng nhập đầy đủ thông tin");
+            JOptionPane.showMessageDialog(null, "Vui lòng nhập đầy đủ thông tin", "Message", JOptionPane.WARNING_MESSAGE);
             return false;
         }
         if (txtUser.getText().length() > 30 || txtUser.getText().length() < 6) {
-            JOptionPane.showMessageDialog(null, "tên đăng nhập có độ dài 6-30 ký tự");
+            JOptionPane.showMessageDialog(null, "tên đăng nhập có độ dài 6-30 ký tự", "Message", JOptionPane.WARNING_MESSAGE);
             return false;
         }
         if (txtPass.getText().length() > 15 || txtPass.getText().length() < 6) {
-            JOptionPane.showMessageDialog(null, "mật khẩu có độ dài từ 6-15 ký tự");
+            JOptionPane.showMessageDialog(null, "mật khẩu có độ dài từ 6-15 ký tự", "Message", JOptionPane.WARNING_MESSAGE);
             return false;
         }
         String username = txtUser.getText();
         String password = txtPass.getText();
         String regex = "[a-zA-Z0-9_@]{6,}";
         if (!Pattern.matches(regex, username) || !Pattern.matches(regex, password)) {
-            JOptionPane.showMessageDialog(null, "tên đăng nhập và mật khẩu chỉ gồm các ký tự a-z, A-Z, 0-9, _, @");
+            JOptionPane.showMessageDialog(null, "tên đăng nhập và mật khẩu chỉ gồm các ký tự a-z, A-Z, 0-9, _, @", "Message", JOptionPane.WARNING_MESSAGE);
             return false;
         }
         return true;

@@ -38,7 +38,8 @@ public class MarkManager extends javax.swing.JFrame {
         try {
             loadCombobox();
         } catch (SQLException ex) {
-            Logger.getLogger(MarkManager.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Có lỗi xảy ra khi thực hiện truy vấn. Vui lòng kiểm tra lại", "Message", JOptionPane.WARNING_MESSAGE);
+            System.err.println(ex.getMessage());
         }
     }
 
@@ -163,7 +164,8 @@ public class MarkManager extends javax.swing.JFrame {
             }
 
         } catch (SQLException ex) {
-            Logger.getLogger(MarkManager.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Có lỗi xảy ra khi thực hiện truy vấn. Vui lòng kiểm tra lại", "Message", JOptionPane.WARNING_MESSAGE);
+            System.err.println(ex.getMessage());
         }
     }//GEN-LAST:event_btnShowActionPerformed
 
@@ -181,17 +183,18 @@ public class MarkManager extends javax.swing.JFrame {
                     double value = Double.parseDouble(tblMark.getModel().getValueAt(i, 3).toString());
                     mark.setMark(value);
                     System.out.println(mark.getMark());
-                    if(!Mark.updatetMark(mark)){
+                    if (!Mark.updatetMark(mark)) {
                         flag = 0;
                     }
                 } catch (SQLException ex) {
-                    Logger.getLogger(MarkManager.class.getName()).log(Level.SEVERE, null, ex);
+                    JOptionPane.showMessageDialog(null, "Có lỗi xảy ra khi thực hiện truy vấn. Vui lòng kiểm tra lại", "Message", JOptionPane.WARNING_MESSAGE);
+                    System.err.println(ex.getMessage());
                 }
             }
             if (flag == 1) {
-                JOptionPane.showMessageDialog(null, "Cập nhật điểm thành công");
+                JOptionPane.showMessageDialog(null, "Cập nhật điểm thành công", "Message", JOptionPane.INFORMATION_MESSAGE);
             } else {
-                JOptionPane.showMessageDialog(null, "Cập nhật điểm thất bại");
+                JOptionPane.showMessageDialog(null, "Cập nhật điểm thất bại", "Message", JOptionPane.WARNING_MESSAGE);
             }
         } else {
             int flag = 1;
@@ -209,13 +212,14 @@ public class MarkManager extends javax.swing.JFrame {
                         return;
                     }
                 } catch (SQLException ex) {
-                    Logger.getLogger(MarkManager.class.getName()).log(Level.SEVERE, null, ex);
+                    JOptionPane.showMessageDialog(null, "Có lỗi xảy ra khi thực hiện truy vấn. Vui lòng kiểm tra lại", "Message", JOptionPane.WARNING_MESSAGE);
+                    System.err.println(ex.getMessage());
                 }
             }
             if (flag == 1) {
-                JOptionPane.showMessageDialog(null, "Cập nhật điểm thành công");
+                JOptionPane.showMessageDialog(null, "Cập nhật điểm thành công", "Message", JOptionPane.INFORMATION_MESSAGE);
             } else {
-                JOptionPane.showMessageDialog(null, "Cập nhật điểm thất bại");
+                JOptionPane.showMessageDialog(null, "Cập nhật điểm thất bại", "Message", JOptionPane.WARNING_MESSAGE);
             }
         }
     }//GEN-LAST:event_btnSaveActionPerformed

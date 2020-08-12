@@ -41,7 +41,8 @@ public class AttendanceForm extends javax.swing.JFrame {
             loadComboBox();
             jDateChooser.setDate(new Date());
         } catch (SQLException ex) {
-            Logger.getLogger(AttendanceForm.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Có lỗi xảy ra khi thực hiện truy vấn. Vui lòng kiểm tra lại", "Mesage", JOptionPane.ERROR_MESSAGE);
+            System.err.println(ex.getMessage());
         }
 
     }
@@ -59,7 +60,7 @@ public class AttendanceForm extends javax.swing.JFrame {
         jDateChooser = new com.toedter.calendar.JDateChooser();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblAttendance = new javax.swing.JTable();
-        btnCancel = new javax.swing.JButton();
+        btnClose = new javax.swing.JButton();
         btnSave = new javax.swing.JButton();
         btnShow = new javax.swing.JButton();
 
@@ -90,10 +91,10 @@ public class AttendanceForm extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(tblAttendance);
 
-        btnCancel.setText("Cancel");
-        btnCancel.addActionListener(new java.awt.event.ActionListener() {
+        btnClose.setText("Close");
+        btnClose.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCancelActionPerformed(evt);
+                btnCloseActionPerformed(evt);
             }
         });
 
@@ -119,7 +120,7 @@ public class AttendanceForm extends javax.swing.JFrame {
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(80, 80, 80)
-                .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnClose, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(186, 186, 186))
             .addGroup(layout.createSequentialGroup()
                 .addGap(30, 30, 30)
@@ -146,7 +147,7 @@ public class AttendanceForm extends javax.swing.JFrame {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 361, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(27, 27, 27)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnClose, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(30, 30, 30))
         );
@@ -154,19 +155,19 @@ public class AttendanceForm extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
+    private void btnCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCloseActionPerformed
         // TODO add your handling code here:
-        int choose = JOptionPane.showConfirmDialog(null, "Bạn có chắc muốn đóng cửa sổ này");
+        int choose = JOptionPane.showConfirmDialog(null, "Bạn có chắc muốn đóng cửa sổ này", "Mesage", JOptionPane.WARNING_MESSAGE);
         if (choose == 0) {
             this.setVisible(false);
         }
-    }//GEN-LAST:event_btnCancelActionPerformed
+    }//GEN-LAST:event_btnCloseActionPerformed
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
         // TODO add your handling code here:
 
         if (attendances.size() > 0) {
-            int choose = JOptionPane.showConfirmDialog(null, "Buổi học này đã điểm danh. Bạn có chắc muốn điểm danh lại");
+            int choose = JOptionPane.showConfirmDialog(null, "Buổi học này đã điểm danh. Bạn có chắc muốn điểm danh lại", "Mesage", JOptionPane.WARNING_MESSAGE);
             if (choose == 0) {
                 try {
                     int rowCount = tblAttendance.getRowCount();
@@ -199,15 +200,16 @@ public class AttendanceForm extends javax.swing.JFrame {
                             }
                         }
                         if (flag == 1) {
-                            JOptionPane.showMessageDialog(null, "Điểm danh thành công");
+                            JOptionPane.showMessageDialog(null, "Điểm danh thành công", "Mesage", JOptionPane.INFORMATION_MESSAGE);
                             this.setVisible(false);
                         } else {
-                            JOptionPane.showMessageDialog(null, "Điểm danh thất bại");
+                            JOptionPane.showMessageDialog(null, "Điểm danh thất bại", "Mesage", JOptionPane.WARNING_MESSAGE);
                         }
                     }
 
                 } catch (SQLException ex) {
-                    Logger.getLogger(AttendanceForm.class.getName()).log(Level.SEVERE, null, ex);
+                    JOptionPane.showMessageDialog(null, "Có lỗi xảy ra khi thực hiện truy vấn. Vui lòng kiểm tra lại", "Mesage", JOptionPane.ERROR_MESSAGE);
+                    System.err.println(ex.getMessage());
                 }
             } else {
 
@@ -218,16 +220,17 @@ public class AttendanceForm extends javax.swing.JFrame {
                     Subject subject;
                     subject = Subject.getSubjectByName(subNam);
                     Schedule schedule = Schedule.getSchedule(c.getId(), subject.getId());
-                    if(schedule != null){
+                    if (schedule != null) {
                         loadTable(Attendance.getAllAttendance(schedule, date));
-                    } else{
-                        JOptionPane.showMessageDialog(null, "Môn bạn chọn chưa có trong lịch học của lớp.", "", JOptionPane.WARNING_MESSAGE);
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Môn bạn chọn chưa có trong lịch học của lớp.", "Mesage", JOptionPane.WARNING_MESSAGE);
                     }
-                    
+
                 } catch (SQLException ex) {
-                    Logger.getLogger(AttendanceForm.class.getName()).log(Level.SEVERE, null, ex);
+                    JOptionPane.showMessageDialog(null, "Có lỗi xảy ra khi thực hiện truy vấn. Vui lòng kiểm tra lại", "Mesage", JOptionPane.ERROR_MESSAGE);
+                    System.err.println(ex.getMessage());
                 }
-                
+
             }
 
         } else {
@@ -259,15 +262,16 @@ public class AttendanceForm extends javax.swing.JFrame {
                         }
                     }
                     if (flag == 1) {
-                        JOptionPane.showMessageDialog(null, "Điểm danh thành công");
+                        JOptionPane.showMessageDialog(null, "Điểm danh thành công","Mesage", JOptionPane.INFORMATION_MESSAGE);
                         this.setVisible(false);
                     } else {
-                        JOptionPane.showMessageDialog(null, "Điểm danh thất bại");
+                        JOptionPane.showMessageDialog(null, "Điểm danh thất bại", "Mesage", JOptionPane.WARNING_MESSAGE);
                     }
                 }
 
             } catch (SQLException ex) {
-                Logger.getLogger(AttendanceForm.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null, "Có lỗi xảy ra khi thực hiện truy vấn. Vui lòng kiểm tra lại", "Mesage", JOptionPane.ERROR_MESSAGE);
+                System.err.println(ex.getMessage());
             }
         }
 
@@ -288,11 +292,12 @@ public class AttendanceForm extends javax.swing.JFrame {
                     loadTable();
                 }
             } else {
-                JOptionPane.showMessageDialog(null, "Môn bạn chọn chưa có trong lịch học của lớp.", "", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Môn bạn chọn chưa có trong lịch học của lớp.", "Mesage", JOptionPane.WARNING_MESSAGE);
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Có lỗi xảy ra khi thực hiện truy vấn. Vui lòng kiểm tra lại", "Mesage", JOptionPane.ERROR_MESSAGE);
+            System.err.println(e.getMessage());
         }
     }//GEN-LAST:event_btnShowActionPerformed
 
@@ -332,7 +337,7 @@ public class AttendanceForm extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnCancel;
+    private javax.swing.JButton btnClose;
     private javax.swing.JButton btnSave;
     private javax.swing.JButton btnShow;
     private javax.swing.JComboBox<String> cbxSubject;
@@ -343,7 +348,7 @@ public class AttendanceForm extends javax.swing.JFrame {
 
     private void loadComboBox() throws SQLException {
         cbxSubject.removeAllItems();
-        List<Subject> subjects = Subject.getAllSubject();
+        List<Subject> subjects = Subject.getSubjectbyClass(c.getId());
         for (Subject s : subjects) {
             if (s.getStatus() == 1) {
                 cbxSubject.addItem(s.getSubjectName());

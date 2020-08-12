@@ -55,9 +55,11 @@ public class ScheduleForm extends javax.swing.JFrame {
             }
 
         } catch (SQLException ex) {
-            Logger.getLogger(ScheduleForm.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Có lỗi xảy ra khi thực hiện truy vấn. Vui lòng kiểm tra lại", "Message", JOptionPane.WARNING_MESSAGE);
+                System.err.println(ex.getMessage());
         } catch (ParseException ex) {
-            Logger.getLogger(ScheduleForm.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Không thể convert dữ liệu", "Message", JOptionPane.WARNING_MESSAGE);
+                System.err.println(ex.getMessage());
         }
 
     }
@@ -221,15 +223,16 @@ public class ScheduleForm extends javax.swing.JFrame {
                     s.setStartDate(startDate);
                     s.setEndDate(endDate);
                     if (Schedule.update(s)) {
-                        JOptionPane.showMessageDialog(null, "Update thành công");
+                        JOptionPane.showMessageDialog(null, "Update thành công","Message", JOptionPane.INFORMATION_MESSAGE);
                         ScheduleManagerForm scheduleManagerForm = new ScheduleManagerForm(c, account);
                         scheduleManagerForm.setVisible(true);
                         this.setVisible(false);
                     } else {
-                        JOptionPane.showMessageDialog(null, "Update thất bại");
+                        JOptionPane.showMessageDialog(null, "Update thất bại", "Message", JOptionPane.WARNING_MESSAGE);
                     }
                 } catch (SQLException ex) {
-                    Logger.getLogger(ScheduleForm.class.getName()).log(Level.SEVERE, null, ex);
+                    JOptionPane.showMessageDialog(null, "Có lỗi xảy ra khi thực hiện truy vấn. Vui lòng kiểm tra lại", "Message", JOptionPane.WARNING_MESSAGE);
+                System.err.println(ex.getMessage());
                 }
             } else {
                 s = new Schedule();
@@ -246,15 +249,16 @@ public class ScheduleForm extends javax.swing.JFrame {
                     s.setEndDate(endDate);
                     s = Schedule.insert(s);
                     if(s != null){
-                        JOptionPane.showMessageDialog(null, "insert thành công");
+                        JOptionPane.showMessageDialog(null, "Thêm lịch thành công", "Message", JOptionPane.INFORMATION_MESSAGE);
                         resetForm();
                         s = null;
                     } else{
-                        JOptionPane.showMessageDialog(null, "insert thất bại");
+                        JOptionPane.showMessageDialog(null, "Thêm lịch thất bại", "Message", JOptionPane.WARNING_MESSAGE);
                         s = null;
                     }
                 } catch (SQLException ex) {
-                    Logger.getLogger(ScheduleForm.class.getName()).log(Level.SEVERE, null, ex);
+                    JOptionPane.showMessageDialog(null, "Có lỗi xảy ra khi thực hiện truy vấn. Vui lòng kiểm tra lại", "Message", JOptionPane.WARNING_MESSAGE);
+                    System.err.println(ex.getMessage());
                 }
 
             }

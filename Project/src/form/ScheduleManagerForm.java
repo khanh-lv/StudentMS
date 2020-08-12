@@ -39,7 +39,8 @@ public class ScheduleManagerForm extends javax.swing.JFrame {
         try {
             loadTable(Schedule.getAllSchedulesByClass(c.getId()));
         } catch (SQLException ex) {
-            Logger.getLogger(ScheduleManagerForm.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Có lỗi xảy ra khi thực hiện truy vấn. Vui lòng kiểm tra lại", "Message", JOptionPane.WARNING_MESSAGE);
+            System.err.println(ex.getMessage());
         }
     }
 
@@ -195,25 +196,26 @@ public class ScheduleManagerForm extends javax.swing.JFrame {
             try {
                 Subject subject = Subject.getSubjectByName(tblSchedule.getModel().getValueAt(rowSelected, 1).toString());
                 Schedule schedule = Schedule.getSchedule(c.getId(), subject.getId());
-                int choose = JOptionPane.showConfirmDialog(null, "bạn có chắc muốn xóa lịch trình này");
+                int choose = JOptionPane.showConfirmDialog(null, "bạn có chắc muốn xóa lịch trình này", "Message", JOptionPane.WARNING_MESSAGE);
                 if (choose == 0) {
                     schedule.setStatus(0);
                     if (Schedule.update(schedule)) {
-                        JOptionPane.showMessageDialog(null, "Xóa thành công");
+                        JOptionPane.showMessageDialog(null, "Xóa thành công", "Message", JOptionPane.INFORMATION_MESSAGE);
                         loadTable(Schedule.getAllSchedulesByClass(c.getId()));
                     } else {
-                        JOptionPane.showMessageDialog(null, "Xóa thất bại", "", JOptionPane.WARNING_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "Xóa thất bại", "Message", JOptionPane.WARNING_MESSAGE);
                     }
                 }
             } catch (SQLException ex) {
-                Logger.getLogger(ScheduleManagerForm.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null, "Có lỗi xảy ra khi thực hiện truy vấn. Vui lòng kiểm tra lại", "Message", JOptionPane.WARNING_MESSAGE);
+                System.err.println(ex.getMessage());
             }
         }
     }//GEN-LAST:event_btnDeleteActionPerformed
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
         // TODO add your handling code here:
-        ScheduleForm scheduleForm = new ScheduleForm(account,c, null);
+        ScheduleForm scheduleForm = new ScheduleForm(account, c, null);
         scheduleForm.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_btnAddActionPerformed
@@ -229,7 +231,8 @@ public class ScheduleManagerForm extends javax.swing.JFrame {
                 this.setVisible(false);
                 scheduleForm.setVisible(true);
             } catch (SQLException ex) {
-                Logger.getLogger(ScheduleManagerForm.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null, "Có lỗi xảy ra khi thực hiện truy vấn. Vui lòng kiểm tra lại", "Message", JOptionPane.WARNING_MESSAGE);
+                System.err.println(ex.getMessage());
             }
         }
     }//GEN-LAST:event_btnUpdateActionPerformed
@@ -241,7 +244,8 @@ public class ScheduleManagerForm extends javax.swing.JFrame {
             EmployeeForm employeeForm = new EmployeeForm(e);
             employeeForm.setVisible(true);
         } catch (SQLException ex) {
-            Logger.getLogger(MainForm.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Có lỗi xảy ra khi thực hiện truy vấn. Vui lòng kiểm tra lại", "Message", JOptionPane.WARNING_MESSAGE);
+            System.err.println(ex.getMessage());
         }
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 

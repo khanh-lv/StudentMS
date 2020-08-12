@@ -6,6 +6,9 @@
 package form;
 
 import entity.Account;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -21,6 +24,7 @@ public class ResetPassForm extends javax.swing.JFrame {
         initComponents();
     }
     Account account;
+
     ResetPassForm(Account account) {
         this.account = account;
         initComponents();
@@ -38,9 +42,9 @@ public class ResetPassForm extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        txtNewPass = new javax.swing.JPasswordField();
-        txtRepass = new javax.swing.JPasswordField();
         txtConfirm = new javax.swing.JPasswordField();
+        txtNewPass = new javax.swing.JPasswordField();
+        txtRePass = new javax.swing.JPasswordField();
         btnReset = new javax.swing.JButton();
         btnCancel = new javax.swing.JButton();
         btnSave = new javax.swing.JButton();
@@ -49,11 +53,11 @@ public class ResetPassForm extends javax.swing.JFrame {
         setTitle("Thay đôi mật khẩu");
         setResizable(false);
 
-        jLabel1.setText("New password");
+        jLabel1.setText("Mật khẩu cũ");
 
-        jLabel2.setText("Re-password");
+        jLabel2.setText("Mật khẩu mới");
 
-        jLabel3.setText("Confirm password");
+        jLabel3.setText("Nhập lại mật khẩu mới");
 
         btnReset.setText("Reset");
         btnReset.addActionListener(new java.awt.event.ActionListener() {
@@ -85,20 +89,20 @@ public class ResetPassForm extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                         .addComponent(jLabel3)
-                        .addComponent(jLabel2)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING))
+                        .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING))
                     .addComponent(btnSave))
                 .addGap(30, 30, 30)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(txtNewPass, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(txtConfirm, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(txtRepass, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(txtRePass, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtNewPass, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btnReset)
                         .addGap(30, 30, 30)
                         .addComponent(btnCancel)))
-                .addContainerGap(59, Short.MAX_VALUE))
+                .addContainerGap(41, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -106,15 +110,15 @@ public class ResetPassForm extends javax.swing.JFrame {
                 .addGap(50, 50, 50)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(txtNewPass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtConfirm, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(30, 30, 30)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(txtRepass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtNewPass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(30, 30, 30)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(txtConfirm, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtRePass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnReset, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -135,23 +139,34 @@ public class ResetPassForm extends javax.swing.JFrame {
 
     private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
         // TODO add your handling code here:
-        txtNewPass.setText("");
-        txtRepass.setText("");
         txtConfirm.setText("");
+        txtNewPass.setText("");
+        txtRePass.setText("");
     }//GEN-LAST:event_btnResetActionPerformed
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
         // TODO add your handling code here:
-        if(validation()){
-            account.setPassword(txtNewPass.getText());
-            if(Account.update(account)){
-                JOptionPane.showMessageDialog(null, "Thay đổi mật khẩu thành công. Hãy đăng nhập lại");
-                LoginForm loginForm = new LoginForm();
-                loginForm.setVisible(true);
-                this.setVisible(false);
-            } else{
-                JOptionPane.showMessageDialog(null, "Thay đổi mật khẩu thất bại");
+        if (validation()) {
+            if (account.getPassword().equals(txtConfirm.getText())) {
+                account.setPassword(txtNewPass.getText());
+                try {
+                    if (Account.update(account)) {
+                        JOptionPane.showMessageDialog(null, "Thay đổi mật khẩu thành công. Hãy đăng nhập lại", "Message", JOptionPane.INFORMATION_MESSAGE);
+                        LoginForm loginForm = new LoginForm();
+                        loginForm.setVisible(true);
+                        this.setVisible(false);
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Thay đổi mật khẩu thất bại", "Message", JOptionPane.WARNING_MESSAGE);
+                    }
+                } catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(null, "Có lỗi xảy ra khi thực hiện truy vấn. Vui lòng kiểm tra lại", "Message", JOptionPane.WARNING_MESSAGE);
+                    System.err.println(ex.getMessage());
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "Mật khẩu xác nhận không đúng. Vui lòng nhập lại", "Message", JOptionPane.WARNING_MESSAGE);
+                txtConfirm.setText("");
             }
+
         }
     }//GEN-LAST:event_btnSaveActionPerformed
 
@@ -199,49 +214,40 @@ public class ResetPassForm extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPasswordField txtConfirm;
     private javax.swing.JPasswordField txtNewPass;
-    private javax.swing.JPasswordField txtRepass;
+    private javax.swing.JPasswordField txtRePass;
     // End of variables declaration//GEN-END:variables
 
     private boolean validation() {
-        if(txtNewPass.getText().isEmpty()){
+        if (txtConfirm.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Vui lòng điền đầy đủ thông tin");
             return false;
         }
-        
-        if(txtRepass.getText().isEmpty()){
+
+        if (txtNewPass.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Vui lòng điền đầy đủ thông tin");
             return false;
         }
-        
-        if(txtConfirm.getText().isEmpty()){
+
+        if (txtRePass.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Vui lòng điền đầy đủ thông tin");
             return false;
         }
-        
-        if(txtNewPass.getText().length() > 15){
+
+        if (txtConfirm.getText().length() > 15) {
             JOptionPane.showMessageDialog(null, "mật khẩu không vượt quá 15 ký tự");
-            return false;
-        }
-        
-        if(txtRepass.getText().length() > 15){
-            JOptionPane.showMessageDialog(null, "mật khẩu không vượt quá 15 ký tự");
-            return false;
-        }
-        
-        if(txtConfirm.getText().length() > 15){
-            JOptionPane.showMessageDialog(null, "mật khẩu không vượt quá 15 ký tự");
-            return false;
-        }
-        
-        if(!txtNewPass.getText().equals(txtRepass.getText())){
-            JOptionPane.showMessageDialog(null, "password mới và re-pasword không trùng khớp");
-            txtRepass.setText("");
-            return false;
-        }
-        
-        if(txtConfirm.getText().equals(account.getPassword())){
-            JOptionPane.showMessageDialog(null, "maatjk hẩu xác nhận không đúng. Vui lòng nhập lại");
             txtConfirm.setText("");
+            return false;
+        }
+
+        if (txtNewPass.getText().length() > 15) {
+            JOptionPane.showMessageDialog(null, "mật khẩu không vượt quá 15 ký tự");
+            txtNewPass.setText("");
+            return false;
+        }
+
+        if (!txtRePass.getText().equals(txtNewPass.getText())) {
+            JOptionPane.showMessageDialog(null, "password mới và re-pasword không trùng khớp");
+            txtRePass.setText("");
             return false;
         }
         return true;

@@ -37,7 +37,8 @@ public class EmployeeManagerForm extends javax.swing.JFrame {
             loadTable(employees);
             loadCombobox();
         } catch (SQLException ex) {
-            Logger.getLogger(EmployeeManagerForm.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Có lỗi xảy ra khi thực hiện truy vấn. Vui lòng kiểm tra lại", "Mesage", JOptionPane.ERROR_MESSAGE);
+            System.err.println(ex.getMessage());
         }
 
     }
@@ -73,7 +74,7 @@ public class EmployeeManagerForm extends javax.swing.JFrame {
         setResizable(false);
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(255, 0, 204));
+        jLabel1.setForeground(new java.awt.Color(0, 0, 255));
         jLabel1.setText("STUDENT MS");
 
         tblEmp.setModel(new javax.swing.table.DefaultTableModel(
@@ -108,7 +109,6 @@ public class EmployeeManagerForm extends javax.swing.JFrame {
             }
         });
 
-        btnUpdate.setForeground(new java.awt.Color(204, 0, 204));
         btnUpdate.setText("Sửa");
         btnUpdate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -116,7 +116,6 @@ public class EmployeeManagerForm extends javax.swing.JFrame {
             }
         });
 
-        btnAdd.setForeground(new java.awt.Color(0, 0, 255));
         btnAdd.setText("Thêm");
         btnAdd.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -124,7 +123,6 @@ public class EmployeeManagerForm extends javax.swing.JFrame {
             }
         });
 
-        btnDelete.setForeground(new java.awt.Color(255, 0, 0));
         btnDelete.setText("Xóa");
         btnDelete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -263,11 +261,12 @@ public class EmployeeManagerForm extends javax.swing.JFrame {
                 employeeForm.setVisible(true);
                 this.setVisible(false);
             } catch (SQLException ex) {
-                Logger.getLogger(EmployeeManagerForm.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null, "Có lỗi xảy ra khi thực hiện truy vấn. Vui lòng kiểm tra lại", "Mesage", JOptionPane.ERROR_MESSAGE);
+                System.err.println(ex.getMessage());
             }
 
         } else {
-            JOptionPane.showMessageDialog(null, "Vui lòng chọn nhân viên trước");
+            JOptionPane.showMessageDialog(null, "Vui lòng chọn nhân viên trước", "Message", JOptionPane.WARNING_MESSAGE);
         }
     }//GEN-LAST:event_btnUpdateActionPerformed
 
@@ -276,20 +275,22 @@ public class EmployeeManagerForm extends javax.swing.JFrame {
         int rowSelected = tblEmp.getSelectedRow();
         if (rowSelected >= 0) {
             String empNum = tblEmp.getModel().getValueAt(rowSelected, 1).toString();
-            int choose = JOptionPane.showConfirmDialog(null, "bạn có chắc muốn xóa nhân viên này");
+            int choose = JOptionPane.showConfirmDialog(null, "bạn có chắc muốn xóa nhân viên này", "Message", JOptionPane.WARNING_MESSAGE);
             if (choose == 0) {
                 try {
                     Employee e = Employee.getEmployee(empNum);
                     e.setStatus(0);
-                    if (Employee.update(e)) {
+                    e.getAccount().setStatus(0);
+                    if (Employee.update(e) && Account.update(e.getAccount())) {
                         JOptionPane.showMessageDialog(null, "Xóa thành công", "", JOptionPane.INFORMATION_MESSAGE);
                         List<Employee> employees = Employee.getAllEmployee();
                         loadTable(employees);
                     } else {
-                        JOptionPane.showMessageDialog(null, "Xóa thất bại", "", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "Xóa thất bại", "", JOptionPane.WARNING_MESSAGE);
                     }
                 } catch (SQLException ex) {
-                    Logger.getLogger(EmployeeManagerForm.class.getName()).log(Level.SEVERE, null, ex);
+                    JOptionPane.showMessageDialog(null, "Có lỗi xảy ra khi thực hiện truy vấn. Vui lòng kiểm tra lại", "Mesage", JOptionPane.ERROR_MESSAGE);
+                    System.err.println(ex.getMessage());
                 }
             }
 
@@ -301,13 +302,14 @@ public class EmployeeManagerForm extends javax.swing.JFrame {
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
         // TODO add your handling code here:
         String nameStr = JOptionPane.showInputDialog("nhập tên:");
-        if (!nameStr.isEmpty()) {
+        if (nameStr != null) {
             List<Employee> employees;
             try {
                 employees = Employee.findByName(nameStr);
                 loadTable(employees);
             } catch (SQLException ex) {
-                Logger.getLogger(EmployeeManagerForm.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null, "Có lỗi xảy ra khi thực hiện truy vấn. Vui lòng kiểm tra lại", "Mesage", JOptionPane.ERROR_MESSAGE);
+                System.err.println(ex.getMessage());
             }
 
         }
@@ -320,7 +322,8 @@ public class EmployeeManagerForm extends javax.swing.JFrame {
             List<Employee> employees = Employee.filter(role);
             loadTable(employees);
         } catch (SQLException ex) {
-            Logger.getLogger(EmployeeManagerForm.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Có lỗi xảy ra khi thực hiện truy vấn. Vui lòng kiểm tra lại", "Mesage", JOptionPane.ERROR_MESSAGE);
+            System.err.println(ex.getMessage());
         }
     }//GEN-LAST:event_btnFilterActionPerformed
 
@@ -335,11 +338,12 @@ public class EmployeeManagerForm extends javax.swing.JFrame {
                 EmployeeForm employeeForm = new EmployeeForm(e);
                 employeeForm.setVisible(true);
             } catch (SQLException ex) {
-                Logger.getLogger(EmployeeManagerForm.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null, "Có lỗi xảy ra khi thực hiện truy vấn. Vui lòng kiểm tra lại", "Mesage", JOptionPane.ERROR_MESSAGE);
+                System.err.println(ex.getMessage());
             }
 
         } else {
-            JOptionPane.showMessageDialog(null, "Vui lòng chọn nhân viên trước");
+            JOptionPane.showMessageDialog(null, "Vui lòng chọn nhân viên trước", "Message", JOptionPane.WARNING_MESSAGE);
         }
     }//GEN-LAST:event_btnDetailActionPerformed
 
@@ -351,7 +355,8 @@ public class EmployeeManagerForm extends javax.swing.JFrame {
             EmployeeForm employeeForm = new EmployeeForm(e);
             employeeForm.setVisible(true);
         } catch (SQLException ex) {
-            Logger.getLogger(MainForm.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Có lỗi xảy ra khi thực hiện truy vấn. Vui lòng kiểm tra lại", "Mesage", JOptionPane.ERROR_MESSAGE);
+            System.err.println(ex.getMessage());
         }
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
