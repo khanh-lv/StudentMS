@@ -317,9 +317,15 @@ public class EmployeeManagerForm extends javax.swing.JFrame {
 
     private void btnFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFilterActionPerformed
         // TODO add your handling code here:
-        String role = cbxRole.getSelectedItem().toString();
         try {
-            List<Employee> employees = Employee.filter(role);
+            String role = cbxRole.getSelectedItem().toString();
+            List<Employee> employees;
+            if (role.equals("Show All")) {
+                employees = Employee.getAllEmployee();
+            } else {
+                employees = Employee.filter(role);
+            }
+
             loadTable(employees);
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Có lỗi xảy ra khi thực hiện truy vấn. Vui lòng kiểm tra lại", "Mesage", JOptionPane.ERROR_MESSAGE);
@@ -437,12 +443,15 @@ public class EmployeeManagerForm extends javax.swing.JFrame {
                 model.addRow(new Object[]{
                     count, e.getEmployeenum(), e.getFullname(), e.getBirthdate(), e.getGender(), e.getAddress(), e.getEmail(), e.getPhoneNo(), e.getAccount().getRole().getRole()
                 });
+                count++;
             }
         }
     }
 
     private void loadCombobox() throws SQLException {
         cbxRole.removeAllItems();
+        cbxRole.addItem("Show All");
+
         for (Role role : Role.getAllRole()) {
             cbxRole.addItem(role.getRole());
         }

@@ -351,9 +351,15 @@ public class StudentManagerForm extends javax.swing.JFrame {
 
     private void btnFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFilterActionPerformed
         // TODO add your handling code here:
-        String classNo = cbxClass.getSelectedItem().toString();
         try {
-            List<Student> students = Student.getAllStudent(classNo);
+            String classNo = cbxClass.getSelectedItem().toString();
+            List<Student> students;
+            if (classNo.equals("Show All")) {
+                students = Student.getAllStudent();
+            } else {
+                students = Student.getAllStudent(classNo);
+            }
+
             loadTable(students);
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Có lỗi xảy ra khi thực hiện truy vấn. Vui lòng kiểm tra lại", "Message", JOptionPane.WARNING_MESSAGE);
@@ -471,6 +477,7 @@ public class StudentManagerForm extends javax.swing.JFrame {
                 model.addRow(new Object[]{
                     count, s.getRollNo(), s.getFullName(), s.getBirthdate(), s.getGender(), s.getAddress(), s.getEmail(), s.getPhoneNo(), s.getClassNo().getClassNo()
                 });
+                count++;
             }
         }
     }
@@ -480,6 +487,7 @@ public class StudentManagerForm extends javax.swing.JFrame {
 
         classes = ClassObj.getAllClass();
         cbxClass.removeAllItems();
+        cbxClass.addItem("Show All");
         for (ClassObj c : classes) {
             if (c.getStatus() == 1) {
                 cbxClass.addItem(c.getClassNo());

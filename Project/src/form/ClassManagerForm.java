@@ -296,7 +296,7 @@ public class ClassManagerForm extends javax.swing.JFrame {
                 System.err.println(ex.getMessage());
             }
         } else {
-            JOptionPane.showMessageDialog(null, "Bạn phải chọn lớp học để thực hiện thao tác này", "Message", JOptionPane.ABORT);
+            JOptionPane.showMessageDialog(null, "Bạn phải chọn lớp học để thực hiện thao tác này", "Message", JOptionPane.WARNING_MESSAGE);
         }
     }//GEN-LAST:event_btnDeleteActionPerformed
 
@@ -322,7 +322,7 @@ public class ClassManagerForm extends javax.swing.JFrame {
             }
 
         } else {
-            JOptionPane.showMessageDialog(null, "Bạn phải chọn lớp để thực hiện thao tác này", "Message", JOptionPane.ABORT);
+            JOptionPane.showMessageDialog(null, "Bạn phải chọn lớp để thực hiện thao tác này", "Message", JOptionPane.WARNING_MESSAGE);
         }
     }//GEN-LAST:event_btnScheduleActionPerformed
 
@@ -339,6 +339,8 @@ public class ClassManagerForm extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "Có lỗi xảy ra khi thực hiện truy vấn. Vui lòng kiểm tra lại", "Mesage", JOptionPane.ERROR_MESSAGE);
                 System.err.println(ex.getMessage());
             }
+        } else{
+            JOptionPane.showMessageDialog(null, "Bạn phải chọn lớp để thực hiện thao tác này", "Message", JOptionPane.WARNING_MESSAGE);
         }
     }//GEN-LAST:event_btnAttendanceActionPerformed
 
@@ -356,6 +358,8 @@ public class ClassManagerForm extends javax.swing.JFrame {
                 System.err.println(ex.getMessage());
             }
 
+        } else{
+            JOptionPane.showMessageDialog(null, "Bạn phải chọn lớp để thực hiện thao tác này", "Message", JOptionPane.WARNING_MESSAGE);
         }
     }//GEN-LAST:event_btnMarkActionPerformed
 

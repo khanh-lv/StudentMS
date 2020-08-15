@@ -69,9 +69,16 @@ public class MarkManager extends javax.swing.JFrame {
                 "STT", "Mã sinh viên", "Họ tên", "Điểm"
             }
         ) {
+            Class[] types = new Class [] {
+                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Double.class
+            };
             boolean[] canEdit = new boolean [] {
                 false, false, false, true
             };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
@@ -154,14 +161,7 @@ public class MarkManager extends javax.swing.JFrame {
         model.setRowCount(0);
         try {
             // TODO add your handling code here:
-            Subject s = Subject.getSubjectByName(cbxSubject.getSelectedItem().toString());
-            marks = Mark.getMarkByClass(s.getId(), c.getId());
-
-            if (marks.size() > 0) {
-                loadTable(marks);
-            } else {
-                loadTable();
-            }
+            loadTable();
 
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Có lỗi xảy ra khi thực hiện truy vấn. Vui lòng kiểm tra lại", "Message", JOptionPane.WARNING_MESSAGE);
@@ -172,55 +172,36 @@ public class MarkManager extends javax.swing.JFrame {
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
         // TODO add your handling code here:
         int rowCount = tblMark.getRowCount();
-        if (marks.size() > 0) {
-            int flag = 1;
+        int flag = 1;
+        try {
             for (int i = 0; i < rowCount; i++) {
 
-                try {
-                    Subject s = Subject.getSubjectByName(cbxSubject.getSelectedItem().toString());
-                    Student st = Student.getStudent(tblMark.getModel().getValueAt(i, 1).toString());
-                    Mark mark = Mark.getMark(st.getId(), s.getId());
-                    double value = Double.parseDouble(tblMark.getModel().getValueAt(i, 3).toString());
-                    mark.setMark(value);
-                    System.out.println(mark.getMark());
-                    if (!Mark.updatetMark(mark)) {
-                        flag = 0;
-                    }
-                } catch (SQLException ex) {
-                    JOptionPane.showMessageDialog(null, "Có lỗi xảy ra khi thực hiện truy vấn. Vui lòng kiểm tra lại", "Message", JOptionPane.WARNING_MESSAGE);
-                    System.err.println(ex.getMessage());
-                }
-            }
-            if (flag == 1) {
-                JOptionPane.showMessageDialog(null, "Cập nhật điểm thành công", "Message", JOptionPane.INFORMATION_MESSAGE);
-            } else {
-                JOptionPane.showMessageDialog(null, "Cập nhật điểm thất bại", "Message", JOptionPane.WARNING_MESSAGE);
-            }
-        } else {
-            int flag = 1;
-            for (int i = 0; i < rowCount; i++) {
-
-                try {
-                    Mark mark = new Mark();
-                    mark.setStudent(Student.getStudent(tblMark.getModel().getValueAt(i, 1).toString()));
-                    Subject s = Subject.getSubjectByName(cbxSubject.getSelectedItem().toString());
-                    mark.setSubject(s);
-                    double value = Double.parseDouble(tblMark.getModel().getValueAt(i, 3).toString());
-                    mark.setMark(value);
+                Student student = Student.getStudent(tblMark.getModel().getValueAt(i, 1).toString());
+                Subject subject = Subject.getSubjectByName(cbxSubject.getSelectedItem().toString());
+                if (Mark.getMark(student.getId(), subject.getId()) == null) {
+                    Mark mark = new Mark(student, subject, (double) tblMark.getModel().getValueAt(i, 3));
                     if (Mark.insertMark(mark) == null) {
                         flag = 0;
-                        return;
+                        break;
                     }
-                } catch (SQLException ex) {
-                    JOptionPane.showMessageDialog(null, "Có lỗi xảy ra khi thực hiện truy vấn. Vui lòng kiểm tra lại", "Message", JOptionPane.WARNING_MESSAGE);
-                    System.err.println(ex.getMessage());
+                } else {
+                    Mark mark = Mark.getMark(student.getId(), subject.getId());
+                    mark.setMark((double) tblMark.getModel().getValueAt(i, 3));
+                    if (!Mark.updatetMark(mark)) {
+                        flag = 0;
+                        break;
+                    }
                 }
+
             }
             if (flag == 1) {
                 JOptionPane.showMessageDialog(null, "Cập nhật điểm thành công", "Message", JOptionPane.INFORMATION_MESSAGE);
             } else {
                 JOptionPane.showMessageDialog(null, "Cập nhật điểm thất bại", "Message", JOptionPane.WARNING_MESSAGE);
             }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Có lỗi xảy ra khi thực hiện truy vấn. Vui lòng kiểm tra lại", "Mesage", JOptionPane.ERROR_MESSAGE);
+            System.err.println(ex.getMessage());
         }
     }//GEN-LAST:event_btnSaveActionPerformed
 
@@ -285,14 +266,25 @@ public class MarkManager extends javax.swing.JFrame {
         DefaultTableModel model = (DefaultTableModel) tblMark.getModel();
         model.setRowCount(0);
         int count = 1;
-        for (Student st : students) {
-            if (st.getStatus() == 1) {
 
-                model.addRow(new Object[]{
-                    count, st.getRollNo(), st.getFullName(), 0.0
-                });
+        if (cbxSubject.getSelectedItem() != null) {
+            Subject s = Subject.getSubjectByName(cbxSubject.getSelectedItem().toString());
+            for (Student st : students) {
+                if (st.getStatus() == 1) {
+                    Mark mark = Mark.getMark(st.getId(), s.getId());
+                    if (mark != null) {
+                        model.addRow(new Object[]{
+                            count, st.getRollNo(), st.getFullName(), mark.getMark()
+                        });
+                    } else {
+                        model.addRow(new Object[]{
+                            count, st.getRollNo(), st.getFullName(), 0.0
+                        });
+                    }
+                }
             }
         }
+
     }
 
     private void loadTable(List<Mark> marks) {

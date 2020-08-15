@@ -165,114 +165,54 @@ public class AttendanceForm extends javax.swing.JFrame {
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
         // TODO add your handling code here:
+        Subject subject;
+        try {
+            subject = Subject.getSubjectByName(cbxSubject.getSelectedItem().toString());
+            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+            String date = sdf.format(jDateChooser.getDate());
+            Schedule schedule = Schedule.getSchedule(c.getId(), subject.getId());
 
-        if (attendances.size() > 0) {
-            int choose = JOptionPane.showConfirmDialog(null, "Buổi học này đã điểm danh. Bạn có chắc muốn điểm danh lại", "Mesage", JOptionPane.WARNING_MESSAGE);
-            if (choose == 0) {
-                try {
-                    int rowCount = tblAttendance.getRowCount();
-                    SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-                    String date = sdf.format(jDateChooser.getDate());
-                    String subNam = cbxSubject.getSelectedItem().toString();
-                    Subject subject;
-                    subject = Subject.getSubjectByName(subNam);
-                    Schedule schedule = Schedule.getSchedule(c.getId(), subject.getId());
-                    if (Attendance.delete(schedule.getId(), date)) {
-
-                        int flag = 1;
-                        for (int i = 0; i < rowCount; i++) {
-                            String rollNo = tblAttendance.getModel().getValueAt(i, 1).toString();
-
-                            Student s = Student.getStudent(rollNo);
-                            Attendance a = new Attendance();
-                            a.setDate(date);
-                            a.setSchedule(schedule);
-                            a.setStudent(s);
-                            boolean status = (boolean) tblAttendance.getModel().getValueAt(i, 3);
-                            if (status) {
-                                a.setStatus(1);
-                            } else {
-                                a.setStatus(0);
-                            }
-                            if (Attendance.insert(a) == null) {
-                                flag = 0;
-                                break;
-                            }
-                        }
-                        if (flag == 1) {
-                            JOptionPane.showMessageDialog(null, "Điểm danh thành công", "Mesage", JOptionPane.INFORMATION_MESSAGE);
-                            this.setVisible(false);
+            int rowCount = tblAttendance.getRowCount();
+            int flag = 1;
+            if (rowCount > 0) {
+                for (int i = 0; i < rowCount; i++) {
+                    Student student = Student.getStudent(tblAttendance.getModel().getValueAt(i, 1).toString());
+                    Attendance a;
+                    if (Attendance.getAttendance(student, schedule, date) == null) {
+                        boolean status = (boolean) tblAttendance.getModel().getValueAt(i, 3);
+                        if (status) {
+                            a = new Attendance(student, schedule, date, 1);
                         } else {
-                            JOptionPane.showMessageDialog(null, "Điểm danh thất bại", "Mesage", JOptionPane.WARNING_MESSAGE);
+                            a = new Attendance(student, schedule, date, 0);
                         }
-                    }
-
-                } catch (SQLException ex) {
-                    JOptionPane.showMessageDialog(null, "Có lỗi xảy ra khi thực hiện truy vấn. Vui lòng kiểm tra lại", "Mesage", JOptionPane.ERROR_MESSAGE);
-                    System.err.println(ex.getMessage());
-                }
-            } else {
-
-                try {
-                    SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-                    String date = sdf.format(jDateChooser.getDate());
-                    String subNam = cbxSubject.getSelectedItem().toString();
-                    Subject subject;
-                    subject = Subject.getSubjectByName(subNam);
-                    Schedule schedule = Schedule.getSchedule(c.getId(), subject.getId());
-                    if (schedule != null) {
-                        loadTable(Attendance.getAllAttendance(schedule, date));
+                        if (Attendance.insert(a) == null) {
+                            flag = 0;
+                            break;
+                        }
                     } else {
-                        JOptionPane.showMessageDialog(null, "Môn bạn chọn chưa có trong lịch học của lớp.", "Mesage", JOptionPane.WARNING_MESSAGE);
-                    }
-
-                } catch (SQLException ex) {
-                    JOptionPane.showMessageDialog(null, "Có lỗi xảy ra khi thực hiện truy vấn. Vui lòng kiểm tra lại", "Mesage", JOptionPane.ERROR_MESSAGE);
-                    System.err.println(ex.getMessage());
-                }
-
-            }
-
-        } else {
-            try {
-                int rowCount = tblAttendance.getRowCount();
-                SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-                String date = sdf.format(jDateChooser.getDate());
-                String subNam = cbxSubject.getSelectedItem().toString();
-                Subject subject = Subject.getSubjectByName(subNam);
-                Schedule schedule = Schedule.getSchedule(c.getId(), subject.getId());
-                int flag = 1;
-                if (schedule != null) {
-                    for (int i = 0; i < rowCount; i++) {
-                        String rollNo = tblAttendance.getModel().getValueAt(i, 1).toString();
-                        Student s = Student.getStudent(rollNo);
-                        Attendance a = new Attendance();
-                        a.setDate(date);
-                        a.setSchedule(schedule);
-                        a.setStudent(s);
+                        a = Attendance.getAttendance(student, schedule, date);
                         boolean status = (boolean) tblAttendance.getModel().getValueAt(i, 3);
                         if (status) {
                             a.setStatus(1);
                         } else {
                             a.setStatus(0);
                         }
-                        if (Attendance.insert(a) == null) {
+                        if (!Attendance.update(a)) {
                             flag = 0;
                             break;
                         }
                     }
-                    if (flag == 1) {
-                        JOptionPane.showMessageDialog(null, "Điểm danh thành công","Mesage", JOptionPane.INFORMATION_MESSAGE);
-                        this.setVisible(false);
-                    } else {
-                        JOptionPane.showMessageDialog(null, "Điểm danh thất bại", "Mesage", JOptionPane.WARNING_MESSAGE);
-                    }
                 }
-
-            } catch (SQLException ex) {
-                JOptionPane.showMessageDialog(null, "Có lỗi xảy ra khi thực hiện truy vấn. Vui lòng kiểm tra lại", "Mesage", JOptionPane.ERROR_MESSAGE);
-                System.err.println(ex.getMessage());
+                if (flag == 1) {
+                    JOptionPane.showMessageDialog(null, "Cập nhật điểm danh thành công", "Message", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Cập nhật điểm danh thất bại", "Message", JOptionPane.WARNING_MESSAGE);
+                }
             }
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Có lỗi xảy ra khi thực hiện truy vấn. Vui lòng kiểm tra lại", "Mesage", JOptionPane.ERROR_MESSAGE);
+            System.err.println(ex.getMessage());
         }
 
     }//GEN-LAST:event_btnSaveActionPerformed
@@ -280,19 +220,16 @@ public class AttendanceForm extends javax.swing.JFrame {
     private void btnShowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnShowActionPerformed
         // TODO add your handling code here:
         try {
-            Subject subject = Subject.getSubjectByName(cbxSubject.getSelectedItem().toString());
-            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-            String date = sdf.format(jDateChooser.getDate());
-            Schedule schedule = Schedule.getSchedule(c.getId(), subject.getId());
-            if (schedule != null) {
-                attendances = Attendance.getAllAttendance(schedule, date);
-                if (attendances.size() > 0) {
-                    loadTable(attendances);
+            if (cbxSubject.getSelectedItem() != null) {
+                Subject subject = Subject.getSubjectByName(cbxSubject.getSelectedItem().toString());
+                SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+                String date = sdf.format(jDateChooser.getDate());
+                Schedule schedule = Schedule.getSchedule(c.getId(), subject.getId());
+                if (schedule != null) {
+                    loadTable(schedule, date);
                 } else {
-                    loadTable();
+                    JOptionPane.showMessageDialog(null, "Môn bạn chọn chưa có trong lịch học của lớp.", "Mesage", JOptionPane.WARNING_MESSAGE);
                 }
-            } else {
-                JOptionPane.showMessageDialog(null, "Môn bạn chọn chưa có trong lịch học của lớp.", "Mesage", JOptionPane.WARNING_MESSAGE);
             }
 
         } catch (SQLException e) {
@@ -356,37 +293,32 @@ public class AttendanceForm extends javax.swing.JFrame {
         }
     }
 
-    private void loadTable() throws SQLException {
+    private void loadTable(Schedule schedule, String date) throws SQLException {
         List<Student> students = Student.getAllStudent(c.getClassNo());
         DefaultTableModel model = (DefaultTableModel) tblAttendance.getModel();
         model.setRowCount(0);
         int count = 1;
         for (Student s : students) {
             if (s.getStatus() == 1) {
-                model.addRow(new Object[]{
-                    count, s.getRollNo(), s.getFullName(), false
-                });
+                if (Attendance.getAttendance(s, schedule, date) == null) {
+                    model.addRow(new Object[]{
+                        count, s.getRollNo(), s.getFullName(), false
+                    });
+                } else {
+                    Attendance attendance = Attendance.getAttendance(s, schedule, date);
+                    if (attendance.getStatus() == 1) {
+                        model.addRow(new Object[]{
+                            count, s.getRollNo(), s.getFullName(), true
+                        });
+                    } else {
+                        model.addRow(new Object[]{
+                            count, s.getRollNo(), s.getFullName(), false
+                        });
+                    }
+                }
+
             }
         }
     }
 
-    private void loadTable(List<Attendance> attendances) throws SQLException {
-        DefaultTableModel model = (DefaultTableModel) tblAttendance.getModel();
-        model.setRowCount(0);
-        int count = 1;
-        for (Attendance a : attendances) {
-            if (a.getStudent().getStatus() == 1) {
-                if (a.getStatus() == 1) {
-                    model.addRow(new Object[]{
-                        count, a.getStudent().getRollNo(), a.getStudent().getFullName(), true
-                    });
-                } else {
-                    model.addRow(new Object[]{
-                        count, a.getStudent().getRollNo(), a.getStudent().getFullName(), false
-                    });
-                }
-                count++;
-            }
-        }
-    }
 }

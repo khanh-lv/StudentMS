@@ -353,9 +353,9 @@ public class StudentForm extends javax.swing.JFrame {
                             student = null;
                             JOptionPane.showMessageDialog(null, "Thêm sinh viên mới thất bại", "Message", JOptionPane.WARNING_MESSAGE);
                         }
-                    } else{
+                    } else {
                         student = null;
-                            JOptionPane.showMessageDialog(null, "Mã sinh viên đã tồn tại", "Message", JOptionPane.WARNING_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "Mã sinh viên đã tồn tại", "Message", JOptionPane.WARNING_MESSAGE);
                     }
                 } catch (SQLException ex) {
                     JOptionPane.showMessageDialog(null, "Có lỗi xảy ra khi thực hiện truy vấn. Vui lòng kiểm tra lại", "Message", JOptionPane.WARNING_MESSAGE);

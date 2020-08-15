@@ -185,7 +185,7 @@ public class Mark {
         if(connection != null){
             marks = new ArrayList<>();
             Statement st = connection.createStatement();
-            ResultSet rs = st.executeQuery("select mark.* from mark, student where mark.subjectId = " + subjectId + " and mark.studentId = student.id and student.classId =" + classId);
+            ResultSet rs = st.executeQuery("select student.rollNo, mark.subjectId, mark.mark from student LEFT JOIN mark on student.id = mark.id and mark.subjectId =" + subjectId + " where student.classId = " + classId);
             while(rs.next()){
                 Mark mark = new Mark(rs.getInt("id"), Student.getStudent(rs.getInt("studentId")), Subject.getSubject(rs.getInt("subjectId")), rs.getDouble("mark"));
                 marks.add(mark);

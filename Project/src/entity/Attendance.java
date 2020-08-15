@@ -165,4 +165,18 @@ public class Attendance {
         return false;
         
     }
+    
+    public static Attendance getAttendance(Student student, Schedule schedule, String date) throws SQLException{
+        Connection connection = DbConnector.getConnection();
+        String sql = "select * from attendance where studentId = " + student.getId() + " and scheduleId = " + schedule.getId() + " and date = '" + date + "'";
+        if(connection != null){
+            Statement st = connection.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            if(rs.next()){
+                Attendance attendance = new Attendance(rs.getInt("id"), student, schedule, date, rs.getInt("status"));
+                return attendance;
+            }
+        }
+        return null;
+    }
 }
